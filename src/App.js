@@ -13,7 +13,7 @@ function App() {
       <HeaderLabel />
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/" element={<Dashboard />} />
         </Routes>
       </BrowserRouter>
     </div>

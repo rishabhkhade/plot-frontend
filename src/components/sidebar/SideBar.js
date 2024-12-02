@@ -14,7 +14,7 @@ function SideBar() {
   const data = [
     {
       link_name: "Dashboard",
-      link_path: "/dashboard",
+      link_path: "/",
       icon: <GoHome />,
     },
     {
