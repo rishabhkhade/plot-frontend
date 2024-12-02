@@ -1,0 +1,93 @@
+.sidebar {
+  width: 300px;
+  height: 100vh;
+  background: linear-gradient(var(--accent), var(--teal));
+  padding: 20px 10px;
+  border-radius: 0px 20px 20px 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--unit) * 10);
+  position: fixed;
+  top: 0;
+  left: 0;
+  transition: var(--trans);
+  z-index: 999999999999999;
+
+  &.active {
+    width: 70px;
+  }
+
+  .arrow-icon {
+    position: absolute;
+    right: -21px;
+    top: 70px;
+    border-radius: 100%;
+    background: var(--yellow);
+    color: var(--accent);
+    padding: 8px;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--trans);
+
+    &.active {
+      transform: rotate(180deg);
+    }
+  }
+
+  .h2 {
+    color: var(--white);
+    font-size: calc(var(--unit) * 1.5);
+    font-weight: 700;
+
+    &.active {
+    }
+  }
+
+  .sidebar-headings {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--unit) * 1.5);
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+
+    a {
+      width: 100%;
+      color: var(--light-grey);
+      font-size: calc(var(--unit));
+      padding: 10px 0px;
+      border-left: 5px solid transparent;
+      transition: var(--trans);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--unit);
+
+      .icon {
+        display: none;
+        justify-content: center;
+        align-items: center;
+
+        &.active {
+          display: flex;
+        }
+      }
+
+      .text {
+        &.active {
+          display: none;
+        }
+      }
+
+      &:hover {
+        background: var(--light-grey);
+        color: var(--accent);
+        border-left: 10px solid var(--yellow);
+      }
+    }
+  }
+}

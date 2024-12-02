@@ -1,0 +1,60 @@
+.login-parent {
+  height: 100vh;
+
+  .login-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .login-box {
+      width: 600px;
+      height: auto;
+      box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.185);
+      border-radius: 10px;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+
+      .left-login {
+        width: 60%;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: calc(var(--unit) * 2);
+
+        h2 {
+          font-size: 50px;
+          font-weight: 700;
+        }
+
+        .username-password {
+          display: flex;
+          flex-direction: column;
+          gap: calc(var(--unit));
+
+          input {
+            border: none;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.164);
+            outline: none;
+          }
+
+          span {
+            font-size: calc(var(--unit) / 1.2);
+            font-weight: 500;
+            color: var(--grey);
+          }
+          .line {
+            height: 1px;
+            background-color: rgba(0, 0, 0, 0.116);
+          }
+        }
+      }
+      .right-login {
+        width: 40%;
+        height: auto;
+        background: linear-gradient(rgba(0, 0, 0, 0.096), rgba(0, 0, 0, 0.096)),
+          url("../assets/login/building.webp");
+        border-radius: 0px 10px 10px 0px;
+      }
+    }
+  }
+}
