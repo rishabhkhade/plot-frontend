@@ -10,58 +10,28 @@
     gap: calc(var(--unit) * 2);
     background: linear-gradient(var(--accent), var(--teal));
     border-radius: 10px;
+    padding: 20px;
 
-    .dashboard-left {
-      width: 50%;
-      padding: 10px;
-      // background-color: rgba(255, 0, 0, 0.171);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      // gap: calc(var(--unit));
-      flex-wrap: wrap;
-      .box {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 10px;
-        flex-direction: column;
-        gap: calc(var(--unit)/2);
-        
-        span{
-          font-size: calc(var(--unit)*2);
-          font-weight: 400;
-          color: var(--white);
-        }
-        p{
-          font-size: calc(var(--unit));
-          color: var(--white);
-          opacity: 0.7;
-
-        }
-      }
-      .box-1 {
-        width: 40%;
-      
-      }
-      .box-2 {
-        width: 40%;
-      }
-      .box-3 {
-        width: 40%;
-        border-top: 1px solid rgba(255, 255, 255, 0.144);
-
-
-      }
-      .box-4 {
-        width: 40%;
-        border-top: 1px solid rgba(255, 255, 255, 0.144);
-      }
+    .mySwiper {
+      width: 100%;
+      height: 100%;
     }
-    .dashboard-right {
-      width: 50%;
-      padding: 20px 0px;
-      
+    .box {
+      padding: 20px;
+      border-radius: calc(var(--unit) / 2);
+      background-color: white;
+      display: flex;
+      margin: auto;
+      align-items: center;
+      justify-content: space-between;
+      .status {
+        font-size: calc(var(--unit) * 1);
+        font-weight: 500;
+      }
+      .count {
+        font-size: calc(var(--unit) * 1.5);
+        font-weight: 500;
+      }
     }
   }
 }

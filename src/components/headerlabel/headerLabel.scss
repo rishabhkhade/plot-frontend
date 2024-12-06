@@ -5,6 +5,7 @@
   position: fixed;
   top: 8%;
   right: 0;
+  z-index: 10;
   .header-container {
     background: var(--white);
     border-radius: calc(var(--unit) / 2);

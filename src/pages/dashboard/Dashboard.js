@@ -3,8 +3,48 @@ import "./dashboard.scss";
 import { BarChart, Bar, Cell, XAxis, YAxis } from "recharts";
 import { Table as AntTable, Button, Space, Dropdown, Menu } from "antd";
 import { DownOutlined, SearchOutlined } from "@ant-design/icons";
+import { Swiper, SwiperSlide } from "swiper/react";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+
+// import required modules
+import { Autoplay, Pagination, Navigation } from "swiper/modules";
+import CountUp from "react-countup";
 
 function Dashboard() {
+
+
+  const statusData = [
+    {
+      status: "Completed",
+      projects_counts: 50,
+     
+    },
+    {
+      status: "In-Progress",
+      projects_counts: 50,
+      
+    },
+    {
+      status: "Pending",
+      projects_counts: 50,
+    },
+    {
+      status: "Completed",
+      projects_counts: 50,
+    },
+  ];
+
+
+
+
+
+
+
+
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
 
@@ -102,35 +142,59 @@ function Dashboard() {
     <>
       <div className="parent dasboard-parent">
         <div className="container dashboard-container">
-          <div className="dashboard-left">
-            <div className="box box-1">
-              <span>1000</span>
-              <p>Total Plots</p>
-            </div>
-            <div className="box box-2">
-              <span>4</span>
-              <p>Projects</p>
-            </div>
-            <div className="box box-3">
-              <span>250</span>
-              <p>Total Plots Sale</p>
-            </div>
-            <div className="box box-4">
-              <span>250</span>
-              <p>Total Customers</p>
-            </div>
-          </div>
-          <div className="dashboard-right">
-            <BarChart width={500} height={300} data={data} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-              <XAxis dataKey="name" tick={{ fill: "white" }} stroke="white" />
-              <YAxis tick={{ fill: "white" }} stroke="white" />
-              <Bar dataKey="uv" fill="#8884d8">
-                {data.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={colors[index % 20]} />
-                ))}
-              </Bar>
-            </BarChart>
-          </div>
+        <Swiper
+            spaceBetween={30}
+            centeredSlides={false}
+            slidesPerView={4}
+            autoplay={{
+              delay: 2500,
+              disableOnInteraction: false,
+            }}
+            pagination={{
+              clickable: false,
+            }}
+            navigation={false}
+            breakpoints={{
+              340: {
+                slidesPerView: 2,
+                spaceBetween: 20,
+              },
+              400: {
+                slidesPerView: 2,
+                spaceBetween: 20,
+              },
+              640: {
+                slidesPerView: 2,
+                spaceBetween: 20,
+              },
+              768: {
+                slidesPerView: 3,
+                spaceBetween: 40,
+              },
+              1024: {
+                slidesPerView: 4,
+                spaceBetween: 50,
+              },
+            }}
+            modules={[Autoplay, Pagination, Navigation]}
+            className="mySwiper"
+          >
+            {statusData.map((item, index) => (
+              <SwiperSlide>
+                <div className="box" key={index}>
+                  <h3 className="status">{item.status}</h3>
+                  <h3 className="count">
+                    <CountUp
+                      start={0}
+                      end={item.projects_counts}
+                      duration={2}
+                      separator=","
+                    />
+                  </h3>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
       </div>
 
