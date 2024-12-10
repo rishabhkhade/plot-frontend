@@ -6,7 +6,8 @@ import { GoHome } from "react-icons/go";
 import { GoProjectRoadmap } from "react-icons/go";
 import { PiUsers } from "react-icons/pi";
 import { RiBillLine } from "react-icons/ri";
-
+import { IoMdAdd } from "react-icons/io";
+import { IoMdLogOut } from "react-icons/io";
 
 function SideBar() {
   const [navbar, setNavbar] = useState(false);
@@ -21,6 +22,7 @@ function SideBar() {
       link_name: "Our Projects",
       link_path: "/",
       icon: <GoProjectRoadmap />,
+      
     },
     {
       link_name: "Our Customer",
@@ -32,11 +34,15 @@ function SideBar() {
       icon: <RiBillLine />,
       link_path: "/",
     },
+    {
+      link_name: "Add Employee",
+      icon: <IoMdAdd />,
+      link_path: "/",
+    },
   ];
 
   return (
     <>
-  
       <div className={navbar ? "sidebar active" : "sidebar"}>
         <span
           className={navbar ? "arrow-icon " : "arrow-icon active"}
@@ -59,6 +65,10 @@ function SideBar() {
             </Link>
           ))}
         </div>
+        <span className="logout-icon">
+          <IoMdLogOut />{" "}
+        </span>
+        <Link className="btn logout-btn">Log Out</Link>
       </div>
     </>
   );

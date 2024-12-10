@@ -13,6 +13,7 @@
       display: flex;
       align-items: stretch;
       justify-content: center;
+      background-color: white;
 
       .left-login {
         width: 60%;
@@ -22,8 +23,8 @@
         gap: calc(var(--unit) * 2);
 
         h2 {
-          font-size: 50px;
-          font-weight: 700;
+          font-size: 40px;
+          font-weight: 500;
         }
 
         .username-password {
@@ -31,20 +32,39 @@
           flex-direction: column;
           gap: calc(var(--unit));
 
-          input {
-            border: none;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.164);
-            outline: none;
+          .username {
+            width: 100%;
           }
 
-          span {
-            font-size: calc(var(--unit) / 1.2);
-            font-weight: 500;
-            color: var(--grey);
+          .password {
+            width: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .eye-icon {
+              position: absolute;
+              top: 30%;
+              right: 10px;
+              cursor: pointer;
+            }
           }
-          .line {
-            height: 1px;
-            background-color: rgba(0, 0, 0, 0.116);
+
+          input {
+            border: 1px solid rgba(0, 0, 0, 0.164);
+            outline: none;
+            height: 40px;
+            background-color: transparent;
+            border-radius: 5px;
+            padding: 5px 10px;
+            width: 100%;
+            &::placeholder {
+              color: rgba(8, 8, 8, 0.315);
+            }
+
+            .eye-icon {
+            }
           }
         }
       }

@@ -64,6 +64,10 @@ a {
   align-items: center;
   justify-content: center;
   transition: var(--trans);
-
-
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: 0.7px;
+  word-spacing: 1px;
+  cursor: pointer;
+  border: none;
 }

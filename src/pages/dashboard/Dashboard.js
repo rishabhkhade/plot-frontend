@@ -198,7 +198,7 @@ function Dashboard() {
         </div>
       </div>
 
-      <div className="parent">
+      <div className=" table_parent parent">
         <div className="container">
           <AntTable
             columns={columns}

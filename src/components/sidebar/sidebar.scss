@@ -16,6 +16,13 @@
 
   &.active {
     width: 70px;
+
+    .logout-icon {
+      display: flex;
+    }
+    .logout-btn {
+      display: none;
+    }
   }
 
   .arrow-icon {
@@ -89,5 +96,21 @@
         border-left: 10px solid var(--yellow);
       }
     }
+  }
+
+  .logout-btn {
+    display: flex;
+  }
+  .logout-icon {
+    display: none;
+    border-radius: 100%;
+    background: var(--yellow);
+    color: var(--accent);
+    padding: 8px;
+    font-size: 20px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transform: rotate(-90deg);
   }
 }

@@ -38,13 +38,19 @@
 
 
 
+.table_parent{
+width: calc(100% - 300px);
+margin-left: 300px;
+}
+
 .table{
   border-radius: 5px !important;
   overflow: hidden;
-  width: calc(100% - 300px);
+  width: calc(100%);
   height: calc(100svh - 50px - 8%);
-  margin-left: 300px;
-  margin-top: calc(8% + 20px);
+  // margin-left: 300px;
+  // margin-top: calc(8% + 20px);
+  margin-top: 5%;
 }
 
 .action-icon{
