@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./sidebar.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoIosArrowForward } from "react-icons/io";
 import { GoHome } from "react-icons/go";
 import { GoProjectRoadmap } from "react-icons/go";
@@ -8,10 +8,18 @@ import { PiUsers } from "react-icons/pi";
 import { RiBillLine } from "react-icons/ri";
 import { IoMdAdd } from "react-icons/io";
 import { IoMdLogOut } from "react-icons/io";
+import { DownOutlined } from '@ant-design/icons';
+import { Dropdown, Space } from 'antd';
+  
+ 
 
-function SideBar() {
+
+function SideBar({ setIslogdin }) {
   const [navbar, setNavbar] = useState(false);
 
+  const role = localStorage.getItem("role");
+
+  const navigate = useNavigate();
   const data = [
     {
       link_name: "Dashboard",
@@ -22,25 +30,35 @@ function SideBar() {
       link_name: "Our Projects",
       link_path: "/",
       icon: <GoProjectRoadmap />,
-      
     },
     {
       link_name: "Our Customer",
       link_path: "/",
       icon: <PiUsers />,
     },
-    {
-      link_name: "Statement",
-      icon: <RiBillLine />,
-      link_path: "/",
-    },
-    {
-      link_name: "Add Employee",
-      icon: <IoMdAdd />,
-      link_path: "/",
-    },
+ 
+    ...(role === "Admin"
+      ? [
+          {
+            link_name: "Statement",
+            icon: <RiBillLine />,
+            link_path: "/",
+          },
+          {
+            link_name: "Add Employee",
+            icon: <IoMdAdd />,
+            link_path: "/",
+          },
+        ]
+      : []),
   ];
 
+  const logOutUser = () => {
+    localStorage.removeItem("token");
+    setIslogdin(false);
+    navigate("/*");
+  };
+ 
   return (
     <>
       <div className={navbar ? "sidebar active" : "sidebar"}>
@@ -68,7 +86,9 @@ function SideBar() {
         <span className="logout-icon">
           <IoMdLogOut />{" "}
         </span>
-        <Link className="btn logout-btn">Log Out</Link>
+        <Link className="btn logout-btn" onClick={logOutUser}>
+          Log Out
+        </Link>
       </div>
     </>
   );

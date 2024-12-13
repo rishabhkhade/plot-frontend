@@ -1,13 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./headerLabel.scss";
 import { CiCalendar } from "react-icons/ci";
+import { UserContext } from "../../Context";
+
 
 function HeaderLabel() {
+
+  const contextData = useContext(UserContext)
+
+  console.log(contextData)
   return (
     <>
       <div class="parent header-parent">
         <div class="container header-container">
-          <span>User Name</span>
+          <span>{contextData.userName}</span>
           <div class="time">
             <CiCalendar />
             <span>nov 19, 2024</span>
