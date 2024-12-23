@@ -8,7 +8,7 @@ function HeaderLabel() {
 
   const contextData = useContext(UserContext)
 
-  console.log(contextData)
+
   return (
     <>
       <div class="parent header-parent">

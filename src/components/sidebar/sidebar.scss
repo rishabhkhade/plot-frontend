@@ -12,7 +12,7 @@
   top: 0;
   left: 0;
   transition: var(--trans);
-  z-index: 999999999999999;
+  z-index: 999;
 
   &.active {
     width: 70px;
@@ -61,6 +61,7 @@
     align-items: center;
     justify-content: center;
     width: 100%;
+    
 
     a {
       width: 100%;
@@ -73,6 +74,7 @@
       align-items: center;
       justify-content: center;
       gap: var(--unit);
+
 
       .icon {
         display: none;
@@ -98,6 +100,8 @@
     }
   }
 
+  
+
   .logout-btn {
     display: flex;
   }
@@ -114,5 +118,3 @@
     transform: rotate(-90deg);
   }
 }
-
-

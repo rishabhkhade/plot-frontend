@@ -1,7 +1,6 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import "./dashboard.scss";
-import { BarChart, Bar, Cell, XAxis, YAxis } from "recharts";
-import { Table as AntTable, Button, Space, Dropdown, Menu } from "antd";
+import { Table as AntTable, Button, Dropdown, Menu } from "antd";
 import { DownOutlined, SearchOutlined } from "@ant-design/icons";
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -14,20 +13,15 @@ import "swiper/css/navigation";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import CountUp from "react-countup";
 
-
 function Dashboard() {
-
-
   const statusData = [
     {
       status: "Completed",
       projects_counts: 50,
-     
     },
     {
       status: "In-Progress",
       projects_counts: 50,
-      
     },
     {
       status: "Pending",
@@ -39,25 +33,10 @@ function Dashboard() {
     },
   ];
 
-
-
-
-
-
-
-
-
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
 
-  const colors = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "red", "pink"];
-
-  const data = [
-    { name: "Pro 1", uv: 4000 },
-    { name: "Pro 2", uv: 3000 },
-    { name: "Pro 3", uv: 2000 },
-    { name: "Pro 4", uv: 2780 },
-  ];
+ 
 
   const getMenu = (record, key) => (
     <Menu>
@@ -107,13 +86,55 @@ function Dashboard() {
   };
 
   const columns = [
-    { title: "Name", dataIndex: "fname", key: "name", width: "10%", ...getColumnSearchProps("fname") },
-    { title: "Contact", dataIndex: "pnumber", key: "phone", width: "7%", ...getColumnSearchProps("pnumber") },
-    { title: "Plots", dataIndex: "message", key: "complaint", width: "15%", ...getColumnSearchProps("message") },
-    { title: "Projects", dataIndex: "address", key: "address", width: "12%", ...getColumnSearchProps("address") },
-    { title: "Cost", dataIndex: "vname", key: "village", width: "10%", ...getColumnSearchProps("vname") },
-    { title: "Balance", dataIndex: "taluka", key: "taluka", width: "8%", ...getColumnSearchProps("taluka") },
-    { title: "Acres", dataIndex: "taluka", key: "taluka", width: "8%", ...getColumnSearchProps("taluka") },
+    {
+      title: "Name",
+      dataIndex: "fname",
+      key: "name",
+      width: "10%",
+      ...getColumnSearchProps("fname"),
+    },
+    {
+      title: "Contact",
+      dataIndex: "pnumber",
+      key: "phone",
+      width: "7%",
+      ...getColumnSearchProps("pnumber"),
+    },
+    {
+      title: "Plots",
+      dataIndex: "message",
+      key: "complaint",
+      width: "15%",
+      ...getColumnSearchProps("message"),
+    },
+    {
+      title: "Projects",
+      dataIndex: "address",
+      key: "address",
+      width: "12%",
+      ...getColumnSearchProps("address"),
+    },
+    {
+      title: "Cost",
+      dataIndex: "vname",
+      key: "village",
+      width: "10%",
+      ...getColumnSearchProps("vname"),
+    },
+    {
+      title: "Balance",
+      dataIndex: "taluka",
+      key: "taluka",
+      width: "8%",
+      ...getColumnSearchProps("taluka"),
+    },
+    {
+      title: "Acres",
+      dataIndex: "taluka",
+      key: "taluka",
+      width: "8%",
+      ...getColumnSearchProps("taluka"),
+    },
     {
       title: "Status",
       dataIndex: "work_status",
@@ -121,30 +142,132 @@ function Dashboard() {
       width: "10%",
       render: (_, record) => (
         <Dropdown overlay={getMenu(record, "work_status")} trigger={["click"]}>
-          <Button>{record.work_status} <DownOutlined /></Button>
+          <Button>
+            {record.work_status} <DownOutlined />
+          </Button>
         </Dropdown>
       ),
     },
   ];
 
   const tableData = [
-    { fname: "John Doe", pnumber: "1234567890", message: "plot 1", address: "Sai project", vname: "1000000", taluka: "50000", work_status: "In Progress", complaint_status: "Pending", timestamp: { seconds: 1617171717 } },
-    { fname: "John Doe", pnumber: "1234567890", message: "plot 1", address: "Sai project", vname: "1000000", taluka: "50000", work_status: "In Progress", complaint_status: "Pending", timestamp: { seconds: 1617171717 } },
-    { fname: "John Doe", pnumber: "1234567890", message: "plot 1", address: "Sai project", vname: "1000000", taluka: "50000", work_status: "In Progress", complaint_status: "Pending", timestamp: { seconds: 1617171717 } },
-    { fname: "John Doe", pnumber: "1234567890", message: "plot 1", address: "Sai project", vname: "1000000", taluka: "50000", work_status: "In Progress", complaint_status: "Pending", timestamp: { seconds: 1617171717 } },
-    { fname: "John Doe", pnumber: "1234567890", message: "plot 1", address: "Sai project", vname: "1000000", taluka: "50000", work_status: "In Progress", complaint_status: "Pending", timestamp: { seconds: 1617171717 } },
-    { fname: "John Doe", pnumber: "1234567890", message: "plot 1", address: "Sai project", vname: "1000000", taluka: "50000", work_status: "In Progress", complaint_status: "Pending", timestamp: { seconds: 1617171717 } },
-    { fname: "John Doe", pnumber: "1234567890", message: "plot 1", address: "Sai project", vname: "1000000", taluka: "50000", work_status: "In Progress", complaint_status: "Pending", timestamp: { seconds: 1617171717 } },
-    { fname: "John Doe", pnumber: "1234567890", message: "plot 1", address: "Sai project", vname: "1000000", taluka: "50000", work_status: "In Progress", complaint_status: "Pending", timestamp: { seconds: 1617171717 } },
-    { fname: "John Doe", pnumber: "1234567890", message: "plot 1", address: "Sai project", vname: "1000000", taluka: "50000", work_status: "In Progress", complaint_status: "Pending", timestamp: { seconds: 1617171717 } },
-    { fname: "John Doe", pnumber: "1234567890", message: "plot 1", address: "Sai project", vname: "1000000", taluka: "50000", work_status: "In Progress", complaint_status: "Pending", timestamp: { seconds: 1617171717 } },
+    {
+      fname: "John Doe",
+      pnumber: "1234567890",
+      message: "plot 1",
+      address: "Sai project",
+      vname: "1000000",
+      taluka: "50000",
+      work_status: "In Progress",
+      complaint_status: "Pending",
+      timestamp: { seconds: 1617171717 },
+    },
+    {
+      fname: "John Doe",
+      pnumber: "1234567890",
+      message: "plot 1",
+      address: "Sai project",
+      vname: "1000000",
+      taluka: "50000",
+      work_status: "In Progress",
+      complaint_status: "Pending",
+      timestamp: { seconds: 1617171717 },
+    },
+    {
+      fname: "John Doe",
+      pnumber: "1234567890",
+      message: "plot 1",
+      address: "Sai project",
+      vname: "1000000",
+      taluka: "50000",
+      work_status: "In Progress",
+      complaint_status: "Pending",
+      timestamp: { seconds: 1617171717 },
+    },
+    {
+      fname: "John Doe",
+      pnumber: "1234567890",
+      message: "plot 1",
+      address: "Sai project",
+      vname: "1000000",
+      taluka: "50000",
+      work_status: "In Progress",
+      complaint_status: "Pending",
+      timestamp: { seconds: 1617171717 },
+    },
+    {
+      fname: "John Doe",
+      pnumber: "1234567890",
+      message: "plot 1",
+      address: "Sai project",
+      vname: "1000000",
+      taluka: "50000",
+      work_status: "In Progress",
+      complaint_status: "Pending",
+      timestamp: { seconds: 1617171717 },
+    },
+    {
+      fname: "John Doe",
+      pnumber: "1234567890",
+      message: "plot 1",
+      address: "Sai project",
+      vname: "1000000",
+      taluka: "50000",
+      work_status: "In Progress",
+      complaint_status: "Pending",
+      timestamp: { seconds: 1617171717 },
+    },
+    {
+      fname: "John Doe",
+      pnumber: "1234567890",
+      message: "plot 1",
+      address: "Sai project",
+      vname: "1000000",
+      taluka: "50000",
+      work_status: "In Progress",
+      complaint_status: "Pending",
+      timestamp: { seconds: 1617171717 },
+    },
+    {
+      fname: "John Doe",
+      pnumber: "1234567890",
+      message: "plot 1",
+      address: "Sai project",
+      vname: "1000000",
+      taluka: "50000",
+      work_status: "In Progress",
+      complaint_status: "Pending",
+      timestamp: { seconds: 1617171717 },
+    },
+    {
+      fname: "John Doe",
+      pnumber: "1234567890",
+      message: "plot 1",
+      address: "Sai project",
+      vname: "1000000",
+      taluka: "50000",
+      work_status: "In Progress",
+      complaint_status: "Pending",
+      timestamp: { seconds: 1617171717 },
+    },
+    {
+      fname: "John Doe",
+      pnumber: "1234567890",
+      message: "plot 1",
+      address: "Sai project",
+      vname: "1000000",
+      taluka: "50000",
+      work_status: "In Progress",
+      complaint_status: "Pending",
+      timestamp: { seconds: 1617171717 },
+    },
   ];
 
   return (
     <>
       <div className="parent dasboard-parent">
         <div className="container dashboard-container">
-        <Swiper
+          <Swiper
             spaceBetween={30}
             centeredSlides={false}
             slidesPerView={4}

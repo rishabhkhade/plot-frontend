@@ -7,6 +7,9 @@ import HeaderLabel from "./components/headerlabel/HeaderLabel";
 import SignUp from "./pages/signup/SignUp";
 import ContextProvider from "./Context";
 import { useEffect, useState } from "react";
+import AddProjects from "./components/addProjects/AddProjects";
+import ViewProjects from "./components/viewprojects/ViewProjects";
+import Customer from "./pages/customers/Customer";
 
 function App() {
   const [isLogedIn, setIslogdin] = useState(!!localStorage.getItem("token"));
@@ -30,6 +33,9 @@ function App() {
             {isLogedIn ? (
               <>
                 <Route path="/" element={<Dashboard />} />
+                <Route path="/add-projects" element={<AddProjects />} />
+                <Route path="/view-projects" element={<ViewProjects />} />
+                <Route path="/customer" element={<Customer />} />
                 <Route path="/signup" element={<SignUp />} />
               </>
             ) : (
