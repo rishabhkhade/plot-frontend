@@ -27,9 +27,23 @@ function ViewProjects() {
 
 
 
-const getColumnSearchProps = (dataIndex) => ({
-    filterDropdown: ({ selectedKeys, confirm, clearFilters, close }) => (
+  const getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
       <div style={{ padding: 8 }}>
+        <input
+          type="text"
+          value={selectedKeys[0]}
+          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          placeholder={`Search ${dataIndex}`}
+          style={{
+            marginBottom: 8,
+            display: 'block',
+            width: '100%',
+            padding: '4px',
+            border: '1px solid #d9d9d9',
+            borderRadius: '4px',
+          }}
+        />
         <Button
           type="primary"
           onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
@@ -46,10 +60,10 @@ const getColumnSearchProps = (dataIndex) => ({
         >
           Reset
         </Button>
-        <Button type="link" size="small" onClick={() => close()}>
-          Close
-        </Button>
       </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />
     ),
     onFilter: (value, record) =>
       record[dataIndex]?.toString().toLowerCase().includes(value.toLowerCase()),
@@ -114,7 +128,7 @@ const columns = [
 
   const tableData = [
     {
-        pname: "John Doe",
+        pname: "Tom Doe",
         parea: "1234567890",
         plocation: "plot 1",
         pgat: "Sai project"

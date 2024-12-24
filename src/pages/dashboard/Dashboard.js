@@ -47,8 +47,22 @@ function Dashboard() {
   );
 
   const getColumnSearchProps = (dataIndex) => ({
-    filterDropdown: ({ selectedKeys, confirm, clearFilters, close }) => (
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
       <div style={{ padding: 8 }}>
+        <input
+          type="text"
+          value={selectedKeys[0]}
+          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          placeholder={`Search ${dataIndex}`}
+          style={{
+            marginBottom: 8,
+            display: 'block',
+            width: '100%',
+            padding: '4px',
+            border: '1px solid #d9d9d9',
+            borderRadius: '4px',
+          }}
+        />
         <Button
           type="primary"
           onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
@@ -65,14 +79,15 @@ function Dashboard() {
         >
           Reset
         </Button>
-        <Button type="link" size="small" onClick={() => close()}>
-          Close
-        </Button>
       </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />
     ),
     onFilter: (value, record) =>
       record[dataIndex]?.toString().toLowerCase().includes(value.toLowerCase()),
   });
+  
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -163,7 +178,7 @@ function Dashboard() {
       timestamp: { seconds: 1617171717 },
     },
     {
-      fname: "John Doe",
+      fname: "John1 Doe",
       pnumber: "1234567890",
       message: "plot 1",
       address: "Sai project",
@@ -185,7 +200,7 @@ function Dashboard() {
       timestamp: { seconds: 1617171717 },
     },
     {
-      fname: "John Doe",
+      fname: "Ram Doe",
       pnumber: "1234567890",
       message: "plot 1",
       address: "Sai project",

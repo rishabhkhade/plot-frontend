@@ -3,6 +3,8 @@ import "./customer.scss";
 import { Table as AntTable, Button } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import axios from "axios";
+import { TiPlus } from "react-icons/ti";
+import { Link } from "react-router-dom";
 
 function Customer() {
   const [searchText, setSearchText] = useState("");
@@ -10,7 +12,7 @@ function Customer() {
 
   //fetch customer
   const [getCustomer, setGetCustomer] = useState([]);
-  const [getPlot, setGetPlot] = useState();
+  const [getPlot, setGetPlot] = useState([]);
 
   const plots = async (id) => {
     try {
@@ -46,8 +48,29 @@ function Customer() {
   }, []);
 
   const getColumnSearchProps = (dataIndex) => ({
-    filterDropdown: ({ selectedKeys, confirm, clearFilters, close }) => (
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }) => (
       <div style={{ padding: 8 }}>
+        <input
+          type="text"
+          value={selectedKeys[0]}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          placeholder={`Search ${dataIndex}`}
+          style={{
+            marginBottom: 8,
+            display: "block",
+            width: "100%",
+            padding: "4px",
+            border: "1px solid #d9d9d9",
+            borderRadius: "4px",
+          }}
+        />
         <Button
           type="primary"
           onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
@@ -64,10 +87,10 @@ function Customer() {
         >
           Reset
         </Button>
-        <Button type="link" size="small" onClick={() => close()}>
-          Close
-        </Button>
       </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
     ),
     onFilter: (value, record) =>
       record[dataIndex]?.toString().toLowerCase().includes(value.toLowerCase()),
@@ -155,6 +178,10 @@ function Customer() {
     <>
       <div class="customer-parent parent">
         <div class="customer-cont container">
+          <Link to="/add-customers" className="btn plus-icon-btn">
+            Add Customers
+          <span className="plus-icon">  <TiPlus /></span>
+          </Link>
           <AntTable
             columns={columns}
             dataSource={getCustomer}

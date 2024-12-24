@@ -73,4 +73,9 @@ a {
   word-spacing: 1px;
   cursor: pointer;
   border: none;
+
+  &:hover{
+    background-color: var(--accent);
+    color: var(--white);
+  }
 }

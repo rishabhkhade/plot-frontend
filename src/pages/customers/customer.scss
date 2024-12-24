@@ -1,9 +1,21 @@
-.customer-parent{
-    width: calc(100% - 300px);
-    height: calc(100svh - 50px - 8%);
-    margin-left: 300px;
-    margin-top: calc(8% + 20px);
-    .customer-cont{
+.customer-parent {
+  width: calc(100% - 300px);
+  height: calc(100svh - 50px - 8%);
+  margin-left: 300px;
+  margin-top: calc(8% + 20px);
+  .customer-cont {
+    .plus-icon-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
 
+      .plus-icon {
+        font-size: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
     }
+  }
 }

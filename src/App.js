@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import AddProjects from "./components/addProjects/AddProjects";
 import ViewProjects from "./components/viewprojects/ViewProjects";
 import Customer from "./pages/customers/Customer";
+import AddCustomer from "./components/addCustomer/AddCustomer";
 
 function App() {
   const [isLogedIn, setIslogdin] = useState(!!localStorage.getItem("token"));
@@ -34,6 +35,7 @@ function App() {
               <>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/add-projects" element={<AddProjects />} />
+                <Route path="/add-customers" element={<AddCustomer />} />
                 <Route path="/view-projects" element={<ViewProjects />} />
                 <Route path="/customer" element={<Customer />} />
                 <Route path="/signup" element={<SignUp />} />
