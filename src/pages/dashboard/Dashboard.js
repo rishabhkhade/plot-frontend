@@ -119,33 +119,30 @@ function Dashboard() {
   };
 
   const [customerDetails, setCustomerDetails] = useState([]);
-  const [loading, setLoading] = useState(false);
 
   // Fetch customer list and plot details
   const getCustomerDetails = async () => {
     try {
-      setLoading(true);
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/customer/getAllCustomers`
+        `${process.env.REACT_APP_API_URL}/customer/newCustomer`
       );
-      const customers = response.data.data;
 
-      console.log(customers, "Sdcfds");
+      // Properly map the data to extract specific fields
+      const detailsData = response.data.data.map((item) => ({
+        cName: item.cName,
+        mob_Number: item.mob_Number,
+        projectName: item.plotDetails.projectName,
+        plotId: item.plotDetails.plotId,
+        plotarea: item.plotDetails.plotarea,
+        plotamount: item.plotDetails.plotamount,
+        totalBookingAmount: item.totalBookingAmount,
+        pendingAmount: item.plotDetails.plotamount - item.totalBookingAmount,
+      }));
 
-      // Fetch plot details for each customer
-      const plotDetailsPromises = customers.map(async (customer) => {
-        const plotResponse = await axios.get(
-          `${process.env.REACT_APP_API_URL}/plots/getPlotById/${customer.plotId}`
-        );
-        return { ...customer, plotDetails: plotResponse.data.data };
-      });
-
-      const detailsWithPlots = await Promise.all(plotDetailsPromises);
-      setCustomerDetails(detailsWithPlots);
-      setLoading(false);
+      // Set the mapped data to state
+      setCustomerDetails(detailsData);
     } catch (error) {
-      console.error("Error fetching customer or plot details:", error);
-      setLoading(false);
+      console.error("Error fetching customer details:", error);
     }
   };
 
@@ -170,39 +167,45 @@ function Dashboard() {
     },
     {
       title: "Project Name",
-      dataIndex: "message",
-      key: "complaint",
+      dataIndex: "projectName",
+      key: "projectName",
       width: "15%",
-      ...getColumnSearchProps("message"),
+      ...getColumnSearchProps("projectName"),
     },
     {
-      title: "Plot Details",
-      key: "plotDetails",
-      render: (text, record) =>
-        record.plotDetails
-          ? `Area: ${record.plotDetails.area}, Location: ${record.plotDetails.location}`
-          : "No Details Available",
+      title: "Plot Number",
+      dataIndex: "plotId",
+      key: "plotId",
+      width: "15%",
+      ...getColumnSearchProps("plotId"),
     },
     {
-      title: "Sq. ft.",
-      dataIndex: "vname",
-      key: "village",
+      title: "Plot Area(sq.ft.)",
+      dataIndex: "plotarea",
+      key: "plotarea",
       width: "10%",
-      ...getColumnSearchProps("vname"),
+      ...getColumnSearchProps("plotarea"),
     },
     {
-      title: "Amount",
-      dataIndex: "taluka",
-      key: "taluka",
+      title: "Plot Amount",
+      dataIndex: "plotamount",
+      key: "plotamount",
       width: "8%",
-      ...getColumnSearchProps("taluka"),
+      ...getColumnSearchProps("plotamount"),
     },
     {
-      title: "Pending",
-      dataIndex: "taluka",
-      key: "taluka",
+      title: "Received Amount",
+      dataIndex: "totalBookingAmount",
+      key: "totalBookingAmount",
       width: "8%",
-      ...getColumnSearchProps("taluka"),
+      ...getColumnSearchProps("totalBookingAmount"),
+    },
+    {
+      title: "Pending Amount",
+      dataIndex: "pendingAmount",
+      key: "pendingAmount",
+      width: "8%",
+      ...getColumnSearchProps("pendingAmount"),
     },
   ];
 
