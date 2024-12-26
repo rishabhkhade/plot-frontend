@@ -50,7 +50,7 @@ function SideBar({ setIslogdin }) {
         ]
       : []),
   ];
-
+ 
   const logOutUser = () => {
     localStorage.removeItem("token");
     setIslogdin(false);

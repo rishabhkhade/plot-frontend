@@ -11,6 +11,8 @@ import AddProjects from "./components/addProjects/AddProjects";
 import ViewProjects from "./components/viewprojects/ViewProjects";
 import Customer from "./pages/customers/Customer";
 import AddCustomer from "./components/addCustomer/AddCustomer";
+import AddPlot from "./components/addPlots/AddPlot";
+import AllPlots from "./components/allPlots/AllPlots";
 
 function App() {
   const [isLogedIn, setIslogdin] = useState(!!localStorage.getItem("token"));
@@ -36,7 +38,9 @@ function App() {
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/add-projects" element={<AddProjects />} />
                 <Route path="/add-customers" element={<AddCustomer />} />
+                <Route path="/add-plots" element={<AddPlot />} />
                 <Route path="/view-projects" element={<ViewProjects />} />
+                <Route path="/all-plots" element={<AllPlots />} />
                 <Route path="/customer" element={<Customer />} />
                 <Route path="/signup" element={<SignUp />} />
               </>

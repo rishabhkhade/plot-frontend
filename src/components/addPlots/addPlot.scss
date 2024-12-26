@@ -1,16 +1,16 @@
-.add-projects-table-parent {
+.add-plot-parent {
   width: calc(100% - 300px);
   height: calc(100svh - 50px - 8%);
   margin-left: 300px;
   margin-top: calc(8% + 20px);
-
-  .add-projects-table-cont {
+  .add-plot-cont {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    .add-project-form {
+    .add-plot-form {
       width: 50%;
+      // border: 1px solid rgba(0, 0, 0, 0.39);
       padding: calc(var(--unit) * 2);
       display: flex;
       flex-direction: column;

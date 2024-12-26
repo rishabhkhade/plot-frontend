@@ -1,50 +1,40 @@
 import React, { useEffect, useState } from "react";
-import "./customer.scss";
+import "./allPlots.scss";
 import { Table as AntTable, Button } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import axios from "axios";
-import { TiPlus } from "react-icons/ti";
-import { Link } from "react-router-dom";
 
-function Customer() {
+function AllPlots() {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
 
-  //fetch customer
-  const [getCustomer, setGetCustomer] = useState([]);
-  const [getPlot, setGetPlot] = useState([]);
+  const [allPlots, setAllPlots] = useState([]);
 
-  const plots = async (id) => {
-    try {
-      const response = axios.get(
-        `${process.env.REACT_APP_API_URL}/plots/getPlotById/${id}`,
-        getPlot
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    plots();
-  }, []);
-
-  const handleCustomer = async () => {
+  const plotsData = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/customer/getAllCustomers`,
-        getCustomer
+        `${process.env.REACT_APP_API_URL}/plots/getPlotList`
       );
-      setGetCustomer(response.data.data);
-      
+      setAllPlots(response.data.data);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    handleCustomer();
+    plotsData();
   }, []);
+
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+  };
+
+  const handleReset = (clearFilters) => {
+    clearFilters();
+    setSearchText("");
+  };
 
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
@@ -95,95 +85,72 @@ function Customer() {
       record[dataIndex]?.toString().toLowerCase().includes(value.toLowerCase()),
   });
 
-  const handleSearch = (selectedKeys, confirm, dataIndex) => {
-    confirm();
-    setSearchText(selectedKeys[0]);
-    setSearchedColumn(dataIndex);
-  };
-
-  const handleReset = (clearFilters) => {
-    clearFilters();
-    setSearchText("");
-  };
-
   const columns = [
     {
-      title: "Customer Name",
-      dataIndex: "cName",
-      key: "cName",
-      width: "12%",
-      ...getColumnSearchProps("cName"),
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
-      width: "12%",
-      ...getColumnSearchProps("address"),
-    },
-    {
-      title: "Mobile Number",
-      dataIndex: "mnumber",
-      key: "mnumber",
-      width: "11%",
-      ...getColumnSearchProps("mnumber"),
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
-      width: "10%",
-      ...getColumnSearchProps("email"),
-    },
-    {
       title: "Project Name",
-      dataIndex: "proname",
-      key: "proname",
-      width: "10%",
-      ...getColumnSearchProps("proname"),
+      dataIndex: "projectname",
+      key: "projectname",
+      width: "12%",
+      ...getColumnSearchProps("projectname"),
     },
     {
-      title: "Plot Name",
-      dataIndex: "pname",
-      key: "pname",
-      width: "10%",
-      ...getColumnSearchProps("pname"),
+      title: "Project Area",
+      dataIndex: "projectarea",
+      key: "projectarea",
+      width: "12%",
+      ...getColumnSearchProps("projectarea"),
     },
-
+    {
+      title: "Project Location",
+      dataIndex: "projectlocation",
+      key: "projectlocation",
+      width: "12%",
+      ...getColumnSearchProps("projectlocation"),
+    },
+    {
+      title: "Projects Gat",
+      dataIndex: "projectGatId",
+      key: "projectGatId",
+      width: "12%",
+      ...getColumnSearchProps("projectGatId"),
+    },
     {
       title: "Plot Area",
       dataIndex: "plotarea",
       key: "plotarea",
-      width: "8%",
+      width: "12%",
       ...getColumnSearchProps("plotarea"),
     },
     {
       title: "Plot Rate",
       dataIndex: "plotrate",
       key: "plotrate",
-      width: "8%",
+      width: "12%",
       ...getColumnSearchProps("plotrate"),
     },
     {
       title: "Plot Amount",
       dataIndex: "plotamount",
       key: "plotamount",
-      width: "8%",
+      width: "12%",
       ...getColumnSearchProps("plotamount"),
+    },
+    {
+      title: "Plot Direction",
+      dataIndex: "plotdirection",
+      key: "plotdirection",
+      width: "12%",
+      ...getColumnSearchProps("plotdirection"),
     },
   ];
 
   return (
     <>
-      <div class="customer-parent parent">
-        <div class="customer-cont container">
-          <Link to="/add-customers" className="btn plus-icon-btn">
-            Add Customers
-          <span className="plus-icon">  <TiPlus /></span>
-          </Link>
+      <div class="all-plots-parent parent">
+        <div class="all-plots-cont container">
           <AntTable
             columns={columns}
-            dataSource={getCustomer}
+            dataSource={allPlots}
             pagination={{ pageSize: 10 }}
             rowClassName="editable-row"
             scroll={{ x: "max-content" }}
@@ -196,4 +163,4 @@ function Customer() {
   );
 }
 
-export default Customer;
+export default AllPlots;

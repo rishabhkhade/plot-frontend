@@ -3,18 +3,14 @@ import "./viewProjects.scss";
 import { Cell, Pie, PieChart } from "recharts";
 import { Table as AntTable, Button, Dropdown, Menu } from "antd";
 import { DownOutlined, SearchOutlined } from "@ant-design/icons";
-
-
+import { Link } from "react-router-dom";
+import { TiPlus } from "react-icons/ti";
 
 function ViewProjects() {
+  //table
 
-
-//table
-
- const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
-
- 
 
   const getMenu = (record, key) => (
     <Menu>
@@ -24,24 +20,28 @@ function ViewProjects() {
     </Menu>
   );
 
-
-
-
   const getColumnSearchProps = (dataIndex) => ({
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }) => (
       <div style={{ padding: 8 }}>
         <input
           type="text"
           value={selectedKeys[0]}
-          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
           placeholder={`Search ${dataIndex}`}
           style={{
             marginBottom: 8,
-            display: 'block',
-            width: '100%',
-            padding: '4px',
-            border: '1px solid #d9d9d9',
-            borderRadius: '4px',
+            display: "block",
+            width: "100%",
+            padding: "4px",
+            border: "1px solid #d9d9d9",
+            borderRadius: "4px",
           }}
         />
         <Button
@@ -63,7 +63,7 @@ function ViewProjects() {
       </div>
     ),
     filterIcon: (filtered) => (
-      <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />
+      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
     ),
     onFilter: (value, record) =>
       record[dataIndex]?.toString().toLowerCase().includes(value.toLowerCase()),
@@ -80,8 +80,7 @@ function ViewProjects() {
     setSearchText("");
   };
 
-
-const columns = [
+  const columns = [
     {
       title: "Project Name",
       dataIndex: "pname",
@@ -110,7 +109,7 @@ const columns = [
       width: "12%",
       ...getColumnSearchProps("pgat"),
     },
-    
+
     {
       title: "Status",
       dataIndex: "work_status",
@@ -128,70 +127,66 @@ const columns = [
 
   const tableData = [
     {
-        pname: "Tom Doe",
-        parea: "1234567890",
-        plocation: "plot 1",
-        pgat: "Sai project"
+      pname: "Tom Doe",
+      parea: "1234567890",
+      plocation: "plot 1",
+      pgat: "Sai project",
     },
     {
-        pname: "John Doe",
-        parea: "1234567890",
-        plocation: "plot 1",
-        pgat: "Sai project"
+      pname: "John Doe",
+      parea: "1234567890",
+      plocation: "plot 1",
+      pgat: "Sai project",
     },
     {
-        pname: "John Doe",
-        parea: "1234567890",
-        plocation: "plot 1",
-        pgat: "Sai project"
+      pname: "John Doe",
+      parea: "1234567890",
+      plocation: "plot 1",
+      pgat: "Sai project",
     },
     {
-        pname: "John Doe",
-        parea: "1234567890",
-        plocation: "plot 1",
-        pgat: "Sai project"
+      pname: "John Doe",
+      parea: "1234567890",
+      plocation: "plot 1",
+      pgat: "Sai project",
     },
     {
-        pname: "John Doe",
-        parea: "1234567890",
-        plocation: "plot 1",
-        pgat: "Sai project"
+      pname: "John Doe",
+      parea: "1234567890",
+      plocation: "plot 1",
+      pgat: "Sai project",
     },
     {
-        pname: "John Doe",
-        parea: "1234567890",
-        plocation: "plot 1",
-        pgat: "Sai project"
+      pname: "John Doe",
+      parea: "1234567890",
+      plocation: "plot 1",
+      pgat: "Sai project",
     },
     {
-        pname: "John Doe",
-        parea: "1234567890",
-        plocation: "plot 1",
-        pgat: "Sai project"
+      pname: "John Doe",
+      parea: "1234567890",
+      plocation: "plot 1",
+      pgat: "Sai project",
     },
     {
-        pname: "John Doe",
-        parea: "1234567890",
-        plocation: "plot 1",
-        pgat: "Sai project"
+      pname: "John Doe",
+      parea: "1234567890",
+      plocation: "plot 1",
+      pgat: "Sai project",
     },
     {
-        pname: "John Doe",
-        parea: "1234567890",
-        plocation: "plot 1",
-        pgat: "Sai project"
+      pname: "John Doe",
+      parea: "1234567890",
+      plocation: "plot 1",
+      pgat: "Sai project",
     },
-   
   ];
-
-
-
-
 
   const data = [
     {
       counts: "500",
       plots: "Total Plots",
+      link_path: "/all-plots",
     },
     {
       counts: "500",
@@ -220,12 +215,12 @@ const columns = [
         <div className="view-project-cont container">
           <div className="view-projects-left">
             {data.map((item, index) => (
-              <div class="v-p-box">
+              <Link to={item.link_path} class="v-p-box">
                 <h2>{item.counts}</h2>
                 <p style={{ color: "var(--accent)", fontSize: "20px" }}>
                   {item.plots}
                 </p>
-              </div>
+              </Link>
             ))}
           </div>
           <div className="view-projects-right">
@@ -281,9 +276,24 @@ const columns = [
         </div>
       </div>
 
-
       <div className=" table_parent parent">
-        <div className="container">
+        <div className="container table_cont">
+          <div class="buttons">
+            <Link to="/add-customers" className="btn plus-icon-btn1">
+              Add Customers
+              <span className="plus-icon">
+                {" "}
+                <TiPlus />
+              </span>
+            </Link>
+            <Link to="/add-plots" className="btn plus-icon-btn1">
+              Add Plots
+              <span className="plus-icon">
+                {" "}
+                <TiPlus />
+              </span>
+            </Link>
+          </div>
           <AntTable
             columns={columns}
             dataSource={tableData}
@@ -295,7 +305,6 @@ const columns = [
           />
         </div>
       </div>
-
     </>
   );
 }
