@@ -33,9 +33,27 @@ function Customer() {
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL}/customer/getAllCustomers`,
-        getCustomer
+
       );
-      setGetCustomer(response.data.data);
+      
+      console.log(response.data.data,">>>>");
+
+      const detailsData = response.data.data.map((item) => ({
+        cName:item.cName,
+        address:item.address,
+        mob_Number:item.mob_Number,
+        email:item.email,
+        projectName:item.plotdetails.projectname,
+        plotNumber:item.plotdetails.plotId,
+        plotarea:item.plotdetails.plotarea,
+        plotamount: item.plotdetails.plotamount,
+        bookingAmt:item.payments[0].bookingAmt || 0,
+        pendingAmount:item.plotdetails.plotamount - item.payments[0].bookingAmt
+
+      }))
+
+      setGetCustomer(detailsData);
+      
       
     } catch (error) {
       console.log(error);
@@ -123,10 +141,10 @@ function Customer() {
     },
     {
       title: "Mobile Number",
-      dataIndex: "mnumber",
-      key: "mnumber",
-      width: "11%",
-      ...getColumnSearchProps("mnumber"),
+      dataIndex: "mob_Number",
+      key: "mob_Number",
+      width: "12%",
+      ...getColumnSearchProps("mob_Number"),
     },
     {
       title: "Email",
@@ -137,32 +155,25 @@ function Customer() {
     },
     {
       title: "Project Name",
-      dataIndex: "proname",
-      key: "proname",
+      dataIndex: "projectName",
+      key: "projectName",
       width: "10%",
-      ...getColumnSearchProps("proname"),
+      ...getColumnSearchProps("projectName"),
     },
     {
-      title: "Plot Name",
-      dataIndex: "pname",
-      key: "pname",
+      title: "Plot Number",
+      dataIndex: "plotNumber",
+      key: "plotNumber",
       width: "10%",
-      ...getColumnSearchProps("pname"),
+      ...getColumnSearchProps("plotNumber"),
     },
 
     {
-      title: "Plot Area",
+      title: "Plot Area(sq.ft.)",
       dataIndex: "plotarea",
       key: "plotarea",
       width: "8%",
       ...getColumnSearchProps("plotarea"),
-    },
-    {
-      title: "Plot Rate",
-      dataIndex: "plotrate",
-      key: "plotrate",
-      width: "8%",
-      ...getColumnSearchProps("plotrate"),
     },
     {
       title: "Plot Amount",
@@ -170,6 +181,20 @@ function Customer() {
       key: "plotamount",
       width: "8%",
       ...getColumnSearchProps("plotamount"),
+    },
+    {
+      title: "Received Amount",
+      dataIndex: "bookingAmt",
+      key: "bookingAmt",
+      width: "8%",
+      ...getColumnSearchProps("bookingAmt"),
+    },
+    {
+      title: "Pending Amount",
+      dataIndex: "pendingAmount",
+      key: "pendingAmount",
+      width: "8%",
+      ...getColumnSearchProps("pendingAmount"),
     },
   ];
 

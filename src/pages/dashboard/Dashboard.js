@@ -139,7 +139,7 @@ function Dashboard() {
         pendingAmount: item.plotDetails.plotamount - item.totalBookingAmount,
       }));
 
-      // Set the mapped data to state
+  
       setCustomerDetails(detailsData);
     } catch (error) {
       console.error("Error fetching customer details:", error);

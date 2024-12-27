@@ -1,16 +1,19 @@
-import React, { PureComponent, useState } from "react";
+import React, { PureComponent, useEffect, useState } from "react";
 import "./viewProjects.scss";
 import { Cell, Pie, PieChart } from "recharts";
 import { Table as AntTable, Button, Dropdown, Menu } from "antd";
 import { DownOutlined, SearchOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { TiPlus } from "react-icons/ti";
+import axios from "axios";
 
 function ViewProjects() {
   //table
 
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
+  const location = useLocation(); // Listen to location changes
+  const [searchParams] = useSearchParams(); // Get query parameters
 
   const getMenu = (record, key) => (
     <Menu>
@@ -53,13 +56,6 @@ function ViewProjects() {
         >
           Search
         </Button>
-        <Button
-          onClick={() => clearFilters && handleReset(clearFilters)}
-          size="small"
-          style={{ width: 90 }}
-        >
-          Reset
-        </Button>
       </div>
     ),
     filterIcon: (filtered) => (
@@ -75,129 +71,166 @@ function ViewProjects() {
     setSearchedColumn(dataIndex);
   };
 
-  const handleReset = (clearFilters) => {
-    clearFilters();
-    setSearchText("");
+  //remainning plots
+  const [plotsRemain, setPlotsRemain] = useState([]);
+
+  const handleRemainingPlots = async (id) => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/plots/getAvailablePlots/${id}`
+      );
+
+      setPlotsRemain(response.data.data.length);
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  //total plots
+  const [plotTotal, setPlotTotal] = useState([]);
+
+  const handleTotalPlots = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/plots/getPlotsByProjectId/12`
+      );
+
+      setPlotTotal(response.data.data.length);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    handleTotalPlots();
+  }, []);
+  //total customer
+  const [totalCustomer, setTotalCustomer] = useState([]);
+
+  //get all customer table
+  const [allCustomer, setAllCustomer] = useState([]);
+
+  const handleAllCustomer = async (id) => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/customer/getCustomerByProjId/${id}`
+      );
+
+      setTotalCustomer(response.data.data.length);
+
+      const detailsCustomer =
+        response.data.data &&
+        response.data.data.map((item) => ({
+          cName: item.cName,
+          address: item.address,
+          mob_Number: item.mob_Number,
+          projectName: item.plotdetails.projectname,
+          plotId: item.plotdetails.plotId,
+          plotarea: item.plotdetails.plotarea,
+          plotamount: item.plotdetails.plotamount,
+          bookingAmt: item.paymentTotalAmount,
+          pendingAmount: item.plotdetails.plotamount - item.paymentTotalAmount,
+        }));
+
+      setAllCustomer(detailsCustomer);
+    } catch (error) {
+      console.log(error);
+      if (error.response.data.message === "No data found") {
+        setAllCustomer([]);
+        setTotalCustomer(0);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const id = searchParams.get("id");
+    if (id) {
+      handleAllCustomer(id);
+      handleRemainingPlots(id);
+    }
+  }, [location]);
 
   const columns = [
     {
-      title: "Project Name",
-      dataIndex: "pname",
-      key: "pname",
-      width: "12%",
-      ...getColumnSearchProps("pname"),
+      title: "Customer Name",
+      dataIndex: "cName",
+      key: "cName",
+      width: "13%",
+      ...getColumnSearchProps("cName"),
     },
     {
-      title: "Project Area",
-      dataIndex: "parea",
-      key: "parea",
-      width: "12%",
-      ...getColumnSearchProps("parea"),
+      title: "Contact",
+      dataIndex: "mob_Number",
+      key: "mob_Number",
+      width: "8%",
+      ...getColumnSearchProps("mob_Number"),
     },
     {
-      title: "Project Location",
-      dataIndex: "plocation",
-      key: "plocation",
-      width: "12%",
-      ...getColumnSearchProps("plocation"),
-    },
-    {
-      title: "Projects Gat",
-      dataIndex: "pgat",
-      key: "pgat",
-      width: "12%",
-      ...getColumnSearchProps("pgat"),
-    },
-
-    {
-      title: "Status",
-      dataIndex: "work_status",
-      key: "work_status",
+      title: "Address",
+      dataIndex: "address",
+      key: "address",
       width: "10%",
-      render: (_, record) => (
-        <Dropdown overlay={getMenu(record, "work_status")} trigger={["click"]}>
-          <Button>
-            {record.work_status} <DownOutlined />
-          </Button>
-        </Dropdown>
-      ),
-    },
-  ];
-
-  const tableData = [
-    {
-      pname: "Tom Doe",
-      parea: "1234567890",
-      plocation: "plot 1",
-      pgat: "Sai project",
+      ...getColumnSearchProps("address"),
     },
     {
-      pname: "John Doe",
-      parea: "1234567890",
-      plocation: "plot 1",
-      pgat: "Sai project",
+      title: "Project Name",
+      dataIndex: "projectName",
+      key: "projectName",
+      width: "15%",
+      ...getColumnSearchProps("projectName"),
     },
     {
-      pname: "John Doe",
-      parea: "1234567890",
-      plocation: "plot 1",
-      pgat: "Sai project",
+      title: "Plot Number",
+      dataIndex: "plotId",
+      key: "plotId",
+      width: "10%",
+      ...getColumnSearchProps("plotId"),
     },
     {
-      pname: "John Doe",
-      parea: "1234567890",
-      plocation: "plot 1",
-      pgat: "Sai project",
+      title: "Plot Area(sq.ft.)",
+      dataIndex: "plotarea",
+      key: "plotarea",
+      width: "10%",
+      ...getColumnSearchProps("plotarea"),
     },
     {
-      pname: "John Doe",
-      parea: "1234567890",
-      plocation: "plot 1",
-      pgat: "Sai project",
+      title: "Plot Amount",
+      dataIndex: "plotamount",
+      key: "plotamount",
+      width: "8%",
+      ...getColumnSearchProps("plotamount"),
     },
     {
-      pname: "John Doe",
-      parea: "1234567890",
-      plocation: "plot 1",
-      pgat: "Sai project",
+      title: "Received Amount",
+      dataIndex: "bookingAmt",
+      key: "bookingAmt",
+      width: "8%",
+      ...getColumnSearchProps("bookingAmt"),
     },
     {
-      pname: "John Doe",
-      parea: "1234567890",
-      plocation: "plot 1",
-      pgat: "Sai project",
-    },
-    {
-      pname: "John Doe",
-      parea: "1234567890",
-      plocation: "plot 1",
-      pgat: "Sai project",
-    },
-    {
-      pname: "John Doe",
-      parea: "1234567890",
-      plocation: "plot 1",
-      pgat: "Sai project",
+      title: "Pending Amount",
+      dataIndex: "pendingAmount",
+      key: "pendingAmount",
+      width: "8%",
+      ...getColumnSearchProps("pendingAmount"),
     },
   ];
 
   const data = [
     {
-      counts: "500",
+      counts: plotTotal,
       plots: "Total Plots",
       link_path: "/all-plots",
     },
     {
-      counts: "500",
+      counts: totalCustomer,
       plots: "Sell Plots",
     },
     {
-      counts: "500",
+      counts: plotsRemain,
       plots: "Remaining Plots",
     },
     {
-      counts: "500",
+      counts: totalCustomer,
       plots: "Total Customers",
     },
   ];
@@ -296,7 +329,7 @@ function ViewProjects() {
           </div>
           <AntTable
             columns={columns}
-            dataSource={tableData}
+            dataSource={allCustomer}
             pagination={{ pageSize: 10 }}
             rowClassName="editable-row"
             scroll={{ x: "max-content" }}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./sidebar.scss";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { IoIosArrowForward } from "react-icons/io";
 import { GoHome } from "react-icons/go";
 import { GoProjectRoadmap } from "react-icons/go";
@@ -17,6 +17,22 @@ function SideBar({ setIslogdin }) {
   const [projectList, setProjectList] = useState([]);
   const role = localStorage.getItem("role");
   const navigate = useNavigate();
+  const [projectId, setProjectId] = useState(null);
+
+
+  const fetchProjectId = (id) => {
+    navigate(`./view-projects?id=${id}`); 
+  };
+
+ 
+  const [searchParams] = useSearchParams();
+  const id = searchParams.get("id");
+
+  useEffect(() => {
+    if (id) {
+      setProjectId(id); 
+    }
+  }, [id]);
 
   const data = [
     {
@@ -50,7 +66,7 @@ function SideBar({ setIslogdin }) {
         ]
       : []),
   ];
- 
+
   const logOutUser = () => {
     localStorage.removeItem("token");
     setIslogdin(false);
@@ -76,7 +92,11 @@ function SideBar({ setIslogdin }) {
   const projects_list = [
     ...projectList.map((project) => ({
       label: (
-        <a view-projects href="/view-projects">
+        <a
+          view-projects
+        
+          onClick={() => fetchProjectId(project.projectId)}
+        >
           {project.projectname}
         </a>
       ),
