@@ -2,9 +2,39 @@ import React, { useEffect, useState } from "react";
 import "./customerDetails.scss";
 import { Table as AntTable } from "antd";
 import axios from "axios";
-import { useLocation, useParams, useSearchParams } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 
 function CustomerDetails() {
+ 
+
+  const [customerDetails, setCustomerDetails] = useState([]);
+
+  const [searchParams] = useSearchParams();
+  const location = useLocation();
+
+  const handleCustomer = async (id) => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/customer/getCustomerById/${id}`
+      );
+      setCustomerDetails(response.data.data);
+
+      
+      console.log(response.data.data,"????");
+      
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    const id = searchParams.get("id");
+    if (id) {
+      handleCustomer(id);
+    }
+  }, [location]);
+
+
   const columns = [
     {
       title: "Project Name",
@@ -34,21 +64,17 @@ function CustomerDetails() {
 
   const data = [
     {
-      pro_name: "Sai Plots",
-      plot_area: "1241",
-      plot_amount: "12000",
-      plot_direction: "North",
+      pro_name: customerDetails?.projectsDetails?.projectname || 0,
+      plot_area: customerDetails?.plotdetails?.plotarea || 0,
+      plot_amount:customerDetails?.plotdetails?.plotamount || 0,
+      plot_direction: customerDetails?.plotdetails?.plotdirection || 0,
     },
-    {
-      pro_name: "Sai Plots",
-      plot_area: "1241",
-      plot_amount: "12000",
-      plot_direction: "North",
-    },
+   
   ];
 
-  //payment details
-  const columns1 = [
+
+   //payment details
+   const columns1 = [
     {
       title: "Date",
       dataIndex: "pro_name",
@@ -86,33 +112,6 @@ function CustomerDetails() {
       width: "10%",
     },
   ];
-
-  const [customerDetails, setCustomerDetails] = useState([]);
-
-  const [searchParams] = useSearchParams();
-  const location = useLocation();
-
-  const handleCustomer = async (id) => {
-    try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/customer/getCustomerById/${id}`
-      );
-      setCustomerDetails(response.data.data);
-
-
-      console.log(response.data.data,"????");
-      
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    const id = searchParams.get("id");
-    if (id) {
-      handleCustomer(id);
-    }
-  }, [location]);
 
   return (
     <>
