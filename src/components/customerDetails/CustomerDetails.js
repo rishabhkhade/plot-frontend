@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./customerDetails.scss";
 import { Table as AntTable } from "antd";
+import axios from "axios";
+import { useLocation, useParams, useSearchParams } from "react-router-dom";
 
 function CustomerDetails() {
   const columns = [
@@ -85,6 +87,33 @@ function CustomerDetails() {
     },
   ];
 
+  const [customerDetails, setCustomerDetails] = useState([]);
+
+  const [searchParams] = useSearchParams();
+  const location = useLocation();
+
+  const handleCustomer = async (id) => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/customer/getCustomerById/${id}`
+      );
+      setCustomerDetails(response.data.data);
+
+
+      console.log(response.data.data,"????");
+      
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    const id = searchParams.get("id");
+    if (id) {
+      handleCustomer(id);
+    }
+  }, [location]);
+
   return (
     <>
       <div className="parent customer-detail-parent">
@@ -98,19 +127,19 @@ function CustomerDetails() {
             <div class="line"></div>
             <div class="col-3  d-flex gap-4 align-contemt-center">
               <h4 className="name-class">Name</h4>
-              <h4 className="name-class-side">Rishabh Khade</h4>
+              <h4 className="name-class-side">{customerDetails.cName}</h4>
             </div>
             <div class="col-3 d-flex gap-4 align-contemt-center">
               <h4 className="name-class">Address</h4>
-              <h4 className="name-class-side">56,viman nagar, Pune</h4>
+              <h4 className="name-class-side">{customerDetails.address}</h4>
             </div>
             <div class="col-3 d-flex gap-4 align-contemt-center">
               <h4 className="name-class">Mobile no.</h4>
-              <h4 className="name-class-side">9856985216</h4>
+              <h4 className="name-class-side">{customerDetails.mob_Number}</h4>
             </div>
             <div class="col-3 d-flex gap-4 a lign-contemt-center">
               <h4 className="name-class">Email</h4>
-              <h4 className="name-class-side">abc@gmail.com</h4>
+              <h4 className="name-class-side">{customerDetails.email}</h4>
             </div>
           </div>
 
@@ -121,7 +150,7 @@ function CustomerDetails() {
             <AntTable
               columns={columns}
               dataSource={data}
-              bordered={true}
+              bordered={true}fantatble
               pagination={false}
               className="table1"
             />

@@ -65,7 +65,7 @@ function AddPlot() {
                   setPlotAdd({ ...plotAdd, projectId: Number(e.target.value) })
                 }
               >
-                <option value="" selected disabled hidden>
+                <option value="" selected  hidden>
                   Projects
                 </option>
                 {projectsList.map((item, index) => (

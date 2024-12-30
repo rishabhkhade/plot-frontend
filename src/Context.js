@@ -11,6 +11,9 @@ const ContextProvider = ({ children }) => {
       setUserName(storedUsername);
     }
   }, []);
+
+
+  
   return (
     <UserContext.Provider value={{ userName }}>
       {children}

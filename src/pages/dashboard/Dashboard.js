@@ -33,19 +33,19 @@ function Dashboard() {
       const countData = [
         {
           status: "Total Projects",
-          projects_counts: avilablePlots,
+          projects_counts: totalProject,
         },
         {
           status: "Total Plots",
-          projects_counts: sellPlots,
-        },
-        {
-          status: "Sale Plots",
           projects_counts: totalPlots,
         },
         {
+          status: "Sale Plots",
+          projects_counts: sellPlots,
+        },
+        {
           status: "Remaining Plots",
-          projects_counts: totalProject,
+          projects_counts: avilablePlots,
         },
       ];
 

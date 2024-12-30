@@ -4,11 +4,24 @@ import { Table as AntTable, Button } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { TiPlus } from "react-icons/ti";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 function Customer() {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
+
+  const searchParmas = useSearchParams("id");
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const id = params.get("id");
+    console.log(id); 
+    
+  }, [location]);
+
+
 
   //fetch customer
   const [getCustomer, setGetCustomer] = useState([]);
@@ -17,12 +30,15 @@ function Customer() {
   const plots = async (id) => {
     try {
       const response = axios.get(
-        `${process.env.REACT_APP_API_URL}/plots/getPlotById/${id}`,
-        getPlot
+        `${process.env.REACT_APP_API_URL}/plots/getPlotById/${id}`
       );
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const onCustomerHandler = (id) => {
+    navigate(`/customer-details?id=${id}`);
   };
 
   useEffect(() => {
@@ -32,29 +48,28 @@ function Customer() {
   const handleCustomer = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/customer/getAllCustomers`,
-
+        `${process.env.REACT_APP_API_URL}/customer/getAllCustomers`
       );
-      
-      console.log(response.data.data,">>>>");
 
-      const detailsData = response.data.data.map((item) => ({
-        cName:item.cName,
-        address:item.address,
-        mob_Number:item.mob_Number,
-        email:item.email,
-        projectName:item.plotdetails.projectname,
-        plotNumber:item.plotdetails.plotId,
-        plotarea:item.plotdetails.plotarea,
+      const detailsData = response.data.data.map((item, index) => ({
+        key: item.customerId,
+        sr_no: index + 1,
+        cName: item.cName,
+        address: item.address,
+        mob_Number: item.mob_Number,
+        email: item.email,
+        projectName: item.plotdetails.projectname,
+        plotNumber: item.plotdetails.plotId,
+        plotarea: item.plotdetails.plotarea,
         plotamount: item.plotdetails.plotamount,
-        bookingAmt:item.payments[0].bookingAmt || 0,
-        pendingAmount:item.plotdetails.plotamount - item.payments[0].bookingAmt
-
-      }))
+        bookingAmt: item.payments[0].bookingAmt || 0,
+        pendingAmount:
+          item.plotdetails.plotamount - item.payments[0].bookingAmt,
+      }));
 
       setGetCustomer(detailsData);
-      
-      
+
+      console.log(detailsData, ">>detailsData");
     } catch (error) {
       console.log(error);
     }
@@ -125,6 +140,12 @@ function Customer() {
   };
 
   const columns = [
+    {
+      title: "sr. no.",
+      dataIndex: "sr_no",
+      key: "sr_no",
+      width: "5%",
+    },
     {
       title: "Customer Name",
       dataIndex: "cName",
@@ -204,7 +225,10 @@ function Customer() {
         <div class="customer-cont container">
           <Link to="/add-customers" className="btn plus-icon-btn">
             Add Customers
-          <span className="plus-icon">  <TiPlus /></span>
+            <span className="plus-icon">
+              {" "}
+              <TiPlus />
+            </span>
           </Link>
           <AntTable
             columns={columns}
@@ -214,6 +238,9 @@ function Customer() {
             scroll={{ x: "max-content" }}
             bordered={true}
             className="table"
+            onRow={(record) => ({
+              onClick: () => onCustomerHandler(record.key),
+            })}
           />
         </div>
       </div>
