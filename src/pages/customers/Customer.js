@@ -4,7 +4,12 @@ import { Table as AntTable, Button } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { TiPlus } from "react-icons/ti";
-import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 
 function Customer() {
   const navigate = useNavigate();
@@ -17,11 +22,8 @@ function Customer() {
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const id = params.get("id");
-    console.log(id); 
-    
+    console.log(id);
   }, [location]);
-
-
 
   //fetch customer
   const [getCustomer, setGetCustomer] = useState([]);
@@ -51,7 +53,7 @@ function Customer() {
         `${process.env.REACT_APP_API_URL}/customer/getAllCustomers`
       );
 
-      const detailsData = response.data.data.map((item, index) => ({
+      const detailsData = response.data.data.reverse().map((item, index) => ({
         key: item.customerId,
         sr_no: index + 1,
         cName: item.cName,
@@ -234,10 +236,10 @@ function Customer() {
             columns={columns}
             dataSource={getCustomer}
             pagination={{ pageSize: 10 }}
-            rowClassName="editable-row"
             scroll={{ x: "max-content" }}
             bordered={true}
             className="table"
+            rowClassName={() => "custom-cursor-row"}
             onRow={(record) => ({
               onClick: () => onCustomerHandler(record.key),
             })}

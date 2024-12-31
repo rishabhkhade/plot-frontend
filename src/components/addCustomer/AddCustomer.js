@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import "./addCustomer.scss";
 import axios from "axios";
 import { message } from "antd";
+import { Link } from "react-router-dom";
 
 function AddCustomer() {
-  const date = new Date()
+  const date = new Date();
   const [customerAdd, setAddCustomer] = useState({
     customer: {
       progress: "booked",
@@ -15,7 +16,7 @@ function AddCustomer() {
       plotPurchasedType: "",
       projectId: "",
       plotId: "",
-      date:date.toLocaleDateString()
+      date: date.toLocaleDateString(),
     },
     payment: {
       bookingAmt: "",
@@ -37,7 +38,7 @@ function AddCustomer() {
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/customer/customerAdd`,
-      customerAdd
+        customerAdd
       );
 
       console.log(response, "res>>>>");
@@ -140,7 +141,6 @@ function AddCustomer() {
     }));
   }, [projectId, plotId]);
 
-  console.log("Submitting customer data:", customerAdd);
 
   return (
     <>
@@ -221,7 +221,7 @@ function AddCustomer() {
               <select
                 id="inputState"
                 value={projectId || ""}
-                onChange={(e) => setProjectId(Number(e.target.value ))}
+                onChange={(e) => setProjectId(Number(e.target.value))}
                 class="form-select"
               >
                 <option selected hidden>
@@ -340,15 +340,15 @@ function AddCustomer() {
                   className="form-check-input"
                   type="radio"
                   id="cash"
-                  name="plotPurchasedType" // Grouping with other radio buttons for "plotPurchasedType"
-                  value="Cash" // The value this radio represents
-                  checked={customerAdd.customer.plotPurchasedType === "Cash"} // Correct path for checked
+                  name="plotPurchasedType"
+                  value="Cash"
+                  checked={customerAdd.customer.plotPurchasedType === "Cash"}
                   onChange={(e) =>
                     setAddCustomer({
                       ...customerAdd,
                       customer: {
                         ...customerAdd.customer,
-                        plotPurchasedType: e.target.value, // Update the nested state
+                        plotPurchasedType: e.target.value,
                       },
                     })
                   }
@@ -363,15 +363,15 @@ function AddCustomer() {
                   className="form-check-input"
                   type="radio"
                   id="emi"
-                  name="plotPurchasedType" // Grouping with other radio buttons for "plotPurchasedType"
-                  value="EMI" // The value this radio represents
-                  checked={customerAdd.customer.plotPurchasedType === "EMI"} // Correct path for checked
+                  name="plotPurchasedType"
+                  value="EMI"
+                  checked={customerAdd.customer.plotPurchasedType === "EMI"}
                   onChange={(e) =>
                     setAddCustomer({
                       ...customerAdd,
                       customer: {
                         ...customerAdd.customer,
-                        plotPurchasedType: e.target.value, // Update the nested state
+                        plotPurchasedType: e.target.value,
                       },
                     })
                   }
@@ -453,10 +453,13 @@ function AddCustomer() {
               />
             </div>
 
-            <div class="col-12">
+            <div class="col-2">
               <button type="submit" class="btn ">
                 Add Customer
               </button>
+            </div>
+            <div class="col-3">
+              <Link class="btn ">View Bill</Link>
             </div>
           </form>
         </div>

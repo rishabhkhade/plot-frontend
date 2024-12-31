@@ -5,8 +5,6 @@ import axios from "axios";
 import { useLocation, useSearchParams } from "react-router-dom";
 
 function CustomerDetails() {
- 
-
   const [customerDetails, setCustomerDetails] = useState([]);
 
   const [searchParams] = useSearchParams();
@@ -19,9 +17,7 @@ function CustomerDetails() {
       );
       setCustomerDetails(response.data.data);
 
-      
-      console.log(response.data.data,"????");
-      
+      console.log(response.data.data, "????");
     } catch (error) {
       console.log(error);
     }
@@ -34,12 +30,12 @@ function CustomerDetails() {
     }
   }, [location]);
 
-
+  //plot details
   const columns = [
     {
-      title: "Project Name",
-      dataIndex: "pro_name",
-      key: "pro_name",
+      title: "Plot no.",
+      dataIndex: "plotId",
+      key: "plotId",
       width: "13%",
     },
     {
@@ -49,66 +45,79 @@ function CustomerDetails() {
       width: "8%",
     },
     {
-      title: "Plot Amount",
-      dataIndex: "plot_amount",
-      key: "plot_amount",
+      title: "Plot Rate",
+      dataIndex: "plotrate",
+      key: "plotrate",
       width: "10%",
     },
     {
-      title: "Plot Direction",
-      dataIndex: "plot_direction",
-      key: "plot_direction",
+      title: "Plot Amount",
+      dataIndex: "plotamount",
+      key: "plotamount",
       width: "15%",
     },
   ];
 
+  const paymentDetails = (customerDetails.payments || []).map((item) => ({
+    bankName: item.bankDetails?.bankName,
+    branchName: item.bankDetails?.branchName,
+    cheqDate: item.bankDetails?.cheqDate,
+    cheqNum: item.bankDetails?.cheqNum,
+    payment_type: item?.payment_type,
+    bookingAmt: item?.bookingAmt,
+  }));
+
+  const totalAmount = (customerDetails.payments || []).reduce(
+    (total, item) => total + Number(item.bookingAmt || 0),
+    0
+  );
+
+  //plot details
   const data = [
     {
-      pro_name: customerDetails?.projectsDetails?.projectname || 0,
+      plotId: customerDetails?.plotdetails?.plotId || 0,
       plot_area: customerDetails?.plotdetails?.plotarea || 0,
-      plot_amount:customerDetails?.plotdetails?.plotamount || 0,
-      plot_direction: customerDetails?.plotdetails?.plotdirection || 0,
+      plotrate: customerDetails?.plotdetails?.plotrate || 0,
+      plotamount: customerDetails?.plotdetails?.plotamount || 0,
     },
-   
   ];
 
-
-   //payment details
-   const columns1 = [
+  //payment details
+  const columns1 = [
     {
       title: "Date",
-      dataIndex: "pro_name",
-      key: "pro_name",
+      dataIndex: "cheqDate",
+      key: "cheqDate",
       width: "8%",
     },
     {
       title: "Bank Name",
-      dataIndex: "plot_area",
-      key: "plot_area",
+      dataIndex: "bankName",
+      key: "bankName",
       width: "12%",
     },
     {
       title: "Cheque no.",
-      dataIndex: "plot_amount",
-      key: "plot_amount",
+      dataIndex: "cheqNum",
+      key: "cheqNum",
       width: "10%",
     },
     {
       title: "Branch Name",
-      dataIndex: "plot_direction",
-      key: "plot_direction",
+      dataIndex: "branchName",
+      key: "branchName",
       width: "10%",
     },
     {
       title: "Payment Type",
-      dataIndex: "plot_direction",
-      key: "plot_direction",
+      dataIndex: "payment_type",
+      key: "payment_type",
       width: "10%",
     },
     {
       title: "Amount",
-      dataIndex: "plot_direction",
-      key: "plot_direction",
+      dataIndex: "bookingAmt",
+      key: "bookingAmt",
       width: "10%",
     },
   ];
@@ -121,7 +130,11 @@ function CustomerDetails() {
           <div class="row g-3 customer-detail-form   ">
             <div class="customer-date">
               <h3 style={{ color: "var(--accent)" }}>Customer Details</h3>
-              <span style={{ fontSize: "20px" }}>nov 19, 2024</span>
+              <div className="" style={{display:"flex", gap:"15px",  justifyContent:"center"}}>
+                {" "}
+                <h4 className="name-class">Date:</h4>
+                <span style={{ fontSize: "14px" }}>{customerDetails.date}</span>
+              </div>
             </div>
             <div class="line"></div>
             <div class="col-3  d-flex gap-4 align-contemt-center">
@@ -142,6 +155,26 @@ function CustomerDetails() {
             </div>
           </div>
 
+          {/* Projects details */}
+          <div class="row g-3 customer-detail-form   ">
+            <div class="customer-date">
+              <h3 style={{ color: "var(--accent)" }}>Project Details</h3>
+            </div>
+            <div class="line"></div>
+            <div class="col-3  d-flex gap-4 align-contemt-center">
+              <h4 className="name-class">Project Name</h4>
+              <h4 className="name-class-side">
+                {customerDetails?.projectsDetails?.projectname || ""}
+              </h4>
+            </div>
+            <div class="col-3 d-flex gap-4 align-contemt-center">
+              <h4 className="name-class">Gat no.</h4>
+              <h4 className="name-class-side">
+                {customerDetails?.projectsDetails?.projectGatId || "" }
+              </h4>
+            </div>
+          </div>
+
           {/* plots details */}
           <div class="row g-3 customer-detail-form   ">
             <h3 style={{ color: "var(--accent)" }}>Plots Details</h3>
@@ -149,7 +182,7 @@ function CustomerDetails() {
             <AntTable
               columns={columns}
               dataSource={data}
-              bordered={true}fantatble
+              bordered={true}
               pagination={false}
               className="table1"
             />
@@ -161,14 +194,15 @@ function CustomerDetails() {
             <div class="line"></div>
             <AntTable
               columns={columns1}
-              dataSource={data}
+              dataSource={paymentDetails}
               bordered={true}
               pagination={false}
               className="table1"
+                rowClassName={() => "custom-cursor-row"}
             />
 
             <h3 style={{ display: "flex", justifyContent: "flex-end" }}>
-              Total Amount: 10000
+              Total Amount: {totalAmount}.00
             </h3>
           </div>
         </div>

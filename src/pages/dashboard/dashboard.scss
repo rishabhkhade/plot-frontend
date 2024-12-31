@@ -24,14 +24,19 @@
       margin: auto;
       align-items: center;
       justify-content: space-between;
+     
+
       .status {
         font-size: calc(var(--unit) * 1);
         font-weight: 500;
+        color: var(--black);
       }
       .count {
         font-size: calc(var(--unit) * 1.5);
         font-weight: 500;
+        color: var(--black);
       }
+      
     }
   }
 }
@@ -51,6 +56,10 @@ margin-left: 300px;
   // margin-left: 300px;
   // margin-top: calc(8% + 20px);
   margin-top: 5%;
+
+  .custom-cursor-row{
+    cursor: pointer;
+  }
 }
 
 .action-icon{

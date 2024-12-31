@@ -1,27 +1,28 @@
-import React, { PureComponent, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./viewProjects.scss";
 import { Cell, Pie, PieChart } from "recharts";
 import { Table as AntTable, Button, Dropdown, Menu } from "antd";
 import { DownOutlined, SearchOutlined } from "@ant-design/icons";
-import { Link, useLocation, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { TiPlus } from "react-icons/ti";
 import axios from "axios";
 
 function ViewProjects() {
+
+  const navigate = useNavigate();
+
   //table
 
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
-  const location = useLocation(); // Listen to location changes
-  const [searchParams] = useSearchParams(); // Get query parameters
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
 
-  const getMenu = (record, key) => (
-    <Menu>
-      <Menu.Item key="1">
-        <Button>{record[key]}</Button>
-      </Menu.Item>
-    </Menu>
-  );
+ useEffect(() => {
+     const params = new URLSearchParams(location.search);
+     const id = params.get("id");
+     console.log(id);
+   }, [location]);
 
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
@@ -120,6 +121,7 @@ function ViewProjects() {
       const detailsCustomer =
         response.data.data &&
         response.data.data.map((item) => ({
+        key: item.customerId,
           cName: item.cName,
           address: item.address,
           mob_Number: item.mob_Number,
@@ -242,6 +244,10 @@ function ViewProjects() {
 
   const COLORS = ["#16325b", "#227b94"];
 
+  const onCustomerHandler = (id) => {
+    navigate(`/customer-details?id=${id}`);
+  };
+
   return (
     <>
       <div className="view-project-parent parent">
@@ -331,10 +337,14 @@ function ViewProjects() {
             columns={columns}
             dataSource={allCustomer}
             pagination={{ pageSize: 10 }}
-            rowClassName="editable-row"
+          
             scroll={{ x: "max-content" }}
             bordered={true}
             className="table"
+            rowClassName={() => "custom-cursor-row"}
+            onRow={(record) => ({
+              onClick: () => onCustomerHandler(record.key),
+            })}
           />
         </div>
       </div>

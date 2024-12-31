@@ -61,7 +61,7 @@ function SideBar({ setIslogdin }) {
           {
             link_name: "Add Employee",
             icon: <IoMdAdd />,
-            link_path: "/",
+            link_path: "/add-employees",
           },
         ]
       : []),

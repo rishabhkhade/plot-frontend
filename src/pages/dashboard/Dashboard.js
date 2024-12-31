@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./dashboard.scss";
-import { Table as AntTable, Button, Dropdown, Menu } from "antd";
-import { DownOutlined, SearchOutlined } from "@ant-design/icons";
+import { Table as AntTable, Button, Menu } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { TiPlus } from "react-icons/ti";
 
@@ -14,9 +14,11 @@ import "swiper/css/navigation";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import CountUp from "react-countup";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Dashboard() {
+  const navigate = useNavigate();
+
   //length of projects plots
 
   const [totalProjectPlots, setTotalProjectPlots] = useState([]);
@@ -38,6 +40,7 @@ function Dashboard() {
         {
           status: "Total Plots",
           projects_counts: totalPlots,
+          link_path:"/all-plots"
         },
         {
           status: "Sale Plots",
@@ -60,15 +63,8 @@ function Dashboard() {
   }, []);
 
   const [searchText, setSearchText] = useState("");
-  const [searchedColumn, setSearchedColumn] = useState("");
+  const [searchedColumn, setSearchedColumn] = useState(""); 
 
-  const getMenu = (record, key) => (
-    <Menu>
-      <Menu.Item key="1">
-        <Button>{record[key]}</Button>
-      </Menu.Item>
-    </Menu>
-  );
 
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
@@ -121,7 +117,7 @@ function Dashboard() {
   const [customerDetails, setCustomerDetails] = useState([]);
 
   // Fetch customer list and plot details
-  const getCustomerDetails = async () => {
+  const getCustomerDetails = async (id) => {
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL}/customer/newCustomer`
@@ -129,6 +125,7 @@ function Dashboard() {
 
       // Properly map the data to extract specific fields
       const detailsData = response.data.data.map((item) => ({
+        key: item.customerId,
         cName: item.cName,
         mob_Number: item.mob_Number,
         projectName: item.plotDetails.projectName,
@@ -141,9 +138,14 @@ function Dashboard() {
 
   
       setCustomerDetails(detailsData);
+
+      
     } catch (error) {
       console.error("Error fetching customer details:", error);
     }
+  };
+  const onCustomerHandler = (id) => {
+    navigate(`/customer-details?id=${id}`);
   };
 
   useEffect(() => {
@@ -252,7 +254,7 @@ function Dashboard() {
           >
             {totalProjectPlots.map((item, index) => (
               <SwiperSlide>
-                <div className="box" key={index}>
+                <Link to={item.link_path} className="box" key={index}>
                   <h3 className="status">{item.status}</h3>
                   <h3 className="count">
                     <CountUp
@@ -262,7 +264,7 @@ function Dashboard() {
                       separator=","
                     />
                   </h3>
-                </div>
+                </Link>
               </SwiperSlide>
             ))}
           </Swiper>
@@ -284,10 +286,13 @@ function Dashboard() {
             columns={columns}
             dataSource={customerDetails}
             pagination={{ pageSize: 10 }}
-            rowClassName="editable-row"
+            rowClassName={() => "custom-cursor-row"}
             scroll={{ x: "max-content" }}
             bordered={true}
             className="table"
+            onRow={(record) => ({
+              onClick: () => onCustomerHandler(record.key),
+            })}
           />
         </div>
       </div>
