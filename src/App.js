@@ -16,6 +16,8 @@ import AllPlots from "./components/allPlots/AllPlots";
 import CustomerDetails from "./components/customerDetails/CustomerDetails";
 import GetPlots from "./components/getPlots/GetPlots";
 import AddEmployee from "./components/addEmployee/AddEmployee";
+import BillView from "./components/billView/BillView";
+import { PDFViewer } from "@react-pdf/renderer";
 
 function App() {
   const [isLogedIn, setIslogdin] = useState(!!localStorage.getItem("token"));
@@ -24,9 +26,58 @@ function App() {
     const token = localStorage.getItem("token");
     setIslogdin(!!token);
   }, []);
-
+  const [isPDFVisible, setIsPDFVisible] = useState(false);
   return (
     <div className="App">
+    {isPDFVisible && (
+  <div
+    style={{
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      backgroundColor: "rgba(0, 0, 0, 0.5)", // Optional: Dim background
+      zIndex: 9999,
+    }}
+  >
+    {/* Close Button */}
+    <button
+      onClick={() => setIsPDFVisible(false)}
+      style={{
+        position: "absolute",
+        top: 10,
+        right: 10,
+        padding: "10px 15px",
+        background: "red",
+        color: "white",
+        border: "none",
+        borderRadius: "5px",
+        cursor: "pointer",
+        zIndex: 10000, // Ensure the button is on top
+      }}
+    >
+      Close
+    </button>
+
+    {/* PDF Viewer */}
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <PDFViewer style={{ width: "80%", height: "90%" }}>
+        <BillView />
+      </PDFViewer>
+    </div>
+  </div>
+)}
+
+
       <ContextProvider>
         <BrowserRouter>
           {isLogedIn && (
@@ -40,8 +91,12 @@ function App() {
               <>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/add-projects" element={<AddProjects />} />
-                <Route path="/add-customers" element={<AddCustomer />} />
-                <Route path="/add-employees" element={<AddEmployee/>} />
+                <Route
+                  path="/add-customers"
+                  element={<AddCustomer setIsPDFVisible={setIsPDFVisible} />}
+                />
+                <Route path="/add-employees" element={<AddEmployee />} />
+
                 <Route path="/add-plots" element={<AddPlot />} />
                 <Route path="/view-projects" element={<ViewProjects />} />
                 <Route path="/all-plots" element={<AllPlots />} />

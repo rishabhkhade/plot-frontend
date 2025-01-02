@@ -4,7 +4,7 @@ import axios from "axios";
 import { message } from "antd";
 import { Link } from "react-router-dom";
 
-function AddCustomer() {
+function AddCustomer({setIsPDFVisible}) {
   const date = new Date();
   const [customerAdd, setAddCustomer] = useState({
     customer: {
@@ -33,6 +33,10 @@ function AddCustomer() {
 
   const paymentType = ["Cheque", "Cash", "Online"];
 
+  const [isCustomerAdd, setIsCustomerAdd] = useState(false);
+const [storedId, setStoredId] = useState([]);
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -40,39 +44,50 @@ function AddCustomer() {
         `${process.env.REACT_APP_API_URL}/customer/customerAdd`,
         customerAdd
       );
+setStoredId(response.data.data)
+    
 
-      console.log(response, "res>>>>");
-
-      setAddCustomer({
-        customer: {
-          progress: "booked",
-          cName: "",
-          address: "",
-          mob_Number: "",
-          email: "",
-          plotPurchasedType: "",
-          projectId: "",
-          plotId: "",
-        },
-        payment: {
-          bookingAmt: "",
-          payment_type: "",
-        },
-
-        bankDetails: {
-          bankName: "",
-          cheqNum: "",
-          cheqDate: "",
-          branchName: "",
-        },
-      });
-
+      setIsCustomerAdd(true);
       message.success("Customer added successfully!");
     } catch (error) {
       console.log(error);
       message.error("Failed to add customer. Please try again.");
     }
   };
+
+
+  const addBill = async (e)=>{
+    e.preventDefault();
+    try {
+
+      // const data = storedId.map((item,index)=>({
+      //   customerId:item.customerId,
+      //   paymentId:item.paymentId,
+      //   bankDetailsId:item.bankDetailsId
+      // }));
+
+
+      const data ={
+        customerId:storedId.customerId,
+          paymentId:storedId.payment,
+          bankDetailsId:storedId.bankdetailsId
+      }
+      // console.log(data)
+
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/customer/billing`,
+        data
+      );
+
+      if(response.data.data !== null){
+        localStorage.setItem("billingId" ,response.data.data )
+      }
+      setIsPDFVisible(true)
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+console.log(storedId)
 
   // plots dropdown
   const [plotList, setPlotList] = useState([]);
@@ -140,7 +155,6 @@ function AddCustomer() {
       },
     }));
   }, [projectId, plotId]);
-
 
   return (
     <>
@@ -307,15 +321,15 @@ function AddCustomer() {
                     className="form-check-input"
                     type="radio"
                     id={`paymentType_${item}`}
-                    name="paymentType" // Ensures all radio buttons are grouped
+                    name="paymentType"
                     value={item}
-                    checked={customerAdd.payment.payment_type === item} // Single selection
+                    checked={customerAdd.payment.payment_type === item}
                     onChange={(e) =>
                       setAddCustomer({
                         ...customerAdd,
                         payment: {
                           ...customerAdd.payment,
-                          payment_type: e.target.value, // Update with selected value
+                          payment_type: e.target.value,
                         },
                       })
                     }
@@ -331,7 +345,7 @@ function AddCustomer() {
 
               <div className="form-check col-4">
                 <label className="form-check-label" htmlFor="gridCheck">
-                  Payment Process
+                  Purchase Type
                 </label>
               </div>
 
@@ -458,9 +472,11 @@ function AddCustomer() {
                 Add Customer
               </button>
             </div>
-            <div class="col-3">
-              <Link class="btn ">View Bill</Link>
-            </div>
+            {isCustomerAdd && (
+              <div class="col-3">
+                <button class="btn "   onClick={addBill} >View Bill</button>
+              </div>
+            )}
           </form>
         </div>
       </div>
