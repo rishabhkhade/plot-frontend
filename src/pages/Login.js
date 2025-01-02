@@ -23,7 +23,7 @@ function Login({ setIslogdin }) {
 
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/user/login`,
+        `https://ploting-backend.vercel.app/user/login`,
         loginData
       );
 

@@ -4,7 +4,7 @@ import axios from "axios";
 import { message } from "antd";
 import { Link } from "react-router-dom";
 
-function AddCustomer({setIsPDFVisible}) {
+function AddCustomer({ setIsPDFVisible }) {
   const date = new Date();
   const [customerAdd, setAddCustomer] = useState({
     customer: {
@@ -33,8 +33,8 @@ function AddCustomer({setIsPDFVisible}) {
 
   const paymentType = ["Cheque", "Cash", "Online"];
 
-  const [isCustomerAdd, setIsCustomerAdd] = useState(false);
-const [storedId, setStoredId] = useState([]);
+  const [isCustomerAdd, setIsCustomerAdd] = useState(true);
+  const [storedId, setStoredId] = useState([]);
 
 
   const handleSubmit = async (e) => {
@@ -44,8 +44,8 @@ const [storedId, setStoredId] = useState([]);
         `${process.env.REACT_APP_API_URL}/customer/customerAdd`,
         customerAdd
       );
-setStoredId(response.data.data)
-    
+      setStoredId(response.data.data)
+
 
       setIsCustomerAdd(true);
       message.success("Customer added successfully!");
@@ -56,7 +56,7 @@ setStoredId(response.data.data)
   };
 
 
-  const addBill = async (e)=>{
+  const addBill = async (e) => {
     e.preventDefault();
     try {
 
@@ -67,10 +67,10 @@ setStoredId(response.data.data)
       // }));
 
 
-      const data ={
-        customerId:storedId.customerId,
-          paymentId:storedId.payment,
-          bankDetailsId:storedId.bankdetailsId
+      const data = {
+        customerId: storedId.customerId,
+        paymentId: storedId.payment,
+        bankDetailsId: storedId.bankdetailsId
       }
       // console.log(data)
 
@@ -78,8 +78,8 @@ setStoredId(response.data.data)
         data
       );
 
-      if(response.data.data !== null){
-        localStorage.setItem("billingId" ,response.data.data )
+      if (response.data.data !== null) {
+        localStorage.setItem("billingId", response.data.data)
       }
       setIsPDFVisible(true)
 
@@ -87,7 +87,7 @@ setStoredId(response.data.data)
       console.log(error)
     }
   }
-console.log(storedId)
+  console.log(storedId)
 
   // plots dropdown
   const [plotList, setPlotList] = useState([]);
@@ -474,7 +474,7 @@ console.log(storedId)
             </div>
             {isCustomerAdd && (
               <div class="col-3">
-                <button class="btn "   onClick={addBill} >View Bill</button>
+                <button class="btn " onClick={addBill} >View Bill</button>
               </div>
             )}
           </form>
