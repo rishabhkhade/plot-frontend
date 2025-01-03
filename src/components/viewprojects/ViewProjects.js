@@ -253,7 +253,7 @@ function ViewProjects() {
       <div className="view-project-parent parent">
         <div className="view-project-cont container">
           <div className="view-projects-left">
-            {data.map((item, index) => (
+            {data && data.map((item, index) => (
               <Link to={item.link_path} class="v-p-box">
                 <h2>{item.counts}</h2>
                 <p style={{ color: "var(--accent)", fontSize: "20px" }}>

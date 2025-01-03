@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Document,
   Page,
@@ -56,6 +56,7 @@ function BillViewPDF() {
       justifyContent: "center",
       alignItems: "center",
       gap: "10px",
+      height: "300px",
     },
     booking: {
       textAlign: "center",
@@ -104,11 +105,15 @@ function BillViewPDF() {
       padding: 5,
     },
     tableHeader: {
-      fontWeight: "bold",
+      fontWeight: "500",
       flex: 1,
+      fontWeight: "600",
+      fontSize: "14px",
     },
     tableCell: {
       flex: 1,
+      fontWeight: "300",
+      fontSize: "14px",
     },
     signature: {
       flexDirection: "row",
@@ -116,8 +121,8 @@ function BillViewPDF() {
       marginTop: 60,
     },
     signatureText: {
-      fontSize: 14,
-      fontWeight: "300",
+      fontSize: "14px",
+      fontWeight: "400",
     },
     notes: {
       marginTop: 10,
@@ -125,198 +130,211 @@ function BillViewPDF() {
 
     textColor: {
       color: "#16325b",
-      fontSize: "18px",
+      fontSize: "14px",
+      lineHeight: "15px",
     },
   });
 
   const id = localStorage.getItem("billingId");
 
-  const billing = async () => {
+  //pdf bill view
+  const [putData, setPutData] = useState([]);
+
+  const billing = async (id) => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/customer/viewBill/8`
+        `${process.env.REACT_APP_API_URL}/customer/viewBill/${id}`
       );
 
-      console.log(response)
+      setPutData(response.data.response);
     } catch (error) {
-        console.log(error)
+      console.log(error);
     }
   };
 
-  useEffect(()=>{
-    // if(id){
-        billing()
-    // }
-  },[])
+  useEffect(() => {
+    if (id) {
+      billing(id);
+    }
+  }, [id]);
 
   return (
     <Document>
-      <Page size="A4" style={styles.page}>
-        {/* Header Section */}
-        <View style={styles.heading}>
-          <View style={styles.logo}>
-            <View style={styles.img}></View>
+      {putData.map((item, index) => (
+        <Page size="A4" style={styles.page}>
+          {/* Header Section */}
+          <View style={styles.heading}>
+            <View style={styles.logo}>
+              <View style={styles.img}></View>
+            </View>
+            <View style={styles.companyInfo}>
+              {/* <Text style={styles.headingtitle}></Text>
+           <Text style={styles.headingcontent}>
+           ऑफिस पत्ता : इंडियन ऑइल पेट्रोलपम्पसमोर, शिक्षक भवन शेजारी,
+           </Text>
+           <Text style={styles.headingcontent}>
+           तळेगाव - शिक्रापूर रोड, तळेगाव ढमढेरे ता. शिरूर ,जि. पुणे - ४१२२०८.
+           </Text>
+           <Text style={styles.headingcontent}>
+           मोबाईल : 9028071133 / 9850000444
+           </Text> */}
+            </View>
           </View>
-          <View style={styles.companyInfo}>
-            <Text style={styles.headingtitle}>श्री डेव्हलपर्स अँड construction</Text>
-            <Text style={styles.headingcontent}>
-            ऑफिस पत्ता : इंडियन ऑइल पेट्रोलपम्पसमोर, शिक्षक भवन शेजारी,
+
+          {/* Booking Title */}
+          <View style={styles.booking}>
+            <Text>Billing Receipt</Text>
+          </View>
+
+          {/* Customer Info Section */}
+          <View style={styles.customerInfo}>
+            <View style={styles.row}>
+              <View style={styles.halfrow}>
+                <Text style={styles.label}>Bill no. : </Text>
+                <Text style={styles.label1}>{item.billingId}</Text>
+              </View>
+              <View style={styles.halfrow}>
+                <Text style={styles.label}>Date : </Text>
+                <Text style={styles.label1}>{item.date}</Text>
+              </View>
+            </View>
+
+            <View style={styles.row}>
+              <View style={styles.halfrow}>
+                <Text style={styles.label}>Name : </Text>
+                <Text style={styles.label1}>{item.name}</Text>
+              </View>
+              <View style={styles.halfrow}>
+                <Text style={styles.label}>Address : </Text>
+                <Text style={styles.label1}>{item.address}</Text>
+              </View>
+            </View>
+
+            <View style={styles.row}>
+              <View style={styles.halfrow}>
+                <Text style={styles.label}>Mobile : </Text>
+                <Text style={styles.label1}>{item.mob_number}</Text>
+              </View>
+              <View style={styles.halfrow}>
+                <Text style={styles.label}>Email : </Text>
+                <Text style={styles.label1}>{item.email}</Text>
+              </View>
+            </View>
+
+            <View style={styles.row}>
+              <View style={styles.halfrow}>
+                <Text style={styles.label}>Project Name :</Text>
+                <Text style={styles.label1}>{item.projectName}</Text>
+              </View>
+              <View style={styles.halfrow}>
+                <Text style={styles.label}>{item.gatNumber}</Text>
+                <Text style={styles.label1}>56</Text>
+              </View>
+            </View>
+          </View>
+
+          {/* Table Section */}
+          <View style={styles.infoTable}>
+            <View style={styles.tableRow}>
+              <Text style={styles.tableHeader}>Plot number</Text>
+              <Text style={styles.tableHeader}>Area</Text>
+              <Text style={styles.tableHeader}>Rate</Text>
+              <Text style={styles.tableHeader}>Total Amount</Text>
+            </View>
+            <View style={styles.tableRow}>
+              <Text style={styles.tableCell}>{item.plotNumber}</Text>
+              <Text style={styles.tableCell}>{item.plotarea}</Text>
+              <Text style={styles.tableCell}>{item.plotrate}</Text>
+              <Text style={styles.tableCell}>{item.total_amount}</Text>
+            </View>
+          </View>
+
+          {/* Details Section */}
+          <View style={styles.row}>
+            <View style={styles.halfrow}>
+              <Text style={styles.label}>Direction : </Text>
+              <Text style={styles.label1}>{item.plot_direction}</Text>
+            </View>
+            <View style={styles.halfrow}>
+              <Text style={styles.label}>Total Amount : </Text>
+              <Text style={styles.label1}>{item.total_amount}</Text>
+            </View>
+          </View>
+
+          <View style={styles.row}>
+            <View style={styles.halfrow}>
+              <Text style={styles.label}>Payment Type : </Text>
+              <Text style={styles.label1}>{item.payment_type}</Text>
+            </View>
+
+            <View style={styles.halfrow}>
+              <Text style={styles.label}>Payment Type : </Text>
+              <Text style={styles.label1}>{item.plotPurchasedType}</Text>
+            </View>
+          </View>
+
+          <View style={styles.row}>
+            <View style={styles.halfrow}>
+              <Text style={styles.label}>Amount in words:</Text>
+              <Text style={styles.label1}>{item.amountInWords}</Text>
+            </View>
+          </View>
+
+          <View style={styles.row}>
+            <View style={styles.halfrow}>
+              <Text style={styles.label}>Bank : </Text>
+              <Text style={styles.label1}>{item.bankName}</Text>
+            </View>
+            <View style={styles.halfrow}>
+              <Text style={styles.label}>Cheque no. : </Text>
+              <Text style={styles.label1}>{item.cheqNum}</Text>
+            </View>
+          </View>
+
+          <View style={styles.row}>
+            <View style={styles.halfrow}>
+              <Text style={styles.label}>Cheque date : </Text>
+              <Text style={styles.label1}>{item.cheqDate}</Text>
+            </View>
+            <View style={styles.halfrow}>
+              <Text style={styles.label}>Branch : </Text>
+              <Text style={styles.label1}>{item.branchName}</Text>
+            </View>
+          </View>
+
+          {/* Notes Section */}
+          <View style={styles.notes}>
+            <Text>Some Imp notes :</Text>
+            <Text style={styles.textColor}>
+              1. After booking the plot, the plot will not be canceled and the
+              amount paid for cancellation / booking will not be refunded.
             </Text>
-            <Text style={styles.headingcontent}>
-            तळेगाव - शिक्रापूर रोड, तळेगाव ढमढेरे ता. शिरूर ,जि. पुणे - ४१२२०८.
+            <Text style={styles.textColor}>
+              2. If payment is not made for 3 consecutive weeks, the plot will
+              be canceled and the amount paid will not be refunded.
             </Text>
-            <Text style={styles.headingcontent}>
-            मोबाईल : 9028071133 / 9850000444
+            <Text style={styles.textColor}>
+              3. Plot holder will have to bear all the expenses of the paper for
+              naming the plot.
+            </Text>
+            <Text style={styles.textColor}>
+              4. The plot holder will have to bear all the expenses of the paper
+              for naming the plot.
+            </Text>
+            5. After booking the plot, the plot names have to be taken within 15
+            days from the date of booking.
+          </View>
+
+          {/* Signature Section */}
+          <View style={styles.signature}>
+            <Text style={styles.signatureText}>Customer Signature</Text>
+            <Text style={styles.signatureText}>Representative Signature</Text>
+            <Text style={styles.signatureText}>
+              Shri Developers and Construction
             </Text>
           </View>
-        </View>
-
-        {/* Booking Title */}
-        <View style={styles.booking}>
-          <Text>बुकिंग पावती </Text>
-        </View>
-
-        {/* Customer Info Section */}
-        <View style={styles.customerInfo}>
-          <View style={styles.row}>
-            <View style={styles.halfrow}>
-              <Text style={styles.label}>पावती क्र. : </Text>
-              <Text style={styles.label1}>0001</Text>
-            </View>
-            <View style={styles.halfrow}>
-              <Text style={styles.label}>दिनांक : </Text>
-              <Text style={styles.label1}>12/12/25</Text>
-            </View>
-          </View>
-
-          <View style={styles.row}>
-            <View style={styles.halfrow}>
-              <Text style={styles.label}>नाव : </Text>
-              <Text style={styles.label1}>Raju Bhai</Text>
-            </View>
-            <View style={styles.halfrow}>
-              <Text style={styles.label}>पत्ता : </Text>
-              <Text style={styles.label1}>Lohegaon, Pune</Text>
-            </View>
-          </View>
-
-          <View style={styles.row}>
-            <View style={styles.halfrow}>
-              <Text style={styles.label}>मोबाईल : </Text>
-              <Text style={styles.label1}>95896895625</Text>
-            </View>
-            <View style={styles.halfrow}>
-              <Text style={styles.label}>ई-मेल : </Text>
-              <Text style={styles.label1}>email@gmail.com</Text>
-            </View>
-          </View>
-
-          <View style={styles.row}>
-            <View style={styles.halfrow}>
-              <Text style={styles.label}>प्रोजेक्टचे नाव : </Text>
-              <Text style={styles.label1}>Sai Plots</Text>
-            </View>
-            <View style={styles.halfrow}>
-              <Text style={styles.label}>गट नंबर : </Text>
-              <Text style={styles.label1}>56</Text>
-            </View>
-          </View>
-        </View>
-
-        {/* Table Section */}
-        <View style={styles.infoTable}>
-          <View style={styles.tableRow}>
-            <Text style={styles.tableHeader}>प्लॉट नंबर </Text>
-            <Text style={styles.tableHeader}>चौरस फूट क्षेत्र </Text>
-            <Text style={styles.tableHeader}>दर</Text>
-            <Text style={styles.tableHeader}>एकूण रक्क्म</Text>
-          </View>
-          <View style={styles.tableRow}>
-            <Text style={styles.tableCell}>1</Text>
-            <Text style={styles.tableCell}>1</Text>
-            <Text style={styles.tableCell}>1</Text>
-            <Text style={styles.tableCell}>1</Text>
-          </View>
-        </View>
-
-        {/* Details Section */}
-        <View style={styles.row}>
-          <View style={styles.halfrow}>
-            <Text style={styles.label}>चतु:सिरमा: </Text>
-            <Text style={styles.label1}>North</Text>
-          </View>
-          <View style={styles.halfrow}>
-            <Text style={styles.label}>एकूण रक्क्म : </Text>
-            <Text style={styles.label1}>56000</Text>
-          </View>
-        </View>
-
-        <View style={styles.row}>
-          <View style={styles.halfrow}>
-            <Text style={styles.label}>Payment Type: </Text>
-            <Text style={styles.label1}>Cash</Text>
-          </View>
-
-          <View style={styles.halfrow}>
-            <Text style={styles.label}>प्लॉट खरेदीवरचे स्वरूप : </Text>
-            <Text style={styles.label1}>EMI</Text>
-          </View>
-        </View>
-
-        <View style={styles.row}>
-          <View style={styles.halfrow}>
-            <Text style={styles.label}>अक्षरी रु. : </Text>
-            <Text style={styles.label1}>One Lakhs only</Text>
-          </View>
-        </View>
-
-        <View style={styles.row}>
-          <View style={styles.halfrow}>
-            <Text style={styles.label}>बँक तपशील : </Text>
-            <Text style={styles.label1}>SBI</Text>
-          </View>
-          <View style={styles.halfrow}>
-            <Text style={styles.label}>चेक  नं.: </Text>
-            <Text style={styles.label1}>000213</Text>
-          </View>
-        </View>
-
-        <View style={styles.row}>
-          <View style={styles.halfrow}>
-            <Text style={styles.label}>चेक दिनांक : </Text>
-            <Text style={styles.label1}>12/12/25</Text>
-          </View>
-          <View style={styles.halfrow}>
-            <Text style={styles.label}>शाखा : </Text>
-            <Text style={styles.label1}>Pune</Text>
-          </View>
-        </View>
-
-        {/* Notes Section */}
-        <View style={styles.notes}>
-          <Text>नियम व अटी :</Text>
-          <Text style={styles.textColor}>
-          १. प्लॉट बुकिंग केल्यानंतर प्लॉट रद्द करण्यात येणार नाही व विसार / बुकिंगसाठी भरलेली रक्कम परत केली जाणार नाही.
-          </Text>
-          <Text style={styles.textColor}>
-          २. सलग ३ हफ्ते न भरल्यास प्लॉट कॅन्सल केला जाईल व भरलेली रक्क्म परत केली जाणार नाही.
-          </Text>
-          <Text style={styles.textColor}>
-          ३.प्लॉट नावे करण्याचे कागतपत्र्याचे सर्व खर्च प्लॉट धारकाला करावा लागेल .
-          </Text>
-          <Text style={styles.textColor}>
-          ३. प्लॉट नावे करण्याचे कागतपत्र्याचे सर्व खर्च प्लॉट धारकाला करावा लागेल .
-          </Text>
-          ४. प्लॉट बुकिंग केल्यानंतर बुकिंग तारखेपासून १५ दिवसाचा आत प्लॉट नावे घ्यावे लागेल.
-        </View>
-
-        {/* Signature Section */}
-        <View style={styles.signature}>
-          <Text style={styles.signatureText}>ग्राहकाची सही </Text>
-          <Text style={styles.signatureText}>प्रतिनिधीची सही</Text>
-          <Text style={styles.signatureText}>श्री डेव्हलपर्स अँड construction</Text>
-        </View>
-      </Page>
+        </Page>
+      ))}
     </Document>
   );
 }

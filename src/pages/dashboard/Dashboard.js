@@ -40,7 +40,7 @@ function Dashboard() {
         {
           status: "Total Plots",
           projects_counts: totalPlots,
-          link_path:"/all-plots"
+          link_path: "/all-plots",
         },
         {
           status: "Sale Plots",
@@ -49,6 +49,7 @@ function Dashboard() {
         {
           status: "Remaining Plots",
           projects_counts: avilablePlots,
+          link_path: "/available-plots",
         },
       ];
 
@@ -63,8 +64,7 @@ function Dashboard() {
   }, []);
 
   const [searchText, setSearchText] = useState("");
-  const [searchedColumn, setSearchedColumn] = useState(""); 
-
+  const [searchedColumn, setSearchedColumn] = useState("");
 
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
@@ -136,10 +136,7 @@ function Dashboard() {
         pendingAmount: item.plotDetails.plotamount - item.totalBookingAmount,
       }));
 
-  
       setCustomerDetails(detailsData);
-
-      
     } catch (error) {
       console.error("Error fetching customer details:", error);
     }

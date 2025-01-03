@@ -3,12 +3,20 @@ import "./allPlots.scss";
 import { Table as AntTable, Button } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import axios from "axios";
+import { useLocation, useSearchParams } from "react-router-dom";
 
 function AllPlots() {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
-
+  const [searchParams] = useSearchParams();
+  const location = useLocation();
   const [allPlots, setAllPlots] = useState([]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const id = params.get("id");
+    console.log(id);
+  }, [location]);
 
   const plotsData = async () => {
     try {

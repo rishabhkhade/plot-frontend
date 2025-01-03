@@ -18,6 +18,8 @@ import GetPlots from "./components/getPlots/GetPlots";
 import AddEmployee from "./components/addEmployee/AddEmployee";
 import BillView from "./components/billView/BillView";
 import { PDFViewer } from "@react-pdf/renderer";
+import AvailablePlots from "./components/availablePlots/AvailablePlots";
+import Expenses from "./components/expenses/Expenses";
 
 function App() {
   const [isLogedIn, setIslogdin] = useState(!!localStorage.getItem("token"));
@@ -29,54 +31,53 @@ function App() {
   const [isPDFVisible, setIsPDFVisible] = useState(false);
   return (
     <div className="App">
-    {isPDFVisible && (
-  <div
-    style={{
-      position: "absolute",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      backgroundColor: "rgba(0, 0, 0, 0.5)", // Optional: Dim background
-      zIndex: 9999,
-    }}
-  >
-    {/* Close Button */}
-    <button
-      onClick={() => setIsPDFVisible(false)}
-      style={{
-        position: "absolute",
-        top: 10,
-        right: 10,
-        padding: "10px 15px",
-        background: "red",
-        color: "white",
-        border: "none",
-        borderRadius: "5px",
-        cursor: "pointer",
-        zIndex: 10000, // Ensure the button is on top
-      }}
-    >
-      Close
-    </button>
+      {isPDFVisible && (
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0, 0, 0, 0.5)", // Optional: Dim background
+            zIndex: 9999,
+          }}
+        >
+          {/* Close Button */}
+          <button
+            onClick={() => setIsPDFVisible(false)}
+            style={{
+              position: "absolute",
+              top: 10,
+              right: 10,
+              padding: "10px 15px",
+              background: "red",
+              color: "white",
+              border: "none",
+              borderRadius: "5px",
+              cursor: "pointer",
+              zIndex: 10000, // Ensure the button is on top
+            }}
+          >
+            Close
+          </button>
 
-    {/* PDF Viewer */}
-    <div
-      style={{
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <PDFViewer style={{ width: "80%", height: "90%" }}>
-        <BillView />
-      </PDFViewer>
-    </div>
-  </div>
-)}
-
+          {/* PDF Viewer */}
+          <div
+            style={{
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <PDFViewer style={{ width: "80%", height: "90%" }}>
+              <BillView />
+            </PDFViewer>
+          </div>
+        </div>
+      )}
 
       <ContextProvider>
         <BrowserRouter>
@@ -100,6 +101,8 @@ function App() {
                 <Route path="/add-plots" element={<AddPlot />} />
                 <Route path="/view-projects" element={<ViewProjects />} />
                 <Route path="/all-plots" element={<AllPlots />} />
+                <Route path="/available-plots" element={<AvailablePlots />} />
+                <Route path="/expenses" element={<Expenses />} />
                 <Route path="/customer" element={<Customer />} />
                 <Route path="/get-plots" element={<GetPlots />} />
                 <Route path="/customer-details" element={<CustomerDetails />} />

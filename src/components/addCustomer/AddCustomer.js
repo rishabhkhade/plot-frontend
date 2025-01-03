@@ -33,7 +33,7 @@ function AddCustomer({ setIsPDFVisible }) {
 
   const paymentType = ["Cheque", "Cash", "Online"];
 
-  const [isCustomerAdd, setIsCustomerAdd] = useState(true);
+  const [isCustomerAdd, setIsCustomerAdd] = useState(false);
   const [storedId, setStoredId] = useState([]);
 
 
@@ -97,7 +97,7 @@ function AddCustomer({ setIsPDFVisible }) {
   const handleplotList = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/plots/getPlotsByProjectId/${projectId}`
+        `${process.env.REACT_APP_API_URL}/plots/getAvailablePlots/${projectId}`
       );
       setPlotList(response.data.data);
     } catch (error) {
