@@ -38,11 +38,8 @@ function Expenses() {
                 }
               >
                 <option hidden>Projects</option>
-                {expense.map((item, index) => (
-                  <option key={index} value={item.projectId}>
-                    {item.projectname}
-                  </option>
-                ))}
+
+                <option>project</option>
               </select>
             </div>
             <div class="col-12 d-flex flex-column gap-2">
@@ -58,7 +55,7 @@ function Expenses() {
                 }
               />
             </div>
-            <div  class="col-12 d-flex flex-column gap-2">
+            <div class="col-12 d-flex flex-column gap-2">
               <label for="">Amount</label>
               <input
                 type="text"

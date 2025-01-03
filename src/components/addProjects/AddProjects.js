@@ -9,6 +9,7 @@ function AddProjects() {
     projectarea: "",
     projectlocation: "",
     projectGatId: "",
+    projectAmt: "",
   });
 
   const handleSubmit = async (e) => {
@@ -25,6 +26,7 @@ function AddProjects() {
         projectarea: "",
         projectlocation: "",
         projectGatId: "",
+        projectAmt: "",
       });
     } catch (error) {
       console.log(error);
@@ -65,6 +67,18 @@ function AddProjects() {
                 setProjectAdd({
                   ...projectAdd,
                   projectlocation: e.target.value,
+                })
+              }
+            />
+            <input
+              type="text"
+              placeholder="Project Amount"
+              value={projectAdd.projectAmt}
+              name="projectAmt"
+              onChange={(e) =>
+                setProjectAdd({
+                  ...projectAdd,
+                  projectAmt: e.target.value,
                 })
               }
             />
