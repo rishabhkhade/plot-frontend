@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./expenses.scss";
 import axios from "axios";
 
@@ -9,18 +9,40 @@ function Expenses() {
     amount: "",
   });
 
+
+
   const handleExpenses = async () => {
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/expense/addExpenses`,
         expense
       );
-
-      console.log(response, ">>response");
     } catch (error) {
       console.log(error);
     }
   };
+
+
+  //project list
+  const [projectList, setProjectList] = useState([]);
+
+  const fetchProjects = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/projects/getprojectsList`
+      );
+
+      setProjectList(response.data.data || []);
+    } catch (error) {
+      console.error("Error fetching projects:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+
+
 
   return (
     <>
@@ -39,7 +61,11 @@ function Expenses() {
               >
                 <option hidden>Projects</option>
 
-                <option>project</option>
+                {
+                  projectList.map((item, index) => (
+                    <option>{item.projectname}</option>
+                  ))
+                }
               </select>
             </div>
             <div class="col-12 d-flex flex-column gap-2">

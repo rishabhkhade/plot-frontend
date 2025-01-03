@@ -332,12 +332,18 @@ function ViewProjects() {
                 <TiPlus />
               </span>
             </Link>
+            <Link to="/expenses" className="btn plus-icon-btn1">
+              Add Expenses
+              <span className="plus-icon">
+                {" "}
+                <TiPlus />
+              </span>
+            </Link>
           </div>
           <AntTable
             columns={columns}
             dataSource={allCustomer}
-            pagination={{ pageSize: 10 }}
-          
+            pagination={{ pageSize: 10 }}          
             scroll={{ x: "max-content" }}
             bordered={true}
             className="table"
