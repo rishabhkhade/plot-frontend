@@ -56,7 +56,7 @@ function SideBar({ setIslogdin }) {
           {
             link_name: "Statement",
             icon: <RiBillLine />,
-            link_path: "/",
+            link_path: "/statement",
           },
           {
             link_name: "Add Employee",

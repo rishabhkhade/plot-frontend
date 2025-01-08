@@ -20,6 +20,8 @@ import BillView from "./components/billView/BillView";
 import { PDFViewer } from "@react-pdf/renderer";
 import AvailablePlots from "./components/availablePlots/AvailablePlots";
 import Expenses from "./components/expenses/Expenses";
+import Statement from "./components/statement/Statement";
+import Enquire from "./components/enquire/Enquire";
 
 function App() {
   const [isLogedIn, setIslogdin] = useState(!!localStorage.getItem("token"));
@@ -105,6 +107,8 @@ function App() {
                 <Route path="/expenses" element={<Expenses />} />
                 <Route path="/customer" element={<Customer />} />
                 <Route path="/get-plots" element={<GetPlots />} />
+                <Route path="/statement" element={<Statement />} />
+                <Route path="/enquire" element={<Enquire />} />
                 <Route path="/customer-details" element={<CustomerDetails />} />
                 <Route path="/signup" element={<SignUp />} />
               </>
