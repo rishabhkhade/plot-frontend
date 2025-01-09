@@ -3,7 +3,7 @@ import "./viewProjects.scss";
 import { Cell, Pie, PieChart } from "recharts";
 import { Table as AntTable, Button, Dropdown, Menu } from "antd";
 import { DownOutlined, SearchOutlined } from "@ant-design/icons";
-import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { TiPlus } from "react-icons/ti";
 import axios from "axios";
 
@@ -18,11 +18,11 @@ function ViewProjects() {
   const location = useLocation();
   const [searchParams] = useSearchParams();
 
- useEffect(() => {
-     const params = new URLSearchParams(location.search);
-     const id = params.get("id");
-     console.log(id);
-   }, [location]);
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const id = params.get("id");
+    console.log(id);
+  }, [location]);
 
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
@@ -121,7 +121,7 @@ function ViewProjects() {
       const detailsCustomer =
         response.data.data &&
         response.data.data.map((item) => ({
-        key: item.customerId,
+          key: item.customerId,
           cName: item.cName,
           address: item.address,
           mob_Number: item.mob_Number,
@@ -143,13 +143,7 @@ function ViewProjects() {
     }
   };
 
-  useEffect(() => {
-    const id = searchParams.get("id");
-    if (id) {
-      handleAllCustomer(id);
-      handleRemainingPlots(id);
-    }
-  }, [location]);
+
 
   const columns = [
     {
@@ -248,6 +242,46 @@ function ViewProjects() {
     navigate(`/customer-details?id=${id}`);
   };
 
+
+
+
+  const [totalAmount, setTotalAmount] = useState([]);
+
+  const handleToatalExpense = async (id) => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/projects/getprojectsList`)
+      const data = response.data.data.filter((item) =>
+        String(item.projectId) === String(id)
+      );
+      console.log(data,"llllllll");
+
+      if (data.length > 0) {
+        setTotalAmount(data[0]); // Assuming you need the first match
+      } else {
+        console.warn("No matching project found!");
+      }
+      
+      setTotalAmount(response.data.data);
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  console.log(totalAmount.projectAmt, ">>>>totalAmount");
+
+  useEffect(() => {
+    const id = searchParams.get("id");
+    if (id) {
+      handleAllCustomer(id);
+      handleRemainingPlots(id);
+      handleToatalExpense(id);
+    }
+  }, [location]);
+
+ 
+
+
   return (
     <>
       <div className="view-project-parent parent">
@@ -293,7 +327,7 @@ function ViewProjects() {
             <div class="projects-values">
               <div class="project-value">
                 <p style={{ fontSize: "24px" }}>
-                  Total projects values : 50000000
+                  Total projects values : {totalAmount.projectAmt || "na"}
                 </p>
               </div>
               <div class="project-expenses">
@@ -343,7 +377,7 @@ function ViewProjects() {
           <AntTable
             columns={columns}
             dataSource={allCustomer}
-            pagination={{ pageSize: 10 }}          
+            pagination={{ pageSize: 10 }}
             scroll={{ x: "max-content" }}
             bordered={true}
             className="table"

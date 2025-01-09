@@ -1,0 +1,33 @@
+.enquire-form-parent {
+    width: calc(100% - 300px);
+    height: calc(100svh - 50px - 8%);
+    margin-left: 300px;
+    margin-top: calc(8% + 20px);
+  
+    .enquire-form-cont {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      .add-project-form {
+        width: 50%;
+        padding: calc(var(--unit) * 2);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: calc(var(--unit));
+        border-radius: calc(var(--unit));
+        background: white;
+  
+        input {
+          width: 100%;
+          padding: 15px;
+          border-radius: calc(var(--unit) / 2.5);
+          outline: none;
+          border: 1px solid var(--light-grey);
+        }
+      }
+    }
+  }
+  

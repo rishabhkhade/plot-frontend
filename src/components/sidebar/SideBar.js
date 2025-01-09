@@ -63,6 +63,11 @@ function SideBar({ setIslogdin }) {
             icon: <IoMdAdd />,
             link_path: "/add-employees",
           },
+          {
+            link_name: "Enquiry",
+            icon: <IoMdAdd />,
+            link_path: "/enquiry-form",
+          },
         ]
       : []),
   ];

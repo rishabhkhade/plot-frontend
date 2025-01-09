@@ -22,6 +22,7 @@ import AvailablePlots from "./components/availablePlots/AvailablePlots";
 import Expenses from "./components/expenses/Expenses";
 import Statement from "./components/statement/Statement";
 import Enquire from "./components/enquire/Enquire";
+import EnquireForm from "./components/enquireform/EnquireForm";
 
 function App() {
   const [isLogedIn, setIslogdin] = useState(!!localStorage.getItem("token"));
@@ -99,9 +100,11 @@ function App() {
                   element={<AddCustomer setIsPDFVisible={setIsPDFVisible} />}
                 />
                 <Route path="/add-employees" element={<AddEmployee />} />
+                <Route path="/enquiry-form" element={<EnquireForm />} />
+
 
                 <Route path="/add-plots" element={<AddPlot />} />
-                <Route path="/view-projects" element={<ViewProjects />} />
+                <Route path="/view-projects" element={<ViewProjects />}  />
                 <Route path="/all-plots" element={<AllPlots />} />
                 <Route path="/available-plots" element={<AvailablePlots />} />
                 <Route path="/expenses" element={<Expenses />} />
