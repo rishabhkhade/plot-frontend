@@ -3,12 +3,17 @@ import "./viewProjects.scss";
 import { Cell, Pie, PieChart } from "recharts";
 import { Table as AntTable, Button, Dropdown, Menu } from "antd";
 import { DownOutlined, SearchOutlined } from "@ant-design/icons";
-import { Link, useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { TiPlus } from "react-icons/ti";
 import axios from "axios";
 
 function ViewProjects() {
-
   const navigate = useNavigate();
 
   //table
@@ -90,10 +95,10 @@ function ViewProjects() {
   //total plots
   const [plotTotal, setPlotTotal] = useState([]);
 
-  const handleTotalPlots = async () => {
+  const handleTotalPlots = async (id) => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/plots/getPlotsByProjectId/12`
+        `${process.env.REACT_APP_API_URL}/plots/getPlotsByProjectId/${id}`
       );
 
       setPlotTotal(response.data.data.length);
@@ -101,12 +106,10 @@ function ViewProjects() {
       console.log(error);
     }
   };
-  useEffect(() => {
-    handleTotalPlots();
-  }, []);
+
   //total customer
   const [totalCustomer, setTotalCustomer] = useState([]);
-
+  const [totalSellingAmount, setTotalSellingAmount] = useState(0);
   //get all customer table
   const [allCustomer, setAllCustomer] = useState([]);
 
@@ -117,6 +120,13 @@ function ViewProjects() {
       );
 
       setTotalCustomer(response.data.data.length);
+      const sellingAmount = response.data.data.reduce(
+        (total, item) => total + item.plotdetails.plotamount,
+        0
+      );
+   
+
+      setTotalSellingAmount(sellingAmount);
 
       const detailsCustomer =
         response.data.data &&
@@ -130,6 +140,7 @@ function ViewProjects() {
           plotarea: item.plotdetails.plotarea,
           plotamount: item.plotdetails.plotamount,
           bookingAmt: item.paymentTotalAmount,
+          progress:item.progress,
           pendingAmount: item.plotdetails.plotamount - item.paymentTotalAmount,
         }));
 
@@ -139,11 +150,10 @@ function ViewProjects() {
       if (error.response.data.message === "No data found") {
         setAllCustomer([]);
         setTotalCustomer(0);
+        setTotalSellingAmount(0)
       }
     }
   };
-
-
 
   const columns = [
     {
@@ -209,6 +219,13 @@ function ViewProjects() {
       width: "8%",
       ...getColumnSearchProps("pendingAmount"),
     },
+    {
+      title: "Progress",
+      dataIndex: "progress",
+      key: "progress",
+      width: "8%",
+      ...getColumnSearchProps("progress"),
+    },
   ];
 
   const data = [
@@ -230,10 +247,11 @@ function ViewProjects() {
       plots: "Total Customers",
     },
   ];
-
+  const [totalAmount, setTotalAmount] = useState([]);
+  const [expemseAmt, setExpenseAmt] = useState(null);
   const pie_data = [
-    { name: "Group A", value: 400 },
-    { name: "Group B", value: 300 },
+    { name: "Group A", value: expemseAmt },
+    { name: "Group B", value: totalSellingAmount },
   ];
 
   const COLORS = ["#16325b", "#227b94"];
@@ -242,59 +260,54 @@ function ViewProjects() {
     navigate(`/customer-details?id=${id}`);
   };
 
-
-
-
-  const [totalAmount, setTotalAmount] = useState([]);
-
-  const handleToatalExpense = async (id) => {
+  const handleToatalprojectAmt = async (id) => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/projects/getprojectsList`)
-      const data = response.data.data.filter((item) =>
-        String(item.projectId) === String(id)
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/projects/getProjectById/${id}`
       );
-      console.log(data,"llllllll");
 
-      if (data.length > 0) {
-        setTotalAmount(data[0]); // Assuming you need the first match
-      } else {
-        console.warn("No matching project found!");
-      }
-      
       setTotalAmount(response.data.data);
-
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
-  console.log(totalAmount.projectAmt, ">>>>totalAmount");
+  const totalExpense = async (id) => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/expense/getExpenseByProjId/${id}`
+      );
+      setExpenseAmt(response.data.totalamount);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     const id = searchParams.get("id");
     if (id) {
       handleAllCustomer(id);
       handleRemainingPlots(id);
-      handleToatalExpense(id);
+      handleToatalprojectAmt(id);
+      totalExpense(id);
+      handleTotalPlots(id);
     }
   }, [location]);
-
- 
-
 
   return (
     <>
       <div className="view-project-parent parent">
         <div className="view-project-cont container">
           <div className="view-projects-left">
-            {data && data.map((item, index) => (
-              <Link to={item.link_path} class="v-p-box">
-                <h2>{item.counts}</h2>
-                <p style={{ color: "var(--accent)", fontSize: "20px" }}>
-                  {item.plots}
-                </p>
-              </Link>
-            ))}
+            {data &&
+              data.map((item, index) => (
+                <Link to={item.link_path} class="v-p-box">
+                  <h2>{item.counts}</h2>
+                  <p style={{ color: "var(--accent)", fontSize: "20px" }}>
+                    {item.plots}
+                  </p>
+                </Link>
+              ))}
           </div>
           <div className="view-projects-right">
             <div class="pie-chart">
@@ -327,7 +340,8 @@ function ViewProjects() {
             <div class="projects-values">
               <div class="project-value">
                 <p style={{ fontSize: "24px" }}>
-                  Total projects values : {totalAmount.projectAmt || "na"}
+                  Total projects values :{" "}
+                  {`${totalAmount.projectAmt}.00` || "nan"}
                 </p>
               </div>
               <div class="project-expenses">
@@ -335,14 +349,16 @@ function ViewProjects() {
                   style={{ background: "var(--accent)" }}
                   className="small-box"
                 ></span>
-                <p style={{ fontSize: "20px" }}>Expenses : 10000</p>
+                <p style={{ fontSize: "20px" }}>Expenses : {expemseAmt}.00</p>
               </div>
               <div class="project-expenses">
                 <span
                   style={{ background: "var(--teal)" }}
                   className="small-box"
                 ></span>
-                <p style={{ fontSize: "20px" }}>Selling : 10000</p>
+                <p style={{ fontSize: "20px" }}>
+                  Selling : {totalSellingAmount}.00
+                </p>
               </div>
             </div>
           </div>
