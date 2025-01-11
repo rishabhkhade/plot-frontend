@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import "./customerDetails.scss";
 import { Table as AntTable } from "antd";
 import axios from "axios";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
+import { FiPlusCircle } from "react-icons/fi";
 
 function CustomerDetails() {
   const [customerDetails, setCustomerDetails] = useState([]);
@@ -17,7 +18,6 @@ function CustomerDetails() {
       );
       setCustomerDetails(response.data.data);
 
-      console.log(response.data.data, "????");
     } catch (error) {
       console.log(error);
     }
@@ -137,19 +137,19 @@ function CustomerDetails() {
               </div>
             </div>
             <div class="line"></div>
-            <div class="col-3  d-flex gap-4 align-contemt-center">
+            <div class="col-6  d-flex gap-4 align-contemt-center">
               <h4 className="name-class">Name</h4>
               <h4 className="name-class-side">{customerDetails.cName}</h4>
             </div>
-            <div class="col-3 d-flex gap-4 align-contemt-center">
+            <div class="col-6 d-flex gap-4 align-contemt-center">
               <h4 className="name-class">Address</h4>
               <h4 className="name-class-side">{customerDetails.address}</h4>
             </div>
-            <div class="col-3 d-flex gap-4 align-contemt-center">
+            <div class="col-6 d-flex gap-4 align-contemt-center">
               <h4 className="name-class">Mobile no.</h4>
               <h4 className="name-class-side">{customerDetails.mob_Number}</h4>
             </div>
-            <div class="col-3 d-flex gap-4 a lign-contemt-center">
+            <div class="col-6 d-flex gap-4 a lign-contemt-center">
               <h4 className="name-class">Email</h4>
               <h4 className="name-class-side">{customerDetails.email}</h4>
             </div>
@@ -189,8 +189,11 @@ function CustomerDetails() {
           </div>
 
           {/* Payment details */}
-          <div class="row g-3 customer-detail-form   ">
-            <h3 style={{ color: "var(--accent)" }}>Payment Details</h3>
+          <div class="row g-3 customer-detail-form ">
+           <div class="payment-detail">
+           <h3 style={{ color: "var(--accent)" }}>Payment Details</h3>
+           <Link to="/add-pay"><FiPlusCircle /></Link>
+           </div>
             <div class="line"></div>
             <AntTable
               columns={columns1}

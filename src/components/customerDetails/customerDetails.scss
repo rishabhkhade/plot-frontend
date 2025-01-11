@@ -16,6 +16,18 @@
       padding: 20px;
       background-color: var(--white);
 
+      .payment-detail {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+
+        span {
+          font-size: 22px;
+          cursor: pointer;
+          color: var(--accent);
+        }
+      }
+
       .customer-date {
         display: flex;
         align-items: center;
@@ -29,7 +41,7 @@
       }
 
       .name-class-side {
-        color: rgba(7, 7, 7, 0.60);
+        color: rgba(7, 7, 7, 0.6);
         font-size: 16px;
       }
 

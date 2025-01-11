@@ -23,6 +23,7 @@ import Expenses from "./components/expenses/Expenses";
 import Statement from "./components/statement/Statement";
 import Enquire from "./components/enquire/Enquire";
 import EnquireForm from "./components/enquireform/EnquireForm";
+import AddPayment from "./components/addPayment/AddPayment";
 
 function App() {
   const [isLogedIn, setIslogdin] = useState(!!localStorage.getItem("token"));
@@ -107,6 +108,7 @@ function App() {
                 <Route path="/view-projects" element={<ViewProjects />}  />
                 <Route path="/all-plots" element={<AllPlots />} />
                 <Route path="/available-plots" element={<AvailablePlots />} />
+                <Route path="/add-pay" element={<AddPayment />} />
                 <Route path="/expenses" element={<Expenses />} />
                 <Route path="/customer" element={<Customer />} />
                 <Route path="/get-plots" element={<GetPlots />} />
