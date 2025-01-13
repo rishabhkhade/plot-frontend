@@ -6,7 +6,7 @@ function Statement() {
 
     const columns = [
         {
-            title: "Account Holder Name",
+            title: "Customer Name",
             dataIndex: "cName",
             key: "cName",
             width: "15%",

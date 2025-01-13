@@ -128,17 +128,3 @@ function AddPayment() {
 }
 
 export default AddPayment;
-
-//     "payment":{
-//         "customerId":6,
-//         "bookingAmt":10000,
-//         "payment_type":"online",
-//         "date":""
-//     },
-//  "bankDetails":   {
-//         "bankName":"bank of india",
-//         "cheqNum":"",
-//         "cheqDate":"",
-//         "branchDate":""
-//     }
-// }
