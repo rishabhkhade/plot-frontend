@@ -1,33 +1,66 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import "./statement.scss"
 import { Table as AntTable, Button, Menu } from "antd";
+import axios from 'axios';
 
 function Statement() {
 
+    const [listCustomer, setListCustomer] = useState([]);
+
+    const handleStatement = async () => {
+        try {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/statement/getStatement`);
+            const customerStatement =
+                response.data.response &&
+                response.data.response.map((item) => ({
+                    date: item?.date || item?.paymentDetails?.date || item?.expenseDetails?.date || "N/A",
+                    customerName: item?.paymentDetails?.customerName || "N/A",
+                    projectname: item?.expenseDetails?.projectname || "N/A",
+                    pay_amount: item?.paymentDetails?.pay_amount || "0",
+                    method: item?.paymentDetails?.method || "N/A",
+                    description: item?.expenseDetails?.description || "N/A",
+                }));
+    
+            setListCustomer(customerStatement);
+        } catch (error) {
+            console.error("Error fetching statement data:", error);
+        }
+    };
+
+    useEffect(() => {
+        handleStatement()
+    }, [])
+
     const columns = [
         {
+            title: "Date",
+            dataIndex: "date",
+            key: "date",
+            width: "8%",
+        },
+        {
             title: "Customer Name",
-            dataIndex: "cName",
-            key: "cName",
+            dataIndex: "customerName",
+            key: "customerName",
             width: "15%",
         },
         {
-            title: "Account Number",
-            dataIndex: "mob_Number",
-            key: "mob_Number",
+            title: "Project Name",
+            dataIndex: "projectname",
+            key: "projectname",
+            width: "15%",
+        },
+        {
+            title: "Payment",
+            dataIndex: "pay_amount",
+            key: "pay_amount",
             width: "18%",
         },
         {
-            title: "Account Type",
-            dataIndex: "projectName",
-            key: "projectName",
+            title: "Payment Method",
+            dataIndex: "method",
+            key: "method",
             width: "15%",
-        },
-        {
-            title: "Date",
-            dataIndex: "plotId",
-            key: "plotId",
-            width: "8%",
         },
         {
             title: "Debit ",
@@ -42,20 +75,13 @@ function Statement() {
             width: "8%",
         },
         {
-            title: "Balance ",
-            dataIndex: "totalBookingAmount",
-            key: "totalBookingAmount",
+            title: "Description ",
+            dataIndex: "description",
+            key: "description",
             width: "8%",
         },
+
     ];
-
-
-    const data = [
-        {
-
-        }
-    ]
-
 
     return (
         <>
@@ -63,7 +89,7 @@ function Statement() {
                 <div className="container">
                     <AntTable
                         columns={columns}
-                        dataSource={data}
+                        dataSource={listCustomer}
                         pagination={{ pageSize: 10 }}
                         rowClassName={() => "custom-cursor-row"}
                         scroll={{ x: "max-content" }}

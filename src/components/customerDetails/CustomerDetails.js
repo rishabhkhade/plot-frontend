@@ -4,6 +4,7 @@ import { Table as AntTable } from "antd";
 import axios from "axios";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { FiPlusCircle } from "react-icons/fi";
+import AddPayment from "../addPayment/AddPayment";
 
 function CustomerDetails() {
   const [customerDetails, setCustomerDetails] = useState([]);
@@ -29,6 +30,13 @@ function CustomerDetails() {
       handleCustomer(id);
     }
   }, [location]);
+
+  const handlePaymentUpdate = () => {
+    const id = searchParams.get("id");
+    if (id) {
+      handleCustomer(id);
+    }
+  };
 
   //plot details
   const columns = [
@@ -137,22 +145,28 @@ function CustomerDetails() {
               </div>
             </div>
             <div class="line"></div>
-            <div class="col-6  d-flex gap-4 align-contemt-center">
+            <div class="col-3  d-flex gap-4 align-contemt-center">
               <h4 className="name-class">Name</h4>
               <h4 className="name-class-side">{customerDetails.cName}</h4>
             </div>
-            <div class="col-6 d-flex gap-4 align-contemt-center">
+            <div class="col-3 d-flex gap-4 align-contemt-center">
               <h4 className="name-class">Address</h4>
               <h4 className="name-class-side">{customerDetails.address}</h4>
             </div>
-            <div class="col-6 d-flex gap-4 align-contemt-center">
+            <div class="col-3 d-flex gap-4 align-contemt-center">
               <h4 className="name-class">Mobile no.</h4>
               <h4 className="name-class-side">{customerDetails.mob_Number}</h4>
             </div>
-            <div class="col-6 d-flex gap-4 a lign-contemt-center">
+            <div class="col-3 d-flex gap-4 a lign-contemt-center">
               <h4 className="name-class">Email</h4>
               <h4 className="name-class-side">{customerDetails.email}</h4>
             </div>
+
+            <div class="col-12">
+              <h4 className="name-class">Payment Added</h4>
+              {/* <AddPayment onPaymentUpdate={handlePaymentUpdate} /> */}
+            </div>
+            
           </div>
 
           {/* Projects details */}
