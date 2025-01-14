@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./enquireForm.scss";
 import axios from "axios";
 import { message } from "antd";
+import { useNavigate } from "react-router-dom";
 
 function EnquireForm() {
   const [enquireForm, setEnquireForm] = useState({
@@ -11,6 +12,8 @@ function EnquireForm() {
     feedback: "",
     status: "",
   });
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,6 +31,8 @@ function EnquireForm() {
         status: "",
       });
        message.success("Enquiry added!");
+
+       navigate("/enquire");
     } catch (error) {
       console.log(error);
     }

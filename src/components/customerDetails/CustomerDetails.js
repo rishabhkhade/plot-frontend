@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./customerDetails.scss";
-import { Table as AntTable } from "antd";
+import { Table as AntTable, Modal } from "antd";
 import axios from "axios";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { FiPlusCircle } from "react-icons/fi";
@@ -11,6 +11,7 @@ function CustomerDetails() {
 
   const [searchParams] = useSearchParams();
   const location = useLocation();
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const handleCustomer = async (id) => {
     try {
@@ -36,6 +37,14 @@ function CustomerDetails() {
     if (id) {
       handleCustomer(id);
     }
+  };
+
+  const showAddPaymentModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const hideAddPaymentModal = () => {
+    setIsModalVisible(false);
   };
 
   //plot details
@@ -138,35 +147,56 @@ function CustomerDetails() {
           <div class="row g-3 customer-detail-form   ">
             <div class="customer-date">
               <h3 style={{ color: "var(--accent)" }}>Customer Details</h3>
-              <div className="" style={{display:"flex", gap:"15px",  justifyContent:"center"}}>
+              <div className="" style={{ display: "flex", gap: "15px", justifyContent: "center" }}>
                 {" "}
                 <h4 className="name-class">Date:</h4>
                 <span style={{ fontSize: "14px" }}>{customerDetails.date}</span>
               </div>
             </div>
             <div class="line"></div>
-            <div class="col-3  d-flex gap-4 align-contemt-center">
-              <h4 className="name-class">Name</h4>
-              <h4 className="name-class-side">{customerDetails.cName}</h4>
+            <div className="col-3">
+              <div class="col-3  d-flex gap-4 align-contemt-center">
+                <h4 className="name-class">Name</h4>
+                <h4 className="name-class-side">{customerDetails.cName}</h4>
+              </div>
+              <div class="col-3 d-flex gap-4 align-contemt-center">
+                <h4 className="name-class">Address</h4>
+                <h4 className="name-class-side">{customerDetails.address}</h4>
+              </div>
             </div>
-            <div class="col-3 d-flex gap-4 align-contemt-center">
-              <h4 className="name-class">Address</h4>
-              <h4 className="name-class-side">{customerDetails.address}</h4>
+            <div className="col-6">
+              <div class="col-3 d-flex gap-4 align-contemt-center">
+                <h4 className="name-class">Mobile no.</h4>
+                <h4 className="name-class-side">{customerDetails.mob_Number}</h4>
+              </div>
+              <div class="col-3 d-flex gap-4 a lign-contemt-center">
+                <h4 className="name-class">Email</h4>
+                <h4 className="name-class-side">{customerDetails.email}</h4>
+              </div>
+
+
             </div>
-            <div class="col-3 d-flex gap-4 align-contemt-center">
-              <h4 className="name-class">Mobile no.</h4>
-              <h4 className="name-class-side">{customerDetails.mob_Number}</h4>
-            </div>
-            <div class="col-3 d-flex gap-4 a lign-contemt-center">
-              <h4 className="name-class">Email</h4>
-              <h4 className="name-class-side">{customerDetails.email}</h4>
+            <div className="col-3">
+              <select
+                id="inputState"
+                class="form-select"
+              >
+                <option selected hidden>
+                  Status
+                </option>
+                <option value="pqr">Booked</option>
+                <option value="pqr">Canceled</option>
+
+              </select>
+
             </div>
 
-            <div class="col-12">
+
+
+            {/* <div class="col-12">
               <h4 className="name-class">Payment Added</h4>
-              {/* <AddPayment onPaymentUpdate={handlePaymentUpdate} /> */}
-            </div>
-            
+            </div> */}
+
           </div>
 
           {/* Projects details */}
@@ -184,7 +214,7 @@ function CustomerDetails() {
             <div class="col-3 d-flex gap-4 align-contemt-center">
               <h4 className="name-class">Gat no.</h4>
               <h4 className="name-class-side">
-                {customerDetails?.projectsDetails?.projectGatId || "" }
+                {customerDetails?.projectsDetails?.projectGatId || ""}
               </h4>
             </div>
           </div>
@@ -204,10 +234,10 @@ function CustomerDetails() {
 
           {/* Payment details */}
           <div class="row g-3 customer-detail-form ">
-           <div class="payment-detail">
-           <h3 style={{ color: "var(--accent)" }}>Payment Details</h3>
-           <Link to="/add-pay"><FiPlusCircle /></Link>
-           </div>
+            <div class="payment-detail">
+              <h3 style={{ color: "var(--accent)" }}>Payment Details</h3>
+              <FiPlusCircle onClick={showAddPaymentModal} style={{ cursor: "pointer" }} />
+            </div>
             <div class="line"></div>
             <AntTable
               columns={columns1}
@@ -215,13 +245,22 @@ function CustomerDetails() {
               bordered={true}
               pagination={false}
               className="table1"
-                rowClassName={() => "custom-cursor-row"}
+              rowClassName={() => "custom-cursor-row"}
             />
 
             <h3 style={{ display: "flex", justifyContent: "flex-end" }}>
               Total Amount: {totalAmount}.00
             </h3>
           </div>
+
+          <Modal
+            title="Add Payment"
+            visible={isModalVisible}
+            onCancel={hideAddPaymentModal}
+            footer={null}
+          >
+            <AddPayment onPaymentAdded={handlePaymentUpdate} />
+          </Modal>
         </div>
       </div>
     </>

@@ -1,0 +1,28 @@
+.popup {
+    width: 100%;
+    // padding: calc(var(--unit) * 2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: calc(var(--unit)/2);
+    border-radius: calc(var(--unit));
+    background: white;
+
+    .add-project-form {
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+
+
+        input {
+            width: 100%;
+            padding: 15px;
+            border-radius: calc(var(--unit) / 2.5);
+            outline: none;
+            border: 1px solid var(--light-grey);
+        }
+    }
+}

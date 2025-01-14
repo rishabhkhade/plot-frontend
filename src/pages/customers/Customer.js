@@ -63,6 +63,7 @@ function Customer() {
         projectName: item.plotdetails.projectname,
         plotNumber: item.plotdetails.plotId,
         plotarea: item.plotdetails.plotarea,
+        progress: item.progress,
         plotamount: item.plotdetails.plotamount,
         bookingAmt: item.payments[0].bookingAmt || 0,
         pendingAmount:
@@ -187,7 +188,7 @@ function Customer() {
       title: "Plot Number",
       dataIndex: "plotNumber",
       key: "plotNumber",
-      width: "10%",
+      width: "6%",
       ...getColumnSearchProps("plotNumber"),
     },
 
@@ -218,6 +219,13 @@ function Customer() {
       key: "pendingAmount",
       width: "8%",
       ...getColumnSearchProps("pendingAmount"),
+    },
+    {
+      title: "Progress",
+      dataIndex: "progress",
+      key: "progress",
+      width: "8%",
+      ...getColumnSearchProps("progress"),
     },
   ];
 

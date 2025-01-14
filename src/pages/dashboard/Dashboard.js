@@ -132,6 +132,7 @@ function Dashboard() {
         plotId: item.plotDetails.plotId,
         plotarea: item.plotDetails.plotarea,
         plotamount: item.plotDetails.plotamount,
+        progress: item.progress,
         totalBookingAmount: item.totalBookingAmount,
         pendingAmount: item.plotDetails.plotamount - item.totalBookingAmount,
       }));
@@ -175,7 +176,7 @@ function Dashboard() {
       title: "Plot Number",
       dataIndex: "plotId",
       key: "plotId",
-      width: "15%",
+      width: "6%",
       ...getColumnSearchProps("plotId"),
     },
     {
@@ -205,6 +206,13 @@ function Dashboard() {
       key: "pendingAmount",
       width: "8%",
       ...getColumnSearchProps("pendingAmount"),
+    },
+    {
+      title: "Progress",
+      dataIndex: "progress",
+      key: "progress",
+      width: "8%",
+      ...getColumnSearchProps("progress"),
     },
   ];
 
