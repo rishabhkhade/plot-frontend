@@ -7,11 +7,11 @@ function Expenses() {
     projectId: "",
     workDetails: "",
     amount: "",
+    date:""
   });
 
-
-
-  const handleExpenses = async () => {
+  const handleExpenses = async (e) => {
+    e.preventDefault();
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/expense/addExpenses`,
@@ -21,7 +21,6 @@ function Expenses() {
       console.log(error);
     }
   };
-
 
   //project list
   const [projectList, setProjectList] = useState([]);
@@ -42,8 +41,6 @@ function Expenses() {
     fetchProjects();
   }, []);
 
-
-
   return (
     <>
       <div class="parent add-plot-parent">
@@ -61,11 +58,9 @@ function Expenses() {
               >
                 <option hidden>Projects</option>
 
-                {
-                  projectList.map((item, index) => (
-                    <option>{item.projectname}</option>
-                  ))
-                }
+                {projectList.map((item, index) => (
+                  <option>{item.projectname}</option>
+                ))}
               </select>
             </div>
             <div class="col-12 d-flex flex-column gap-2">
