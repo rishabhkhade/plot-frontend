@@ -21,6 +21,7 @@ function AddCustomer({ setIsPDFVisible }) {
     payment: {
       bookingAmt: "",
       payment_type: "",
+      date:date.toLocaleDateString()
     },
 
     bankDetails: {
@@ -33,7 +34,7 @@ function AddCustomer({ setIsPDFVisible }) {
 
   const paymentType = ["Cheque", "Cash", "Online"];
 
-  const [isCustomerAdd, setIsCustomerAdd] = useState(false);
+  const [isCustomerAdd, setIsCustomerAdd] = useState(true);
   const [storedId, setStoredId] = useState([]);
 
 

@@ -71,7 +71,6 @@ function BillViewPDF() {
     },
     row: {
       flexDirection: "row",
-
       marginBottom: 5,
     },
 
