@@ -34,7 +34,7 @@ function AddCustomer({ setIsPDFVisible }) {
 
   const paymentType = ["Cheque", "Cash", "Online"];
 
-  const [isCustomerAdd, setIsCustomerAdd] = useState(true);
+  const [isCustomerAdd, setIsCustomerAdd] = useState(false);
   const [storedId, setStoredId] = useState([]);
 
 
