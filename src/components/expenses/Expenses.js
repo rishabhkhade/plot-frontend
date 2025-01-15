@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./expenses.scss";
 import axios from "axios";
+import { message } from "antd";
 
 function Expenses() {
   const [expense, setExpense] = useState({
@@ -17,6 +18,7 @@ function Expenses() {
         `${process.env.REACT_APP_API_URL}/expense/addExpenses`,
         expense
       );
+      message("Expense Added successfully")
     } catch (error) {
       console.log(error);
     }

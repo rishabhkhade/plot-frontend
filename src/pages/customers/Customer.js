@@ -53,22 +53,32 @@ function Customer() {
         `${process.env.REACT_APP_API_URL}/customer/getAllCustomers`
       );
 
-      const detailsData = response.data.data.reverse().map((item, index) => ({
-        key: item.customerId,
-        sr_no: index + 1,
-        cName: item.cName,
-        address: item.address,
-        mob_Number: item.mob_Number,
-        email: item.email,
-        projectName: item.plotdetails.projectname,
-        plotNumber: item.plotdetails.plotId,
-        plotarea: item.plotdetails.plotarea,
-        progress: item.progress,
-        plotamount: item.plotdetails.plotamount,
-        bookingAmt: item.payments[0].bookingAmt || 0,
-        pendingAmount:
-          item.plotdetails.plotamount - item.payments[0].bookingAmt,
-      }));
+      const detailsData = response.data.data.reverse().map((item, index) => {
+
+        const totalBookingAmt = item.payments.reduce((total, payment) => {
+          const amount = Number(payment.bookingAmt);
+          return total + (isNaN(amount) ? 0 : amount);
+        }, 0);
+
+        return {
+          key: item.customerId,
+          sr_no: index + 1,
+          cName: item.cName,
+          address: item.address,
+          mob_Number: item.mob_Number,
+          email: item.email,
+          projectName: item.plotdetails.projectname,
+          plotNumber: item.plotdetails.plotId,
+          plotarea: item.plotdetails.plotarea,
+          progress: item.progress,
+          plotamount: item.plotdetails.plotamount,
+     
+          bookingAmt: totalBookingAmt,
+          pendingAmount: item.plotdetails.plotamount - totalBookingAmt,
+        };
+      });
+
+      const updateAmount =  
 
       setGetCustomer(detailsData);
 

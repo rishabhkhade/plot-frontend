@@ -3,12 +3,16 @@ import "./addpayment.scss";
 import axios from "axios";
 import { message } from "antd";
 
-function AddPayment() {
+function AddPayment({id}) {
+
+
+  const date = new Date();
   const [addPay, setAddPay] = useState({
     payment: {
       bookingAmt: "",
       payment_type: "",
-      date: "",
+      date: date.toLocaleDateString(),
+      customerId:Number(id)
     },
     bankDetails: {
       bankName: "",
@@ -29,7 +33,6 @@ function AddPayment() {
         payment: {
           bookingAmt: "",
           payment_type: "",
-
         },
         bankDetails: {
           bankName: "",
@@ -46,10 +49,11 @@ function AddPayment() {
 
   };
 
+  console.log(addPay);
+  
+
   return (
     <>
-
-
       <div className="popup"> 
           <form class="add-project-form" onSubmit={handleSubmit}>
         <label style={{ width: "100%" }}>

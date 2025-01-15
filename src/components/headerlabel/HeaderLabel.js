@@ -3,11 +3,9 @@ import "./headerLabel.scss";
 import { CiCalendar } from "react-icons/ci";
 import { UserContext } from "../../Context";
 
-
 function HeaderLabel() {
-
-  const contextData = useContext(UserContext)
-
+  const contextData = useContext(UserContext);
+  const date = new Date();
 
   return (
     <>
@@ -15,8 +13,7 @@ function HeaderLabel() {
         <div class="container header-container">
           <span>{contextData.userName}</span>
           <div class="time">
-            <CiCalendar />
-            <span>nov 19, 2024</span>
+            <span>{date.toDateString()}</span>
           </div>
         </div>
       </div>

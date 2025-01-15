@@ -10,6 +10,7 @@ function CustomerDetails() {
   const [customerDetails, setCustomerDetails] = useState([]);
 
   const [searchParams] = useSearchParams();
+  const id = searchParams.get("id");
   const location = useLocation();
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -19,7 +20,6 @@ function CustomerDetails() {
         `${process.env.REACT_APP_API_URL}/customer/getCustomerById/${id}`
       );
       setCustomerDetails(response.data.data);
-
     } catch (error) {
       console.log(error);
     }
@@ -78,7 +78,7 @@ function CustomerDetails() {
   const paymentDetails = (customerDetails.payments || []).map((item) => ({
     bankName: item.bankDetails?.bankName,
     branchName: item.bankDetails?.branchName,
-    cheqDate: item.bankDetails?.cheqDate,
+    date: item?.date,
     cheqNum: item.bankDetails?.cheqNum,
     payment_type: item?.payment_type,
     bookingAmt: item?.bookingAmt,
@@ -103,8 +103,8 @@ function CustomerDetails() {
   const columns1 = [
     {
       title: "Date",
-      dataIndex: "cheqDate",
-      key: "cheqDate",
+      dataIndex: "date",
+      key: "date",
       width: "8%",
     },
     {
@@ -139,6 +139,29 @@ function CustomerDetails() {
     },
   ];
 
+  const progress = [
+    {
+      id: 1,
+      progress: "booked",
+    },
+    {
+      id: 2,
+      progress: "sold",
+    },
+  ];
+
+  const updateProgress = async (id, item) => {
+    try {
+      const response = await axios.put(
+        `${process.env.REACT_APP_API_URL}/customer/progressChange`,
+        { customerId: id, progress: item }
+      );
+      handleCustomer();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <div className="parent customer-detail-parent">
@@ -147,56 +170,67 @@ function CustomerDetails() {
           <div class="row g-3 customer-detail-form   ">
             <div class="customer-date">
               <h3 style={{ color: "var(--accent)" }}>Customer Details</h3>
-              <div className="" style={{ display: "flex", gap: "15px", justifyContent: "center" }}>
+              <div
+                className=""
+                style={{
+                  display: "flex",
+                  gap: "15px",
+                  justifyContent: "center",
+                }}
+              >
                 {" "}
                 <h4 className="name-class">Date:</h4>
                 <span style={{ fontSize: "14px" }}>{customerDetails.date}</span>
               </div>
             </div>
             <div class="line"></div>
-            <div className="col-3">
-              <div class="col-3  d-flex gap-4 align-contemt-center">
+
+            <div className="col-9">
+              <div class="  d-flex gap-4 align-contemt-center">
                 <h4 className="name-class">Name</h4>
                 <h4 className="name-class-side">{customerDetails.cName}</h4>
               </div>
-              <div class="col-3 d-flex gap-4 align-contemt-center">
+              <div class=" d-flex gap-4 align-contemt-center">
                 <h4 className="name-class">Address</h4>
                 <h4 className="name-class-side">{customerDetails.address}</h4>
               </div>
-            </div>
-            <div className="col-6">
-              <div class="col-3 d-flex gap-4 align-contemt-center">
+
+              <div class="d-flex gap-4 align-contemt-center">
                 <h4 className="name-class">Mobile no.</h4>
-                <h4 className="name-class-side">{customerDetails.mob_Number}</h4>
+                <h4 className="name-class-side">
+                  {customerDetails.mob_Number}
+                </h4>
               </div>
-              <div class="col-3 d-flex gap-4 a lign-contemt-center">
+              <div class="d-flex gap-4 a lign-contemt-center">
                 <h4 className="name-class">Email</h4>
                 <h4 className="name-class-side">{customerDetails.email}</h4>
               </div>
 
-
+              <div class="d-flex gap-4 a lign-contemt-center">
+                <h4 className="name-class">Progress</h4>
+                <h4 className="name-class-side">{customerDetails.progress}</h4>
+              </div>
             </div>
             <div className="col-3">
               <select
                 id="inputState"
                 class="form-select"
+                onChange={(e)=> updateProgress(id,e.target.value)}
               >
                 <option selected hidden>
                   Status
                 </option>
-                <option value="pqr">Booked</option>
-                <option value="pqr">Canceled</option>
-
+                {progress.map((item, index) => (
+                  <option key={index} value={item.progress}>
+                    {item.progress}
+                  </option>
+                ))}
               </select>
-
             </div>
-
-
 
             {/* <div class="col-12">
               <h4 className="name-class">Payment Added</h4>
             </div> */}
-
           </div>
 
           {/* Projects details */}
@@ -236,7 +270,10 @@ function CustomerDetails() {
           <div class="row g-3 customer-detail-form ">
             <div class="payment-detail">
               <h3 style={{ color: "var(--accent)" }}>Payment Details</h3>
-              <FiPlusCircle onClick={showAddPaymentModal} style={{ cursor: "pointer" }} />
+              <FiPlusCircle
+                onClick={showAddPaymentModal}
+                style={{ cursor: "pointer" }}
+              />
             </div>
             <div class="line"></div>
             <AntTable
@@ -259,7 +296,7 @@ function CustomerDetails() {
             onCancel={hideAddPaymentModal}
             footer={null}
           >
-            <AddPayment onPaymentAdded={handlePaymentUpdate} />
+            <AddPayment onPaymentAdded={handlePaymentUpdate} id={id} />
           </Modal>
         </div>
       </div>
