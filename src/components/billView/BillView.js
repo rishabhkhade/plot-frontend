@@ -22,41 +22,8 @@ function BillViewPDF() {
       justifyContent: "center",
       alignItems: "center",
       marginBottom: 20,
-    },
-
-    headingcontent: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      gap: "10px",
-      color: "#16325b",
-      fontSize: "16px",
-    },
-    logo: {
-      width: "10%",
-      aspectRatio: 1,
-      backgroundColor: "rgba(255, 0, 0, 0.185)",
-      borderRadius: 5,
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-    },
-
-    img: {
-      height: "100%",
-      aspectRatio: 1,
-      backgroundColor: "black",
-    },
-    companyInfo: {
-      textAlign: "center",
-      width: "90%",
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      alignItems: "center",
-      gap: "10px",
-      height: "300px",
+      widht:"100%",
+      height:"100px"
     },
     booking: {
       textAlign: "center",
@@ -163,21 +130,7 @@ function BillViewPDF() {
         <Page size="A4" style={styles.page}>
           {/* Header Section */}
           <View style={styles.heading}>
-            <View style={styles.logo}>
-              <View style={styles.img}></View>
-            </View>
-            <View style={styles.companyInfo}>
-              {/* <Text style={styles.headingtitle}></Text>
-           <Text style={styles.headingcontent}>
-           ऑफिस पत्ता : इंडियन ऑइल पेट्रोलपम्पसमोर, शिक्षक भवन शेजारी,
-           </Text>
-           <Text style={styles.headingcontent}>
-           तळेगाव - शिक्रापूर रोड, तळेगाव ढमढेरे ता. शिरूर ,जि. पुणे - ४१२२०८.
-           </Text>
-           <Text style={styles.headingcontent}>
-           मोबाईल : 9028071133 / 9850000444
-           </Text> */}
-            </View>
+            
           </View>
 
           {/* Booking Title */}
