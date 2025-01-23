@@ -15,6 +15,9 @@ import axios from "axios";
 
 function ViewProjects() {
   const navigate = useNavigate();
+ const [imageFile, setImageFile] = useState("");
+
+
 
   //table
 
@@ -26,7 +29,7 @@ function ViewProjects() {
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const id = params.get("id");
-    console.log(id);
+   
   }, [location]);
 
   const getColumnSearchProps = (dataIndex) => ({
@@ -294,6 +297,30 @@ function ViewProjects() {
     }
   }, [location]);
 
+  const addImage = async(e)=>{
+    e.preventDefault();
+    try {
+      const id = searchParams.get("id")
+      const formData = new FormData();
+      formData.append("projectId", id);
+      formData.append("image", imageFile);
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/projects/addImages`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data", // Set the correct Content-Type
+        },
+      }
+      );
+
+      console.log(response)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
+
   return (
     <>
       <div className="view-project-parent parent">
@@ -389,6 +416,20 @@ function ViewProjects() {
                 <TiPlus />
               </span>
             </Link>
+            <div class="btn  btn2">
+              <input type="file" onChange={(e)=>setImageFile(e.target.files[0])}  className="img_input" />
+            Add Images
+              <span className="plus-icon">
+                {" "}
+                <TiPlus />
+              </span>
+            </div>
+           {
+            imageFile !== "" &&
+            <button className="btn" onClick={addImage} >
+            Submit
+          </button>
+           }
           </div>
           <AntTable
             columns={columns}
