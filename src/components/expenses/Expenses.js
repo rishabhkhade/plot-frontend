@@ -8,7 +8,7 @@ function Expenses() {
     projectId: "",
     workDetails: "",
     amount: "",
-    date:""
+    date: new Date().toLocaleDateString()
   });
 
   const handleExpenses = async (e) => {
@@ -61,7 +61,7 @@ function Expenses() {
                 <option hidden>Projects</option>
 
                 {projectList.map((item, index) => (
-                  <option>{item.projectname}</option>
+                  <option value={item.projectId} >{item.projectname}</option>
                 ))}
               </select>
             </div>

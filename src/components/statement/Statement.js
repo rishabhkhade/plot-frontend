@@ -26,14 +26,17 @@ function Statement() {
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL}/projects/getprojectsList`
       );
-
       const totalProjectAmt = response.data.data.reduce((total, item) => {
-        const amount = Number(item?.projectAmt) || 0; // Convert to number and handle undefined
+        const amount = Number(item?.projectAmt.replace(/,/g, '')) || 0;
         return total + amount;
-      }, 0); // Start with 0
+      }, 0);
+      
+      // Start with 0
       const responseexp = await axios.get(
         `${process.env.REACT_APP_API_URL}/statement/getStatement`
       );
+
+
 
       const totalAmounts = responseexp.data.response.reduce(
         (totals, item) => {
