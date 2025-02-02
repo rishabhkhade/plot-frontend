@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import "./addCustomer.scss";
 import axios from "axios";
 import { message } from "antd";
-import { Link } from "react-router-dom";
 
 function AddCustomer({ setIsPDFVisible }) {
     const date = new Date();
@@ -53,6 +52,7 @@ function AddCustomer({ setIsPDFVisible }) {
             message.success("Customer added successfully!");
             setIsDisable(true);
 
+
         } catch (error) {
             console.log(error);
             message.error("Failed to add customer. Please try again.");
@@ -76,7 +76,36 @@ function AddCustomer({ setIsPDFVisible }) {
             if (response.data.data !== null) {
                 localStorage.setItem("billingId", response.data.data)
             }
-            setIsPDFVisible(true)
+            setIsPDFVisible(true);
+
+            //reset fields
+            setAddCustomer({
+                customer: {
+                    progress: "booked",
+                    cName: "",
+                    address: "",
+                    mob_Number: "",
+                    email: "",
+                    plotPurchasedType: "",
+                    projectId: "",
+                    plotId: "",
+                    date: date.toLocaleDateString(),
+                },
+                payment: {
+                    bookingAmt: "",
+                    payment_type: "",
+                    date: date.toLocaleDateString()
+                },
+
+                bankDetails: {
+                    bankName: "",
+                    cheqNum: "",
+                    cheqDate: "",
+                    branchName: "",
+                },
+            })
+
+
 
         } catch (error) {
             console.log(error)
