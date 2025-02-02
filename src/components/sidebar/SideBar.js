@@ -140,7 +140,7 @@ function SideBar({ setIslogdin }) {
                   <span className={navbar ? "text active" : "text"}>
                     {item.link_name}
                   </span>
-                  <DownOutlined />
+                  <span className="dropdown-arrow"><DownOutlined /></span>
                 </Link>
               </Dropdown>
             );
