@@ -101,7 +101,59 @@ function AddPlot() {
                 }
               />
             </div>
-            <div class="col-md-12">
+            <div class="col-12">
+              <input
+                type="text"
+                class="form-control"
+                id="inputAddress2"
+                placeholder="North"
+                value={plotAdd.plotrate}
+                name="plot area"
+                onChange={(e) =>
+                  setPlotAdd({ ...plotAdd, plotrate: e.target.value })
+                }
+              />
+            </div>
+            <div class="col-12">
+              <input
+                type="text"
+                class="form-control"
+                id="inputAddress2"
+                placeholder="South"
+                value={plotAdd.plotrate}
+                name="plot area"
+                onChange={(e) =>
+                  setPlotAdd({ ...plotAdd, plotrate: e.target.value })
+                }
+              />
+            </div>
+            <div class="col-12">
+              <input
+                type="text"
+                class="form-control"
+                id="inputAddress2"
+                placeholder="East"
+                value={plotAdd.plotrate}
+                name="plot area"
+                onChange={(e) =>
+                  setPlotAdd({ ...plotAdd, plotrate: e.target.value })
+                }
+              />
+            </div>
+            <div class="col-12">
+              <input
+                type="text"
+                class="form-control"
+                id="inputAddress2"
+                placeholder="West"
+                value={plotAdd.plotrate}
+                name="plot area"
+                onChange={(e) =>
+                  setPlotAdd({ ...plotAdd, plotrate: e.target.value })
+                }
+              />
+            </div>
+            {/* <div class="col-md-12">
               <select
                 id="inputState"
                 class="form-select"
@@ -118,7 +170,7 @@ function AddPlot() {
                   <option value={item}>{item}</option>
                 ))}
               </select>
-            </div>
+            </div> */}
             <div class="col-12  w-auto ">
               <button type="submit" class="btn ">
                 Add Plot

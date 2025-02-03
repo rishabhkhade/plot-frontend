@@ -4,6 +4,10 @@ import axios from "axios";
 import { message } from "antd";
 
 function AddCustomer({ setIsPDFVisible }) {
+
+    const [showBankDetails, setShowBankDetails] = useState(false);
+
+
     const date = new Date();
     const [customerAdd, setAddCustomer] = useState({
         customer: {
@@ -105,7 +109,7 @@ function AddCustomer({ setIsPDFVisible }) {
                 },
             })
 
-
+            setShowBankDetails(false);
 
         } catch (error) {
             console.log(error)
@@ -116,9 +120,7 @@ function AddCustomer({ setIsPDFVisible }) {
     // plots dropdown
     const [plotList, setPlotList] = useState([]);
 
-    const [projectId, setProjectId] = useState("");
-
-    const handleplotList = async () => {
+    const [projectId, setProjectId] = useState(""); const handleplotList = async () => {
         try {
             const response = await axios.get(
                 `${process.env.REACT_APP_API_URL}/plots/getAvailablePlots/${projectId}`
@@ -362,15 +364,16 @@ function AddCustomer({ setIsPDFVisible }) {
                                         name="paymentType"
                                         value={item}
                                         checked={customerAdd.payment.payment_type === item}
-                                        onChange={(e) =>
+                                        onChange={(e) => {
                                             setAddCustomer({
                                                 ...customerAdd,
                                                 payment: {
                                                     ...customerAdd.payment,
                                                     payment_type: e.target.value,
                                                 },
-                                            })
-                                        }
+                                            });
+                                            setShowBankDetails(e.target.value === "Cheque");
+                                        }}
                                         disabled={isDisable}
                                     />
                                     <label
@@ -436,12 +439,92 @@ function AddCustomer({ setIsPDFVisible }) {
                                 </label>
                             </div>
                         </div>
+                        {showBankDetails &&
+                            (
+                                <>
+                                    <div className="col-6">
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Bank Name"
+                                            value={customerAdd.bankName}
+                                            onChange={(e) =>
+                                                setAddCustomer({
+                                                    ...customerAdd,
+                                                    bankDetails: {
+                                                        ...customerAdd.bankDetails,
+                                                        bankName: e.target.value,
+                                                    },
+                                                })
+                                            }
+                                            disabled={isDisable}
+                                        />
+                                    </div>
 
+                                    <div className="col-6">
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Branch Name"
+                                            value={customerAdd.branchName}
+                                            onChange={(e) =>
+                                                setAddCustomer({
+                                                    ...customerAdd,
+                                                    bankDetails: {
+                                                        ...customerAdd.bankDetails,
+                                                        branchName: e.target.value,
+                                                    },
+                                                })
+                                            }
+                                            disabled={isDisable}
+                                        />
+
+                                    </div>
+
+                                    <div className="col-6">
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Cheque No."
+                                            value={customerAdd.cheqNum}
+                                            onChange={(e) =>
+                                                setAddCustomer({
+                                                    ...customerAdd,
+                                                    bankDetails: {
+                                                        ...customerAdd.bankDetails,
+                                                        cheqNum: e.target.value,
+                                                    },
+                                                })
+                                            }
+                                            disabled={isDisable}
+                                        />
+                                    </div>
+                                    <div className="col-6">
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Cheque Date"
+                                            value={customerAdd.cheqDate}
+                                            onChange={(e) =>
+                                                setAddCustomer({
+                                                    ...customerAdd,
+                                                    bankDetails: {
+                                                        ...customerAdd.bankDetails,
+                                                        cheqDate: e.target.value,
+                                                    },
+                                                })
+                                            }
+                                            disabled={isDisable}
+                                        />
+                                    </div>
+                                </>
+                            )
+                        }
                         <div className="col-6">
                             <input
                                 type="text"
                                 className="form-control"
-                                placeholder="Bank Name"
+                                placeholder="EMI date"
                                 value={customerAdd.bankName}
                                 onChange={(e) =>
                                     setAddCustomer({
@@ -455,57 +538,18 @@ function AddCustomer({ setIsPDFVisible }) {
                                 disabled={isDisable}
                             />
                         </div>
-
                         <div className="col-6">
                             <input
                                 type="text"
                                 className="form-control"
-                                placeholder="Branch Name"
-                                value={customerAdd.branchName}
+                                placeholder="emi amount"
+                                value={customerAdd.bankName}
                                 onChange={(e) =>
                                     setAddCustomer({
                                         ...customerAdd,
                                         bankDetails: {
                                             ...customerAdd.bankDetails,
-                                            branchName: e.target.value,
-                                        },
-                                    })
-                                }
-                                disabled={isDisable}
-                            />
-
-                        </div>
-
-                        <div className="col-6">
-                            <input
-                                type="text"
-                                className="form-control"
-                                placeholder="Cheque No."
-                                value={customerAdd.cheqNum}
-                                onChange={(e) =>
-                                    setAddCustomer({
-                                        ...customerAdd,
-                                        bankDetails: {
-                                            ...customerAdd.bankDetails,
-                                            cheqNum: e.target.value,
-                                        },
-                                    })
-                                }
-                                disabled={isDisable}
-                            />
-                        </div>
-                        <div className="col-6">
-                            <input
-                                type="text"
-                                className="form-control"
-                                placeholder="Cheque Date"
-                                value={customerAdd.cheqDate}
-                                onChange={(e) =>
-                                    setAddCustomer({
-                                        ...customerAdd,
-                                        bankDetails: {
-                                            ...customerAdd.bankDetails,
-                                            cheqDate: e.target.value,
+                                            bankName: e.target.value,
                                         },
                                     })
                                 }

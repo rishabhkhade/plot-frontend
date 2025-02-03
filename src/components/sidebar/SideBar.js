@@ -21,16 +21,16 @@ function SideBar({ setIslogdin }) {
 
 
   const fetchProjectId = (id) => {
-    navigate(`./view-projects?id=${id}`); 
+    navigate(`./view-projects?id=${id}`);
   };
 
- 
+
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
 
   useEffect(() => {
     if (id) {
-      setProjectId(id); 
+      setProjectId(id);
     }
   }, [id]);
 
@@ -53,22 +53,22 @@ function SideBar({ setIslogdin }) {
     },
     ...(role === "Admin"
       ? [
-          {
-            link_name: "Statement",
-            icon: <RiBillLine />,
-            link_path: "/statement",
-          },
-          {
-            link_name: "Add Employee",
-            icon: <IoMdAdd />,
-            link_path: "/add-employees",
-          },
-          {
-            link_name: "Enquiry",
-            icon: <IoMdAdd />,
-            link_path: "/enquire",
-          },
-        ]
+        {
+          link_name: "Statement",
+          icon: <RiBillLine />,
+          link_path: "/statement",
+        },
+        {
+          link_name: "Add Employee",
+          icon: <IoMdAdd />,
+          link_path: "/add-employees",
+        },
+        {
+          link_name: "Enquiry",
+          icon: <IoMdAdd />,
+          link_path: "/enquire",
+        },
+      ]
       : []),
   ];
 
@@ -99,7 +99,7 @@ function SideBar({ setIslogdin }) {
       label: (
         <a
           view-projects
-        
+
           onClick={() => fetchProjectId(project.projectId)}
         >
           {project.projectname}

@@ -3,7 +3,7 @@ import "./addProjects.scss";
 import axios from "axios";
 import { message } from "antd";
 
-function AddProjects() {
+function AddProjects({fetchProjects}) {
   const [projectAdd, setProjectAdd] = useState({
     projectname: "",
     projectarea: "",
@@ -20,7 +20,7 @@ function AddProjects() {
         `${process.env.REACT_APP_API_URL}/projects/addprojects`,
         projectAdd
       );
-
+      message.success("Project successfully added!");
       setProjectAdd({
         projectname: "",
         projectarea: "",
@@ -28,11 +28,12 @@ function AddProjects() {
         projectGatId: "",
         projectAmt: "",
       });
+      fetchProjects();
+
     } catch (error) {
       console.log(error);
     }
 
-    message.success("Project successfully added!");
   };
 
   return (
