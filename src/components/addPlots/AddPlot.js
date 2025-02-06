@@ -45,7 +45,7 @@ function AddPlot() {
         plotdirection: "",
       });
       message.success("Project successfully added!");
-     
+
     } catch (error) {
       console.log(error);
     }
@@ -65,7 +65,7 @@ function AddPlot() {
                   setPlotAdd({ ...plotAdd, projectId: Number(e.target.value) })
                 }
               >
-                <option value="" selected  hidden>
+                <option value="" selected hidden>
                   Projects
                 </option>
                 {projectsList.map((item, index) => (
@@ -106,6 +106,19 @@ function AddPlot() {
                 type="text"
                 class="form-control"
                 id="inputAddress2"
+                placeholder="Plot no"
+                value={plotAdd.plotrate}
+                name="plot no"
+                onChange={(e) =>
+                  setPlotAdd({ ...plotAdd, plotrate: e.target.value })
+                }
+              />
+            </div>
+            <div class="col-12">
+              <input
+                type="text"
+                class="form-control"
+                id="inputAddress2"
                 placeholder="North"
                 value={plotAdd.plotrate}
                 name="plot area"
@@ -114,6 +127,7 @@ function AddPlot() {
                 }
               />
             </div>
+
             <div class="col-12">
               <input
                 type="text"
@@ -153,24 +167,8 @@ function AddPlot() {
                 }
               />
             </div>
-            {/* <div class="col-md-12">
-              <select
-                id="inputState"
-                class="form-select"
-                value={plotAdd.plotdirection}
-                name="plot direction"
-                onChange={(e) =>
-                  setPlotAdd({ ...plotAdd, plotdirection: e.target.value })
-                }
-              >
-                <option selected hidden>
-                  Plot Direction
-                </option>
-                {direction.map((item, index) => (
-                  <option value={item}>{item}</option>
-                ))}
-              </select>
-            </div> */}
+
+
             <div class="col-12  w-auto ">
               <button type="submit" class="btn ">
                 Add Plot

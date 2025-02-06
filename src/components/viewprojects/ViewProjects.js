@@ -26,6 +26,8 @@ function ViewProjects() {
   const location = useLocation();
   const [searchParams] = useSearchParams();
 
+  const id = searchParams.get("id");
+
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const id = params.get("id");
@@ -235,15 +237,17 @@ function ViewProjects() {
     {
       counts: plotTotal,
       plots: "Total Plots",
-      link_path: "/all-plots",
+      link_path: `/all-plots?totalPlotByProject=${id}`,
     },
     {
       counts: totalCustomer,
       plots: "Sell Plots",
+      
     },
     {
       counts: plotsRemain,
       plots: "Remaining Plots",
+      link_path: `/all-plots?remainingPlotByProject=${id}`,
     },
     {
       counts: totalCustomer,

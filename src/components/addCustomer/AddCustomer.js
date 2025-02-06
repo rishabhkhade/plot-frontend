@@ -7,6 +7,7 @@ function AddCustomer({ setIsPDFVisible }) {
 
     const [showBankDetails, setShowBankDetails] = useState(false);
 
+    const [emiDetails, setEmiDetails] = useState(false);
 
     const date = new Date();
     const [customerAdd, setAddCustomer] = useState({
@@ -20,6 +21,9 @@ function AddCustomer({ setIsPDFVisible }) {
             projectId: "",
             plotId: "",
             date: date.toLocaleDateString(),
+            emiAmt: "",
+            emiPeriod: "",
+
         },
         payment: {
             bookingAmt: "",
@@ -41,7 +45,6 @@ function AddCustomer({ setIsPDFVisible }) {
     const [storedId, setStoredId] = useState([]);
 
     const [isDisable, setIsDisable] = useState(false);
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -120,7 +123,8 @@ function AddCustomer({ setIsPDFVisible }) {
     // plots dropdown
     const [plotList, setPlotList] = useState([]);
 
-    const [projectId, setProjectId] = useState(""); const handleplotList = async () => {
+    const [projectId, setProjectId] = useState("");
+    const handleplotList = async () => {
         try {
             const response = await axios.get(
                 `${process.env.REACT_APP_API_URL}/plots/getAvailablePlots/${projectId}`
@@ -423,15 +427,16 @@ function AddCustomer({ setIsPDFVisible }) {
                                     name="plotPurchasedType"
                                     value="EMI"
                                     checked={customerAdd.customer.plotPurchasedType === "EMI"}
-                                    onChange={(e) =>
+                                    onChange={(e) => {
                                         setAddCustomer({
                                             ...customerAdd,
                                             customer: {
                                                 ...customerAdd.customer,
                                                 plotPurchasedType: e.target.value,
                                             },
-                                        })
-                                    }
+                                        });
+                                        setEmiDetails(true); // Show EMI fields when EMI is selected
+                                    }}
                                     disabled={isDisable}
                                 />
                                 <label className="form-check-label" htmlFor="emi">
@@ -520,44 +525,51 @@ function AddCustomer({ setIsPDFVisible }) {
                                 </>
                             )
                         }
-                        <div className="col-6">
-                            <input
-                                type="text"
-                                className="form-control"
-                                placeholder="EMI date"
-                                value={customerAdd.bankName}
-                                onChange={(e) =>
-                                    setAddCustomer({
-                                        ...customerAdd,
-                                        bankDetails: {
-                                            ...customerAdd.bankDetails,
-                                            bankName: e.target.value,
-                                        },
-                                    })
-                                }
-                                disabled={isDisable}
-                            />
-                        </div>
-                        <div className="col-6">
-                            <input
-                                type="text"
-                                className="form-control"
-                                placeholder="emi amount"
-                                value={customerAdd.bankName}
-                                onChange={(e) =>
-                                    setAddCustomer({
-                                        ...customerAdd,
-                                        bankDetails: {
-                                            ...customerAdd.bankDetails,
-                                            bankName: e.target.value,
-                                        },
-                                    })
-                                }
-                                disabled={isDisable}
-                            />
-                        </div>
+                        {emiDetails && (
+                            <>
 
-                        <div class="col-2">
+                                <div className="col-6">
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="Payment Duration"
+                                        value={customerAdd.emiPeriod}
+                                        onChange={(e) =>
+                                            setAddCustomer({
+                                                ...customerAdd,
+                                                emiPeriod: {
+                                                    ...customerAdd.emiPeriod,
+                                                    emiPeriod: e.target.value,
+                                                },
+                                            })
+                                        }
+                                        disabled={isDisable}
+                                    />
+                                </div>
+                                <div className="col-6">
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="Emi amount"
+                                        value={customerAdd.emiAmt}
+                                        onChange={(e) =>
+                                            setAddCustomer({
+                                                ...customerAdd,
+                                                emiAmt: {
+                                                    ...customerAdd.emiAmt,
+                                                    emiAmt: e.target.value,
+                                                },
+                                            })
+                                        }
+                                        disabled={isDisable}
+                                    />
+                                </div>
+
+                            </>
+                        )
+                        }
+
+                        <div className="col-4">
                             <button type="submit" class="btn ">
                                 Add Customer
                             </button>

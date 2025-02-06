@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./addProjects.scss";
 import axios from "axios";
 import { message } from "antd";
+import { UserContext } from "../../Context";
 
-function AddProjects({fetchProjects}) {
+function AddProjects() {
   const [projectAdd, setProjectAdd] = useState({
     projectname: "",
     projectarea: "",
@@ -11,6 +12,10 @@ function AddProjects({fetchProjects}) {
     projectGatId: "",
     projectAmt: "",
   });
+
+
+const {fetchProjects} = useContext(UserContext);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();

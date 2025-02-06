@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./sidebar.scss";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { IoIosArrowForward } from "react-icons/io";
@@ -11,10 +11,10 @@ import { IoMdLogOut } from "react-icons/io";
 import { DownOutlined } from "@ant-design/icons";
 import { Dropdown } from "antd";
 import axios from "axios";
+import { UserContext } from "../../Context";
 
 function SideBar({ setIslogdin }) {
   const [navbar, setNavbar] = useState(false);
-  const [projectList, setProjectList] = useState([]);
   const role = localStorage.getItem("role");
   const navigate = useNavigate();
   const [projectId, setProjectId] = useState(null);
@@ -24,6 +24,8 @@ function SideBar({ setIslogdin }) {
     navigate(`./view-projects?id=${id}`);
   };
 
+  const {projectList} = useContext(UserContext);
+  
 
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
@@ -78,21 +80,7 @@ function SideBar({ setIslogdin }) {
     navigate("/*");
   };
 
-  const fetchProjects = async () => {
-    try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/projects/getprojectsList`
-      );
-
-      setProjectList(response.data.data || []);
-    } catch (error) {
-      console.error("Error fetching projects:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchProjects();
-  }, []);
+  
 
   const projects_list = [
     ...projectList.map((project) => ({
