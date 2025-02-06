@@ -3,6 +3,7 @@ import "./viewProjects.scss";
 import { Cell, Pie, PieChart } from "recharts";
 import { Table as AntTable, Button, Dropdown, Menu } from "antd";
 import { DownOutlined, SearchOutlined } from "@ant-design/icons";
+import Loader from "../../components/loader/Loader";
 import {
   Link,
   useLocation,
@@ -12,12 +13,13 @@ import {
 } from "react-router-dom";
 import { TiPlus } from "react-icons/ti";
 import axios from "axios";
-
+ 
 function ViewProjects() {
   const navigate = useNavigate();
- const [imageFile, setImageFile] = useState("");
+  const [imageFile, setImageFile] = useState("");
 
-
+  //loader
+  const [loading, setLoading] = useState(false);
 
   //table
 
@@ -31,7 +33,6 @@ function ViewProjects() {
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const id = params.get("id");
-   
   }, [location]);
 
   const getColumnSearchProps = (dataIndex) => ({
@@ -120,6 +121,7 @@ function ViewProjects() {
 
   const handleAllCustomer = async (id) => {
     try {
+      setLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL}/customer/getCustomerByProjId/${id}`
       );
@@ -129,7 +131,6 @@ function ViewProjects() {
         (total, item) => total + item.plotdetails.plotamount,
         0
       );
-   
 
       setTotalSellingAmount(sellingAmount);
 
@@ -145,7 +146,7 @@ function ViewProjects() {
           plotarea: item.plotdetails.plotarea,
           plotamount: item.plotdetails.plotamount,
           bookingAmt: item.paymentTotalAmount,
-          progress:item.progress,
+          progress: item.progress,
           pendingAmount: item.plotdetails.plotamount - item.paymentTotalAmount,
         }));
 
@@ -155,8 +156,10 @@ function ViewProjects() {
       if (error.response.data.message === "No data found") {
         setAllCustomer([]);
         setTotalCustomer(0);
-        setTotalSellingAmount(0)
+        setTotalSellingAmount(0);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -242,7 +245,7 @@ function ViewProjects() {
     {
       counts: totalCustomer,
       plots: "Sell Plots",
-      
+      link_path: `/all-plots?sellPlotByProject=${id}`,
     },
     {
       counts: plotsRemain,
@@ -301,32 +304,33 @@ function ViewProjects() {
     }
   }, [location]);
 
-  const addImage = async(e)=>{
+  const addImage = async (e) => {
     e.preventDefault();
     try {
-      const id = searchParams.get("id")
+      const id = searchParams.get("id");
       const formData = new FormData();
       formData.append("projectId", id);
       formData.append("image", imageFile);
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/projects/addImages`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data", // Set the correct Content-Type
-        },
-      }
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/projects/addImages`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data", // Set the correct Content-Type
+          },
+        }
       );
 
-      console.log(response)
+      console.log(response);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
-
-
+  };
 
   return (
     <>
+      {loading && <Loader />}
+
       <div className="view-project-parent parent">
         <div className="view-project-cont container">
           <div className="view-projects-left">
@@ -421,19 +425,22 @@ function ViewProjects() {
               </span>
             </Link>
             <div class="btn  btn2">
-              <input type="file" onChange={(e)=>setImageFile(e.target.files[0])}  className="img_input" />
-            Add Images
+              <input
+                type="file"
+                onChange={(e) => setImageFile(e.target.files[0])}
+                className="img_input"
+              />
+              Add Images
               <span className="plus-icon">
                 {" "}
                 <TiPlus />
               </span>
             </div>
-           {
-            imageFile !== "" &&
-            <button className="btn" onClick={addImage} >
-            Submit
-          </button>
-           }
+            {imageFile !== "" && (
+              <button className="btn" onClick={addImage}>
+                Submit
+              </button>
+            )}
           </div>
           <AntTable
             columns={columns}
