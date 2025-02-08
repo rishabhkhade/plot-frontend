@@ -28,7 +28,6 @@ function AddCustomer({ setIsPDFVisible }) {
       payment_type: "",
       date: date.toLocaleDateString(),
     },
-
     bankDetails: {
       bankName: "",
       cheqNum: "",
@@ -288,8 +287,8 @@ function AddCustomer({ setIsPDFVisible }) {
               >
                 <option selected>Plots</option>
                 {plotList.map((item, index) => (
-                  <option key={index} value={item.plotId}>
-                    {item.plotId}
+                  <option key={index} value={item.plotNumber}>
+                    {item.plotNumber}
                   </option>
                 ))}
               </select>
@@ -525,7 +524,7 @@ function AddCustomer({ setIsPDFVisible }) {
                       setAddCustomer({
                         ...customerAdd,
                         customer: {
-                          ...customerAdd.emiPeriod,
+                          ...customerAdd.customer,
                           emiPeriod: e.target.value,
                         },
                       })
@@ -543,7 +542,7 @@ function AddCustomer({ setIsPDFVisible }) {
                       setAddCustomer({
                         ...customerAdd,
                         customer: {
-                          ...customerAdd.emiAmt,
+                          ...customerAdd.customer,
                           emiAmt: e.target.value,
                         },
                       })

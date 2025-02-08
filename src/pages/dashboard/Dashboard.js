@@ -208,6 +208,20 @@ function Dashboard() {
       ...getColumnSearchProps("pendingAmount"),
     },
     {
+      title: "EMI Amount",
+      dataIndex: "emiAmt",
+      key: "emiAmt",
+      width: "8%",
+      ...getColumnSearchProps("emiAmt"),
+    },
+    {
+      title: "EMI Period",
+      dataIndex: "emiPeriod",
+      key: "emiPeriod",
+      width: "8%",
+      ...getColumnSearchProps("emiPeriod"),
+    },
+    {
       title: "Progress",
       dataIndex: "progress",
       key: "progress",
