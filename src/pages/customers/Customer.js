@@ -54,7 +54,6 @@ function Customer() {
       );
 
       const detailsData = response.data.data.reverse().map((item, index) => {
-
         const totalBookingAmt = item.payments.reduce((total, payment) => {
           const amount = Number(payment.bookingAmt);
           return total + (isNaN(amount) ? 0 : amount);
@@ -72,15 +71,13 @@ function Customer() {
           plotarea: item.plotdetails.plotarea,
           progress: item.progress,
           plotamount: item.plotdetails.plotamount,
-     
+
           bookingAmt: totalBookingAmt,
           pendingAmount: item.plotdetails.plotamount - totalBookingAmt,
         };
       });
 
-      const updateAmount =  
-
-      setGetCustomer(detailsData);
+      const updateAmount = setGetCustomer(detailsData);
 
       console.log(detailsData, ">>detailsData");
     } catch (error) {
@@ -222,6 +219,20 @@ function Customer() {
       key: "bookingAmt",
       width: "8%",
       ...getColumnSearchProps("bookingAmt"),
+    },
+    {
+      title: "EMI Amount",
+      dataIndex: "emiAmt",
+      key: "emiAmt",
+      width: "8%",
+      ...getColumnSearchProps("emiAmt"),
+    },
+    {
+      title: "EMI Period",
+      dataIndex: "emiPeriod",
+      key: "emiPeriod",
+      width: "8%",
+      ...getColumnSearchProps("emiPeriod"),
     },
     {
       title: "Pending Amount",
