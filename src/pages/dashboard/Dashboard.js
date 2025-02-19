@@ -15,20 +15,22 @@ import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import CountUp from "react-countup";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import Loader from "../../components/loader/Loader";
 
 function Dashboard() {
   const navigate = useNavigate();
-
+const [loader,setLoader] = useState(false)
   //length of projects plots
 
   const [totalProjectPlots, setTotalProjectPlots] = useState([]);
 
   const handleLength = async () => {
     try {
+      setLoader(true)
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL}/plots/getAllLength`
       );
-
+     
       const { avilablePlots, sellPlots, totalPlots, totalProject } =
         response.data.data;
 
@@ -56,6 +58,8 @@ function Dashboard() {
       setTotalProjectPlots(countData);
     } catch (error) {
       console.log(error);
+    }finally{
+      setLoader(false)
     }
   };
 
@@ -232,6 +236,8 @@ function Dashboard() {
 
   return (
     <>
+
+   {loader && <Loader/>}
       <div className="parent dasboard-parent">
         <div className="container dashboard-container">
           <Swiper

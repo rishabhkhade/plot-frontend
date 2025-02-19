@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import "./App.scss";
 import Login from "./pages/Login";
 import SideBar from "./components/sidebar/SideBar";
@@ -28,11 +28,15 @@ import AddPayment from "./components/addPayment/AddPayment";
 function App() {
   const [isLogedIn, setIslogdin] = useState(!!localStorage.getItem("token"));
 
+
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     setIslogdin(!!token);
   }, []);
   const [isPDFVisible, setIsPDFVisible] = useState(false);
+
+
   return (
     <div className="App">
       {isPDFVisible && (
@@ -54,7 +58,7 @@ function App() {
               position: "absolute",
               top: 10,
               right: 10,
-              padding: "10px 15px",
+              padding: "10px 15px", 
               background: "red",
               color: "white",
               border: "none",

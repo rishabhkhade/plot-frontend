@@ -42,6 +42,8 @@ function AddCustomer({ setIsPDFVisible }) {
   const [storedId, setStoredId] = useState([]);
 
   const [isDisable, setIsDisable] = useState(false);
+  const [isdisbledbill, setisdisbledbill] = useState(false)
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -106,7 +108,7 @@ function AddCustomer({ setIsPDFVisible }) {
           branchName: "",
         },
       });
-
+      setisdisbledbill(true)
       setShowBankDetails(false);
     } catch (error) {
       console.log(error);
@@ -123,6 +125,7 @@ function AddCustomer({ setIsPDFVisible }) {
         `${process.env.REACT_APP_API_URL}/plots/getAvailablePlots/${projectId}`
       );
       setPlotList(response.data.data);
+      console.log(response.data.data)
     } catch (error) {
       console.log(error);
     }
@@ -178,6 +181,8 @@ function AddCustomer({ setIsPDFVisible }) {
       },
     }));
   }, [projectId, plotId]);
+
+
 
   return (
     <>
@@ -287,7 +292,7 @@ function AddCustomer({ setIsPDFVisible }) {
               >
                 <option selected>Plots</option>
                 {plotList.map((item, index) => (
-                  <option key={index} value={item.plotNumber}>
+                  <option key={index} value={item.plotId}>
                     {item.plotNumber}
                   </option>
                 ))}
@@ -298,7 +303,7 @@ function AddCustomer({ setIsPDFVisible }) {
                 type="text"
                 class="form-control"
                 placeholder="Plot No."
-                value={plotListId.plotId}
+                value={plotListId.plotNumber}
                 disabled={isDisable}
               />
             </div>
@@ -514,24 +519,7 @@ function AddCustomer({ setIsPDFVisible }) {
             )}
             {emiDetails && (
               <>
-                <div className="col-6">
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Payment Duration"
-                    value={customerAdd.emiPeriod}
-                    onChange={(e) =>
-                      setAddCustomer({
-                        ...customerAdd,
-                        customer: {
-                          ...customerAdd.customer,
-                          emiPeriod: e.target.value,
-                        },
-                      })
-                    }
-                    disabled={isDisable}
-                  />
-                </div>
+             
                 <div className="col-6">
                   <input
                     type="text"
@@ -550,17 +538,35 @@ function AddCustomer({ setIsPDFVisible }) {
                     disabled={isDisable}
                   />
                 </div>
+                <div className="col-6">
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Emi Duration"
+                    value={customerAdd.emiPeriod}
+                    onChange={(e) =>
+                      setAddCustomer({
+                        ...customerAdd,
+                        customer: {
+                          ...customerAdd.customer,
+                          emiPeriod: e.target.value,
+                        },
+                      })
+                    }
+                    disabled={isDisable}
+                  />
+                </div>
               </>
             )}
 
             <div className="col-4">
-              <button type="submit" class="btn ">
+              <button type="submit" disabled={isDisable} class="btn ">
                 Add Customer
               </button>
             </div>
             {isCustomerAdd && (
               <div class="col-3">
-                <button class="btn " onClick={addBill}>
+                <button class="btn" disabled={isdisbledbill} onClick={addBill}>
                   View Bill
                 </button>
               </div>
