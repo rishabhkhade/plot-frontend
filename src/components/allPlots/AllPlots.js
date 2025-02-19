@@ -25,6 +25,8 @@ function AllPlots() {
             );
 
             setAllPlots(response.data.data);
+            console.log(response.data.data,"response.data.data");
+            
         } catch (error) {
             console.log(error);
         }

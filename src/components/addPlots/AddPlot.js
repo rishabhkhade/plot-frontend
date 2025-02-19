@@ -28,7 +28,11 @@ function AddPlot() {
     projectId: "",
     plotarea: "",
     plotrate: "",
-    plotdirection: "",
+    plotNumber: "",
+    south: "",
+    north: "",
+    east: "",
+    west: ""
   });
 
   const handleSubmit = async (e) => {
@@ -42,7 +46,11 @@ function AddPlot() {
         projectId: "",
         plotarea: "",
         plotrate: "",
-        plotdirection: "",
+        plotNumber: "",
+        south: "",
+        north: "",
+        east: "",
+        west: ""
       });
       message.success("Project successfully added!");
 
@@ -79,6 +87,19 @@ function AddPlot() {
               <input
                 type="text"
                 class="form-control"
+                id="inputAddress2"
+                placeholder="Plot no"
+                value={plotAdd.plotNumber}
+                name="plot no"
+                onChange={(e) =>
+                  setPlotAdd({ ...plotAdd, plotNumber: e.target.value })
+                }
+              />
+            </div>
+            <div class="col-12">
+              <input
+                type="text"
+                class="form-control"
                 id="inputAddress"
                 placeholder="Plot Area"
                 value={plotAdd.plotarea}
@@ -101,29 +122,17 @@ function AddPlot() {
                 }
               />
             </div>
-            <div class="col-12">
-              <input
-                type="text"
-                class="form-control"
-                id="inputAddress2"
-                placeholder="Plot no"
-                value={plotAdd.plotrate}
-                name="plot no"
-                onChange={(e) =>
-                  setPlotAdd({ ...plotAdd, plotrate: e.target.value })
-                }
-              />
-            </div>
+
             <div class="col-12">
               <input
                 type="text"
                 class="form-control"
                 id="inputAddress2"
                 placeholder="North"
-                value={plotAdd.plotrate}
+                value={plotAdd.north}
                 name="plot area"
                 onChange={(e) =>
-                  setPlotAdd({ ...plotAdd, plotrate: e.target.value })
+                  setPlotAdd({ ...plotAdd, north: e.target.value })
                 }
               />
             </div>
@@ -134,10 +143,10 @@ function AddPlot() {
                 class="form-control"
                 id="inputAddress2"
                 placeholder="South"
-                value={plotAdd.plotrate}
+                value={plotAdd.south}
                 name="plot area"
                 onChange={(e) =>
-                  setPlotAdd({ ...plotAdd, plotrate: e.target.value })
+                  setPlotAdd({ ...plotAdd, south: e.target.value })
                 }
               />
             </div>
@@ -147,10 +156,10 @@ function AddPlot() {
                 class="form-control"
                 id="inputAddress2"
                 placeholder="East"
-                value={plotAdd.plotrate}
+                value={plotAdd.east}
                 name="plot area"
                 onChange={(e) =>
-                  setPlotAdd({ ...plotAdd, plotrate: e.target.value })
+                  setPlotAdd({ ...plotAdd, east: e.target.value })
                 }
               />
             </div>
@@ -160,10 +169,10 @@ function AddPlot() {
                 class="form-control"
                 id="inputAddress2"
                 placeholder="West"
-                value={plotAdd.plotrate}
+                value={plotAdd.west}
                 name="plot area"
                 onChange={(e) =>
-                  setPlotAdd({ ...plotAdd, plotrate: e.target.value })
+                  setPlotAdd({ ...plotAdd, west: e.target.value })
                 }
               />
             </div>
