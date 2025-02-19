@@ -42,38 +42,36 @@ function AllPlots() {
         );
       }
 
+      const projectDetails = response?.data.data.projectDetails.map(
+        (item, index) => ({
+          projectname: item.projectname,
+          projectlocation: item.projectlocation,
+          projectGatId: item.projectGatId,
+        })
+      );
 
-
-      const projectDetails = response?.data.data.projectDetails.map((item,index)=>({
-        projectname : item.projectname,
-        projectlocation:item.projectlocation,
-        projectGatId:item.projectGatId
-      }));
-
-      const plotDetails = response?.data.data.plotDetails.map((item,index)=>({
-        plotId : item.plotId,
-        plotnum:item.plotNumber,
-        plotarea:item.plotarea,
-        plotrate:item.plotrate,
-        plotamount:item.plotamount
-      }));
+      const plotDetails = response?.data.data.plotDetails.map(
+        (item, index) => ({
+          plotId: item.plotId,
+          plotnum: item.plotNumber,
+          plotarea: item.plotarea,
+          plotrate: item.plotrate,
+          plotamount: item.plotamount,
+        })
+      );
 
       const mergedArray = [
         ...projectDetails.map((item, index) => ({
-          ...item, 
-          ...plotDetails[index], 
-        }))
+          ...item,
+          ...plotDetails[index],
+        })),
       ];
-      
 
-
-      setAllPlots(mergedArray)
-    
+      setAllPlots(mergedArray);
     } catch (error) {
       console.log(error);
     }
   };
-
 
   // const remainPlots = async () => {
   //   try {
@@ -90,15 +88,9 @@ function AllPlots() {
   //   }
   // };
 
-  // useEffect(() => {
-  //   const hasRemainingPlots = searchParams.has("remainingPlotByProject");
-
-  //   if (hasRemainingPlots) {
-  //     remainPlots();
-  //   } else {
-  //     plotsData();
-  //   }
-  // }, [searchParams]);
+  useEffect(() => {
+    plotsData();
+  }, []);
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -168,7 +160,7 @@ function AllPlots() {
       width: "12%",
       ...getColumnSearchProps("projectname"),
     },
-  
+
     {
       title: "Project Location",
       dataIndex: "projectlocation",
@@ -211,7 +203,6 @@ function AllPlots() {
       width: "12%",
       ...getColumnSearchProps("plotamount"),
     },
-    
   ];
 
   return (
