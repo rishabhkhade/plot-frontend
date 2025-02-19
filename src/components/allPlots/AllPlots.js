@@ -30,11 +30,11 @@ function AllPlots() {
         );
       } else if (sellPlotId) {
         response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/plots/getPlotsByProjectId/${sellPlotId}`
+          `${process.env.REACT_APP_API_URL}/plots/getSellPlotsByProjectId/${sellPlotId}`
         );
       } else if (remainPlots) {
         response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/plots/getPlotsByProjectId/${remainPlots}`
+          `${process.env.REACT_APP_API_URL}/plots/getAvailablePlots/${remainPlots}`
         );
       } else {
         response = await axios.get(
@@ -42,36 +42,63 @@ function AllPlots() {
         );
       }
 
-      setAllPlots(response.data.data);
+
+
+      const projectDetails = response?.data.data.projectDetails.map((item,index)=>({
+        projectname : item.projectname,
+        projectlocation:item.projectlocation,
+        projectGatId:item.projectGatId
+      }));
+
+      const plotDetails = response?.data.data.plotDetails.map((item,index)=>({
+        plotId : item.plotId,
+        plotnum:item.plotNumber,
+        plotarea:item.plotarea,
+        plotrate:item.plotrate,
+        plotamount:item.plotamount
+      }));
+
+      const mergedArray = [
+        ...projectDetails.map((item, index) => ({
+          ...item, 
+          ...plotDetails[index], 
+        }))
+      ];
+      
+
+
+      setAllPlots(mergedArray)
+    
     } catch (error) {
       console.log(error);
     }
   };
 
-  const remainPlots = async () => {
-    try {
-      const remainPlotId = searchParams.get("remainingPlotByProject");
-      if (!remainPlotId) return;
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/plots/getAvailablePlots/${remainPlotId}`
-      );
-      if (response.data && response.data.data) {
-        setAllPlots(response.data.data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
-  useEffect(() => {
-    const hasRemainingPlots = searchParams.has("remainingPlotByProject");
+  // const remainPlots = async () => {
+  //   try {
+  //     const remainPlotId = searchParams.get("remainingPlotByProject");
+  //     if (!remainPlotId) return;
+  //     const response = await axios.get(
+  //       `${process.env.REACT_APP_API_URL}/plots/getAvailablePlots/${remainPlotId}`
+  //     );
+  //     if (response.data && response.data.data) {
+  //       setAllPlots(response.data.data);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
-    if (hasRemainingPlots) {
-      remainPlots();
-    } else {
-      plotsData();
-    }
-  }, [searchParams]);
+  // useEffect(() => {
+  //   const hasRemainingPlots = searchParams.has("remainingPlotByProject");
+
+  //   if (hasRemainingPlots) {
+  //     remainPlots();
+  //   } else {
+  //     plotsData();
+  //   }
+  // }, [searchParams]);
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -141,13 +168,7 @@ function AllPlots() {
       width: "12%",
       ...getColumnSearchProps("projectname"),
     },
-    {
-      title: "Project Area",
-      dataIndex: "projectarea",
-      key: "projectarea",
-      width: "12%",
-      ...getColumnSearchProps("projectarea"),
-    },
+  
     {
       title: "Project Location",
       dataIndex: "projectlocation",
@@ -161,6 +182,13 @@ function AllPlots() {
       key: "projectGatId",
       width: "12%",
       ...getColumnSearchProps("projectGatId"),
+    },
+    {
+      title: "Plot Number",
+      dataIndex: "plotnum",
+      key: "plotnum",
+      width: "12%",
+      ...getColumnSearchProps("plotnum"),
     },
     {
       title: "Plot Area",
@@ -183,13 +211,7 @@ function AllPlots() {
       width: "12%",
       ...getColumnSearchProps("plotamount"),
     },
-    {
-      title: "Plot Direction",
-      dataIndex: "plotdirection",
-      key: "plotdirection",
-      width: "12%",
-      ...getColumnSearchProps("plotdirection"),
-    },
+    
   ];
 
   return (

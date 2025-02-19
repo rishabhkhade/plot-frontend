@@ -2,14 +2,26 @@
   width: calc(100% - 300px);
   height: calc(100svh - 50px - 8%);
   margin-left: 300px;
-  margin-top: calc(8% + 20px);
+  margin-top: 50px;
+
+  .project_name{
+    padding: var(--unit) 0px;
+
+
+    h2{
+
+      span{
+        color: var(--accent);
+      }
+    }
+  }
 
   .view-project-cont {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: calc(var(--unit));
-    padding: 20px;
+    padding: 20px 0px;
     .view-projects-left {
       width: 40%;
       gap: 20px;

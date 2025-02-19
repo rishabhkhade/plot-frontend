@@ -107,7 +107,8 @@ function ViewProjects() {
         `${process.env.REACT_APP_API_URL}/plots/getPlotsByProjectId/${id}`
       );
 
-      setPlotTotal(response.data.data.length);
+
+      setPlotTotal(response.data.data.plotDetails.length);
     } catch (error) {
       console.log(error);
     }
@@ -238,22 +239,22 @@ function ViewProjects() {
 
   const data = [
     {
-      counts: plotTotal,
+      counts: plotTotal || 0,
       plots: "Total Plots",
       link_path: `/all-plots?totalPlotByProject=${id}`,
     },
     {
-      counts: totalCustomer,
+      counts: totalCustomer || 0,
       plots: "Sell Plots",
       link_path: `/all-plots?sellPlotByProject=${id}`,
     },
     {
-      counts: plotsRemain,
+      counts: plotsRemain || 0,
       plots: "Remaining Plots",
       link_path: `/all-plots?remainingPlotByProject=${id}`,
     },
     {
-      counts: totalCustomer,
+      counts: totalCustomer || 0,
       plots: "Total Customers",
     },
   ];
@@ -292,7 +293,19 @@ function ViewProjects() {
       console.log(error);
     }
   };
+const [projectData,setProjectData] = useState()
+  // get project by id
 
+  const getProjectById = async (id)=>{
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/projects/getProjectById/${id}`);
+
+      console.log(response.data.data)
+      setProjectData(response.data.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
   useEffect(() => {
     const id = searchParams.get("id");
     if (id) {
@@ -301,6 +314,7 @@ function ViewProjects() {
       handleToatalprojectAmt(id);
       totalExpense(id);
       handleTotalPlots(id);
+      getProjectById(id)
     }
   }, [location]);
 
@@ -332,7 +346,13 @@ function ViewProjects() {
       {loading && <Loader />}
 
       <div className="view-project-parent parent">
+        <div class="project_name container">
+        <h2>
+            Project Name : <span>{projectData?.projectname}</span>
+          </h2>
+        </div>
         <div className="view-project-cont container">
+          
           <div className="view-projects-left">
             {data &&
               data.map((item, index) => (

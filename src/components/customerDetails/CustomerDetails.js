@@ -5,10 +5,11 @@ import axios from "axios";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { FiPlusCircle } from "react-icons/fi";
 import AddPayment from "../addPayment/AddPayment";
+import Loader from "../loader/Loader";
 
 function CustomerDetails() {
   const [customerDetails, setCustomerDetails] = useState([]);
-
+const [loader,setLoader] = useState(false)
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
   const location = useLocation();
@@ -16,12 +17,15 @@ function CustomerDetails() {
 
   const handleCustomer = async (id) => {
     try {
+      setLoader(true)
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL}/customer/getCustomerById/${id}`
       );
       setCustomerDetails(response.data.data);
     } catch (error) {
       console.log(error);
+    }finally{
+      setLoader(false)
     }
   };
 
@@ -92,7 +96,7 @@ function CustomerDetails() {
   //plot details
   const data = [
     {
-      plotId: customerDetails?.plotdetails?.plotId || 0,
+      plotId: customerDetails?.plotdetails?.plotNumber || 0,
       plot_area: customerDetails?.plotdetails?.plotarea || 0,
       plotrate: customerDetails?.plotdetails?.plotrate || 0,
       plotamount: customerDetails?.plotdetails?.plotamount || 0,
@@ -164,6 +168,7 @@ function CustomerDetails() {
 
   return (
     <>
+   {loader && <Loader/>}
       <div className="parent customer-detail-parent">
         <div className="container customer-detail-cont">
           {/* customer details */}
