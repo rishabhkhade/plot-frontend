@@ -22,7 +22,7 @@ function AllPlots() {
       const totalPlotId = searchParams.get("totalPlotByProject");
       const sellPlotId = searchParams.get("sellPlotByProject");
       const remainPlots = searchParams.get("remainingPlotByProject");
-
+  
       let response;
       if (totalPlotId) {
         response = await axios.get(
@@ -41,38 +41,51 @@ function AllPlots() {
           `${process.env.REACT_APP_API_URL}/plots/getPlotList`
         );
       }
+  
 
-      const projectDetails = response?.data.data.projectDetails.map(
-        (item, index) => ({
-          projectname: item.projectname,
-          projectlocation: item.projectlocation,
-          projectGatId: item.projectGatId,
-        })
-      );
-
-      const plotDetails = response?.data.data.plotDetails.map(
-        (item, index) => ({
-          plotId: item.plotId,
-          plotnum: item.plotNumber,
-          plotarea: item.plotarea,
-          plotrate: item.plotrate,
-          plotamount: item.plotamount,
-        })
-      );
-
-      const mergedArray = [
-        ...projectDetails.map((item, index) => ({
-          ...item,
-          ...plotDetails[index],
-        })),
-      ];
-
-      setAllPlots(mergedArray);
+      const allTableData = response?.data?.data?.map((item,index)=>({
+        projectname:item.projectname,
+        projectlocation:item.projectlocation,
+        projectGatId:item.projectGatId,
+        plotnum:item.plotNumber,
+        plotarea:item.plotarea,
+        plotrate:item.plotrate,
+        plotamount:item.projectAmt
+      }))
+  
+     
+      const projectDetails = response?.data?.data?.projectDetails || [];
+      const plotDetails = response?.data?.data?.plotDetails || [];
+  
+    
+      const formattedProjectDetails = projectDetails.map((item) => ({
+        projectname: item.projectname,
+        projectlocation: item.projectlocation,
+        projectGatId: item.projectGatId,
+      }));
+  
+      const formattedPlotDetails = plotDetails.map((item) => ({
+        plotId: item.plotId,
+        plotnum: item.plotNumber,
+        plotarea: item.plotarea,
+        plotrate: item.plotrate,
+        plotamount: item.plotamount,
+      }));
+  
+ 
+      const mergedArray = formattedProjectDetails.map((item, index) => ({
+        ...item,
+        ...(formattedPlotDetails[index] || {}),
+      }));
+  
+      setAllPlots(mergedArray.length > 0 ? mergedArray : allTableData);
+      
     } catch (error) {
-      console.log(error);
+      console.log("Error fetching plots:", error);
     }
   };
-
+  
+console.log(allPlots, "allplots")
   // const remainPlots = async () => {
   //   try {
   //     const remainPlotId = searchParams.get("remainingPlotByProject");
