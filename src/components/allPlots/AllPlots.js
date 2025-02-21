@@ -36,34 +36,48 @@ function AllPlots() {
         response = await axios.get(
           `${process.env.REACT_APP_API_URL}/plots/getAvailablePlots/${remainPlots}`
         );
-      } else {
-        response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/plots/getPlotList`
-        );
       }
   
-
-      const allTableData = response?.data?.data?.map((item,index)=>({
-        projectname:item.projectname,
-        projectlocation:item.projectlocation,
-        projectGatId:item.projectGatId,
-        plotnum:item.plotNumber,
-        plotarea:item.plotarea,
-        plotrate:item.plotrate,
-        plotamount:item.projectAmt
-      }))
+      // Check if response and response.data exist
+      console.log("API Response:", response?.data);
   
-     
-      const projectDetails = response?.data?.data?.projectDetails || [];
-      const plotDetails = response?.data?.data?.plotDetails || [];
+      const apiData = response?.data?.data;
   
-    
+      if (!apiData || typeof apiData !== "object") {
+        console.error("Unexpected API response format:", response?.data);
+        return;
+      }
+  
+      // Ensure apiData is an array before mapping
+      const allTableData = Array.isArray(apiData)
+        ? apiData.map((item) => ({
+            projectname: item.projectname,
+            projectlocation: item.projectlocation,
+            projectGatId: item.projectGatId,
+            plotnum: item.plotNumber,
+            plotarea: item.plotarea,
+            plotrate: item.plotrate,
+            plotamount: item.projectAmt,
+          }))
+        : [];
+  
+      // Ensure projectDetails and plotDetails are arrays
+      const projectDetails = Array.isArray(apiData.projectDetails)
+        ? apiData.projectDetails
+        : [];
+  
+      const plotDetails = Array.isArray(apiData.plotDetails)
+        ? apiData.plotDetails
+        : [];
+  
+      // Format project details
       const formattedProjectDetails = projectDetails.map((item) => ({
         projectname: item.projectname,
         projectlocation: item.projectlocation,
         projectGatId: item.projectGatId,
       }));
   
+      // Format plot details
       const formattedPlotDetails = plotDetails.map((item) => ({
         plotId: item.plotId,
         plotnum: item.plotNumber,
@@ -72,14 +86,14 @@ function AllPlots() {
         plotamount: item.plotamount,
       }));
   
- 
+      // Merge project and plot details safely
       const mergedArray = formattedProjectDetails.map((item, index) => ({
         ...item,
         ...(formattedPlotDetails[index] || {}),
       }));
   
-      setAllPlots(mergedArray.length > 0 ? mergedArray : allTableData);
-      
+      console.log("Merged Data:", mergedArray);
+      setAllPlots(mergedArray);
     } catch (error) {
       console.log("Error fetching plots:", error);
     }
