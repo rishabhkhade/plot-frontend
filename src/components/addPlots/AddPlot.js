@@ -2,14 +2,16 @@ import React, { useEffect, useState } from "react";
 import "./addPlot.scss";
 import axios from "axios";
 import { message } from "antd";
+import Loader from "../loader/Loader";
 
 function AddPlot() {
   const direction = ["North", "South", "East", "West"];
 
   const [projectsList, setProjectsList] = useState([]);
-
+const [loader,setLoader] = useState(false)
   const handleList = async () => {
     try {
+      setLoader(true)
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL}/projects/getprojectsList`
       );
@@ -17,6 +19,8 @@ function AddPlot() {
       setProjectsList(response.data.data);
     } catch (error) {
       console.log(error);
+    }finally{
+      setLoader(false)
     }
   };
 
@@ -61,6 +65,7 @@ function AddPlot() {
 
   return (
     <>
+  {loader &&  <Loader/>}
       <div class="parent add-plot-parent">
         <div class="container add-plot-cont">
           <form class="row g-3 add-plot-form" onSubmit={handleSubmit}>
