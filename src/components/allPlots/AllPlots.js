@@ -4,7 +4,7 @@ import { Table as AntTable, Button } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { useLocation, useSearchParams } from "react-router-dom";
-
+import Loader from "../../components/loader/Loader";
 function AllPlots() {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
@@ -12,17 +12,16 @@ function AllPlots() {
   const location = useLocation();
   const [allPlots, setAllPlots] = useState([]);
 
-  //   useEffect(() => {
-  //     const params = new URLSearchParams(location.search);
-  //     const projectId = params.get("totalPlotByProject");
-  //   }, [location]);
+  const [loader, setLoader] = useState(false);
+
+  const totalPlotId = searchParams.get("totalPlotByProject");
+  const sellPlotId = searchParams.get("sellPlotByProject");
+  const remainPlots = searchParams.get("remainingPlotByProject");
 
   const plotsData = async () => {
     try {
-      const totalPlotId = searchParams.get("totalPlotByProject");
-      const sellPlotId = searchParams.get("sellPlotByProject");
-      const remainPlots = searchParams.get("remainingPlotByProject");
-  
+      setLoader(true);
+
       let response;
       if (totalPlotId) {
         response = await axios.get(
@@ -37,17 +36,17 @@ function AllPlots() {
           `${process.env.REACT_APP_API_URL}/plots/getAvailablePlots/${remainPlots}`
         );
       }
-  
+
       // Check if response and response.data exist
       console.log("API Response:", response?.data);
-  
+
       const apiData = response?.data?.data;
-  
+
       if (!apiData || typeof apiData !== "object") {
         console.error("Unexpected API response format:", response?.data);
         return;
       }
-  
+
       // Ensure apiData is an array before mapping
       const allTableData = Array.isArray(apiData)
         ? apiData.map((item) => ({
@@ -60,23 +59,23 @@ function AllPlots() {
             plotamount: item.projectAmt,
           }))
         : [];
-  
+
       // Ensure projectDetails and plotDetails are arrays
       const projectDetails = Array.isArray(apiData.projectDetails)
         ? apiData.projectDetails
         : [];
-  
+
       const plotDetails = Array.isArray(apiData.plotDetails)
         ? apiData.plotDetails
         : [];
-  
+
       // Format project details
       const formattedProjectDetails = projectDetails.map((item) => ({
         projectname: item.projectname,
         projectlocation: item.projectlocation,
         projectGatId: item.projectGatId,
       }));
-  
+
       // Format plot details
       const formattedPlotDetails = plotDetails.map((item) => ({
         plotId: item.plotId,
@@ -84,39 +83,28 @@ function AllPlots() {
         plotarea: item.plotarea,
         plotrate: item.plotrate,
         plotamount: item.plotamount,
+        CustomerName: item.cName,
       }));
-  
+
       // Merge project and plot details safely
       const mergedArray = formattedProjectDetails.map((item, index) => ({
         ...item,
         ...(formattedPlotDetails[index] || {}),
       }));
-  
+
       console.log("Merged Data:", mergedArray);
       setAllPlots(mergedArray);
     } catch (error) {
       console.log("Error fetching plots:", error);
+    } finally {
+      setLoader(false);
     }
   };
-  
-console.log(allPlots, "allplots")
-  // const remainPlots = async () => {
-  //   try {
-  //     const remainPlotId = searchParams.get("remainingPlotByProject");
-  //     if (!remainPlotId) return;
-  //     const response = await axios.get(
-  //       `${process.env.REACT_APP_API_URL}/plots/getAvailablePlots/${remainPlotId}`
-  //     );
-  //     if (response.data && response.data.data) {
-  //       setAllPlots(response.data.data);
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
   useEffect(() => {
-    plotsData();
+    if (totalPlotId || sellPlotId || remainPlots) {
+      plotsData();
+    }
   }, []);
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -232,8 +220,19 @@ console.log(allPlots, "allplots")
     },
   ];
 
+  if (sellPlotId) {
+    columns.push({
+      title: "Customer Name",
+      dataIndex: "CustomerName",
+      key: "CustomerName",
+      width: "12%",
+      ...getColumnSearchProps("CustomerName"),
+    });
+  }
+
   return (
     <>
+      {loader && <Loader />}
       <div class="all-plots-parent parent">
         <div class="all-plots-cont container">
           <AntTable
