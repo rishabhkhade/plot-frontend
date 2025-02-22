@@ -42,7 +42,7 @@ const [loader,setLoader] = useState(false)
         {
           status: "Total Plots",
           projects_counts: totalPlots,
-          link_path: "/all-plots",
+          link_path: `/dashboarddata`,
         },
         {
           status: "Sale Plots",

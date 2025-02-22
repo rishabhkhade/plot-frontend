@@ -38,7 +38,7 @@ function AllPlots() {
       }
 
       // Check if response and response.data exist
-      console.log("API Response:", response?.data);
+     
 
       const apiData = response?.data?.data;
 
@@ -92,7 +92,7 @@ function AllPlots() {
         ...(formattedPlotDetails[index] || {}),
       }));
 
-      console.log("Merged Data:", mergedArray);
+     
       setAllPlots(mergedArray);
     } catch (error) {
       console.log("Error fetching plots:", error);

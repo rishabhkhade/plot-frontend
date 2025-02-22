@@ -22,6 +22,7 @@ const [loader,setLoader] = useState(false)
         `${process.env.REACT_APP_API_URL}/customer/getCustomerById/${id}`
       );
       setCustomerDetails(response.data.data);
+      console.log(response.data.data)
     } catch (error) {
       console.log(error);
     }finally{
@@ -190,30 +191,44 @@ const [loader,setLoader] = useState(false)
             </div>
             <div class="line"></div>
 
-            <div className="col-9">
+            <div className="col-6">
               <div class="  d-flex gap-4 align-contemt-center">
-                <h4 className="name-class">Name</h4>
+                <h4 className="name-class">Name :</h4>
                 <h4 className="name-class-side">{customerDetails.cName}</h4>
               </div>
               <div class=" d-flex gap-4 align-contemt-center">
-                <h4 className="name-class">Address</h4>
+                <h4 className="name-class">Address :</h4>
                 <h4 className="name-class-side">{customerDetails.address}</h4>
               </div>
 
               <div class="d-flex gap-4 align-contemt-center">
-                <h4 className="name-class">Mobile no.</h4>
+                <h4 className="name-class">Mobile no. :</h4>
                 <h4 className="name-class-side">
                   {customerDetails.mob_Number}
                 </h4>
               </div>
               <div class="d-flex gap-4 a lign-contemt-center">
-                <h4 className="name-class">Email</h4>
+                <h4 className="name-class">Email:</h4>
                 <h4 className="name-class-side">{customerDetails.email}</h4>
+              </div>
+              <div class="d-flex gap-4 a lign-contemt-center">
+                <h4 className="name-class">plot Purchased Type :</h4>
+                <h4 className="name-class-side">{customerDetails.plotPurchasedType}</h4>
               </div>
 
               <div class="d-flex gap-4 a lign-contemt-center">
                 <h4 className="name-class">Progress</h4>
                 <h4 className="name-class-side">{customerDetails.progress}</h4>
+              </div>
+            </div>
+            <div class="col-3">
+            <div class="d-flex gap-4 a lign-contemt-center">
+                <h4 className="name-class">Emi Period :</h4>
+                <h4 className="name-class-side">{customerDetails.emiPeriod}</h4>
+              </div>
+            <div class="d-flex gap-4 a lign-contemt-center">
+                <h4 className="name-class">Emi Amount :</h4>
+                <h4 className="name-class-side">{customerDetails.emiAmount}</h4>
               </div>
             </div>
             <div className="col-3">

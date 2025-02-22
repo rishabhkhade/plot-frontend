@@ -24,6 +24,7 @@ import Statement from "./components/statement/Statement";
 import Enquire from "./components/enquire/Enquire";
 import EnquireForm from "./components/enquireform/EnquireForm";
 import AddPayment from "./components/addPayment/AddPayment";
+import DashBoardData from "../src/pages/dashData/DashBoardData"
 
 function App() {
   const [isLogedIn, setIslogdin] = useState(!!localStorage.getItem("token"));
@@ -117,6 +118,7 @@ function App() {
                 <Route path="/customer" element={<Customer />} />
                 <Route path="/get-plots" element={<GetPlots />} />
                 <Route path="/statement" element={<Statement />} />
+                <Route  path="/dashboarddata" element={<DashBoardData/>} />
                 <Route path="/enquire" element={<Enquire />} />
                 <Route path="/customer-details" element={<CustomerDetails />} />
                 <Route path="/signup" element={<SignUp />} />
