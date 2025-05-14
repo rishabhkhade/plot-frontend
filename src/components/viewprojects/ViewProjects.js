@@ -13,7 +13,7 @@ import {
 } from "react-router-dom";
 import { TiPlus } from "react-icons/ti";
 import axios from "axios";
- 
+
 function ViewProjects() {
   const navigate = useNavigate();
   const [imageFile, setImageFile] = useState("");
@@ -92,14 +92,14 @@ function ViewProjects() {
         `${process.env.REACT_APP_API_URL}/plots/getAvailablePlots/${id}`
       );
 
-      setPlotsRemain(response.data.data.length);
+      setPlotsRemain(response.data.data.availabalePlots.length);
     } catch (error) {
       console.log(error);
     }
   };
 
   //total plots
-  const [plotTotal, setPlotTotal] = useState([]);
+  const [plotTotal, setPlotTotal] = useState(0);
 
   const handleTotalPlots = async (id) => {
     try {
@@ -107,10 +107,13 @@ function ViewProjects() {
         `${process.env.REACT_APP_API_URL}/plots/getPlotsByProjectId/${id}`
       );
 
-
-      setPlotTotal(response.data.data.plotDetails.length);
+      setPlotTotal(response?.data?.data?.plotDetails?.length || 0);
     } catch (error) {
       console.log(error);
+
+      if (error.status === 404) {
+        setPlotTotal(0);
+      }
     }
   };
 
@@ -293,19 +296,21 @@ function ViewProjects() {
       console.log(error);
     }
   };
-const [projectData,setProjectData] = useState()
+  const [projectData, setProjectData] = useState();
   // get project by id
 
-  const getProjectById = async (id)=>{
+  const getProjectById = async (id) => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/projects/getProjectById/${id}`);
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/projects/getProjectById/${id}`
+      );
 
-      console.log(response.data.data)
-      setProjectData(response.data.data)
+     
+      setProjectData(response.data.data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
   useEffect(() => {
     const id = searchParams.get("id");
     if (id) {
@@ -314,7 +319,7 @@ const [projectData,setProjectData] = useState()
       handleToatalprojectAmt(id);
       totalExpense(id);
       handleTotalPlots(id);
-      getProjectById(id)
+      getProjectById(id);
     }
   }, [location]);
 
@@ -334,8 +339,6 @@ const [projectData,setProjectData] = useState()
           },
         }
       );
-
-   
     } catch (error) {
       console.log(error);
     }
@@ -347,12 +350,11 @@ const [projectData,setProjectData] = useState()
 
       <div className="view-project-parent parent">
         <div class="project_name container">
-        <h2>
+          <h2>
             Project Name : <span>{projectData?.projectname}</span>
           </h2>
         </div>
         <div className="view-project-cont container">
-          
           <div className="view-projects-left">
             {data &&
               data.map((item, index) => (

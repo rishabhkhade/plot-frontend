@@ -18,7 +18,17 @@ function Expenses() {
         `${process.env.REACT_APP_API_URL}/expense/addExpenses`,
         expense
       );
-      message("Expense Added successfully")
+
+      if(response.status === 201){
+        setExpense({
+          projectId: "",
+          workDetails: "",
+          amount: "",
+        })
+        message("Expense Added successfully");
+      }
+     
+
     } catch (error) {
       console.log(error);
     }

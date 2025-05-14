@@ -42,6 +42,7 @@ function AddPayment({id}) {
         },
       });
       message.success("Amount Updated!");
+      window.location.reload()
     } catch (error) {
       console.log(error);
       message.error("Failed to update payment.");

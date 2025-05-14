@@ -71,7 +71,8 @@ function Customer() {
           plotarea: item.plotdetails.plotarea,
           progress: item.progress,
           plotamount: item.plotdetails.plotamount,
-
+          emiAmt:item.emiAmt,
+          emiPeriod:item.emiPeriod,
           bookingAmt: totalBookingAmt,
           pendingAmount: item.plotdetails.plotamount - totalBookingAmt,
         };

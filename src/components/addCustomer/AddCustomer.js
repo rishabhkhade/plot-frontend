@@ -124,7 +124,9 @@ function AddCustomer({ setIsPDFVisible }) {
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL}/plots/getAvailablePlots/${projectId}`
       );
-      setPlotList(response.data.data);
+
+      console.log(response, "respopns")
+      setPlotList(response.data.data.availabalePlots);
       console.log(response.data.data)
     } catch (error) {
       console.log(error);
